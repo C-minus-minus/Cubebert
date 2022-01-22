@@ -428,17 +428,20 @@ int StickerCube::getPhase1UdsliceCoordinate() {
     const int secondaryStickerSide[] = { 5, 2, 4, 1, 4, 2, 5, 1, 1, 2, 2, 1 };
 
     bool positions[12];
+    for (int i = 0; i < 12; i++) {
+        positions[i] = 0;
+    }
     for (int i = 0; i < stickerCount; i++) {
 
         int sticker1 = cubeState[primaryStickerSide[i]][primarySticker[i]];
         int sticker2 = cubeState[secondaryStickerSide[i]][secondarySticker[i]];
 
-        if (sticker1 == 1 || sticker2 == 2) {
+        if (sticker1 == 1 || sticker1 == 2) {
             if (sticker2 == 4 || sticker2 == 5) {
                 positions[i] = true;
             }
         }
-        else if (sticker1 == 4 || sticker2 == 5) {
+        else if (sticker1 == 4 || sticker1 == 5) {
             if (sticker2 == 1 || sticker2 == 2) {
                 positions[i] = true;
             }
