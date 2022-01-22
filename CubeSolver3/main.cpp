@@ -5,35 +5,6 @@
 
 int main() {
 
-    StickerCube* cube = new StickerCube();
-    cube->applyScramble("U B' D' F' U R' U B U' B2 R2 U2 F' R2 B' U2 D2 F U2 L2");
-    std::cout << cube->getPhase2CornerCoordinate();
-    exit(0);
-
-    /*StickerCube* stickerCube = StickerCube::fromEdgePermutation(0);
-    stickerCube->applyMove(CubeConstants::PHASE_1_MOVES[0]);
-    std::cout << stickerCube->getPhase1EdgeCoordinate();
-    exit(0);*/
-
-    //int times = 40000;
-    //StickerCube* stickerCube = StickerCube::fromEdgePermutation(0);
-    //stickerCube->getPhase2EdgeCoordinate();
-    ////exit(0);
-    //for (int i = 0; i < times; i++) {
-    //     
-    //    //std::string s = std::to_string(123) + std::to_string(1222) + std::to_string(123);
-    //    /*std::stringstream ss;
-    //    ss << 12 << 23;
-    //    ss.str();
-    //    ss.str(std::string());*/
-    //    
-    //    for (int a = 0; a < 10; a++) {
-    //        
-    //        int b = stickerCube->getPhase2EdgeCoordinate();
-    //    }
-    //}
-    //exit(0);
-
     //  Display welcome message
     std::cout << "Starting CubeSolver 2...\n";
 
@@ -44,7 +15,7 @@ int main() {
     //  Get scramble from user
     std::cout << "Please enter a scramble (standard notation separated via spaces): ";
     std::string scramble;
-    std::cin >> scramble;
+    std::getline(std::cin, scramble);
 
     //  Apply scramble to clean cube
     StickerCube* scrambleCube = new StickerCube(scramble);
