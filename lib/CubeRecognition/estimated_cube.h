@@ -1,7 +1,7 @@
 #ifndef ESTIMATED_CUBE_H
 #define ESTIMATED_CUBE_H
 
-#define RASPISTILL_BIN "/usr/bin/raspistill"
+#include <raspicam/raspicam.h>
 
 class EstimatedCube {
 public:
@@ -9,8 +9,10 @@ public:
     ~EstimatedCube();
 
     void beginCapture();
+    void endCapture();
     void captureSide();
 private:
+    raspicam::RaspiCam *m_camera;
 };
 
 #endif // ESTIMATED_CUBE_H
