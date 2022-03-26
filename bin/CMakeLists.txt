@@ -9,13 +9,7 @@ if(HAS_PIGS)
 
     target_link_libraries(
         cubebert-bot
-        PUBLIC libBot
-        PUBLIC libstb_image
-    )
-
-    target_include_directories(
-        cubebert-bot
-        INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+        PUBLIC Firmware
     )
 
     install(TARGETS cubebert-bot DESTINATION sbin)
@@ -28,7 +22,7 @@ target_compile_features(cubebert-solver PUBLIC cxx_std_11)
 
 target_link_libraries(
     cubebert-solver
-    PUBLIC libSolver
+    PUBLIC CubeSolver
 )
 
 target_include_directories(
