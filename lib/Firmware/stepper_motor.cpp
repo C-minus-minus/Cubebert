@@ -6,8 +6,6 @@ extern "C" {
     #include <pigpio.h>
 }
 
-int StepperMotor::m_curSteps = 0;
-
 StepperMotor::StepperMotor(int dirPin, int stepPin, int enablePin) {
     m_dirPin = dirPin;
     m_stepPin = stepPin;
@@ -36,6 +34,7 @@ StepperMotor::~StepperMotor() {
  */
 void StepperMotor::step(int steps, Direction direction, float speed) {
     m_curSteps = 0;
+    m_stopSteps = steps;
 
     if(direction != Direction::NO_DIR)
         gpioWrite(m_dirPin, direction);
@@ -56,6 +55,10 @@ void StepperMotor::setDirection(Direction direction) {
     m_direction = direction;
 }
 
+StepperMotor::Direction StepperMotor::getDirection() {
+    return m_direction;
+}
+
 /*!
  *  \brief
  *  \param
@@ -73,11 +76,65 @@ void StepperMotor::setSpeed(float speed) {
  *  \brief
  *  \param
  */
-void StepperMotor::stepHappened(int gpio, int level, uint32_t tick) {
-    if(++m_curSteps != steps) {
-        gpioSetPWMfrequency(m_stepPin, 0);
-        gpioSetPWMfrequency(m_stepPin, mapSpeedToPulseFrequency(m_speed));
-        gpioWrite(m_dirPin, m_direction); 
+float StepperMotor::getSpeed() {
+    return m_speed;
+}
+
+/*!
+ *  \brief
+ *  \param
+ */
+int StepperMotor::getDirPin() {
+    return m_dirPin;
+}
+
+/*!
+ *  \brief
+ *  \param
+ */
+int StepperMotor::getStepPin() {
+    return m_stepPin;
+}
+
+/*!
+ *  \brief
+ *  \param
+ */
+int StepperMotor::getEnablePin() {
+    return m_stepPin;
+}
+
+void StepperMotor::incrementCurrentSteps() {
+    ++m_curSteps;
+}
+
+/*!
+ *  \brief
+ *  \param
+ */
+int StepperMotor::getCurrentSteps() {
+    return m_curSteps;
+}
+    
+/*!
+ *  \brief
+ *  \param
+ */
+int StepperMotor::getStopSteps() {
+    return m_stopSteps;
+}
+
+/*!
+ *  \brief
+ *  \param
+ */
+void StepperMotor::stepHappened(int gpio, int level, uint32_t tick, void* data) {
+    StepperMotor* motor = (StepperMotor*) data;
+    motor->incrementCurrentSteps();
+    if(motor->getCurrentSteps() != motor->getStopSteps()) {
+        gpioSetPWMfrequency(motor->getStepPin(), 0);
+        gpioSetPWMfrequency(motor->getStepPin(), StepperMotor::mapSpeedToPulseFrequency(motor->getSpeed()));
+        gpioWrite(motor->getDirPin(), motor->getDirection());
     }
 }
 
@@ -86,7 +143,7 @@ void StepperMotor::stepHappened(int gpio, int level, uint32_t tick) {
  *  \brief
  *  \param
  */
- int StepperMotor::mapSpeedToPulseFrequency(float speed) {
+int StepperMotor::mapSpeedToPulseFrequency(float speed) {
     if(speed <= 0.0)
         return MIN_PF;
 

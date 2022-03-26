@@ -22,10 +22,25 @@ public:
     };
 
     void step(int steps, Direction direction = Direction::NO_DIR, float speed = -1);
-    void setDirection(Direction direction);
-    void setSpeed(float speed);
-    static void stepHappened(int gpio, int level, uint32_t tick);
     
+    void setDirection(Direction direction);
+    Direction getDirection();
+    
+    void setSpeed(float speed);
+    float getSpeed();
+
+    int getDirPin();
+    int getStepPin();
+    int getEnablePin();
+
+    void incrementCurrentSteps();
+    int getCurrentSteps();
+
+    int getStopSteps();
+    
+    static void stepHappened(int gpio, int level, uint32_t tick, void* data);
+    static int mapSpeedToPulseFrequency(float speed);
+
 private:
     Direction m_direction;
     float m_speed;
@@ -34,9 +49,8 @@ private:
     int m_stepPin;
     int m_enablePin;
     
-    static int m_curSteps;
-
-    int mapSpeedToPulseFrequency(float speed);
+    int m_curSteps;
+    int m_stopSteps;
 };
 
 #endif // STEPPER_MOTOR_H
