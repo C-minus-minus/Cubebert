@@ -6,7 +6,6 @@ project(Cubebert VERSION 0.1)
 add_subdirectory(bin)
 add_subdirectory(lib)
 add_subdirectory(libext)
-add_subdirectory(test)
 
 target_compile_features(Cubebert PUBLIC cxx_std_11)
 
