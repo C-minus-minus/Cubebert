@@ -1,5 +1,4 @@
 # just append a new library to the list
-add_subdirectory(CubeRecognition)
 add_subdirectory(CubeSolver)
 
 include(CheckIncludeFile)
