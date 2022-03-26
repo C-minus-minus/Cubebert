@@ -3,12 +3,12 @@
 
 #include <map>
 
+#include "stepper_motor.h"
+
 typedef struct MotorMove {
     char* motor;
     
 };
-
-class StepperMotor;
 
 class AxisController {
 public:
