@@ -55,7 +55,7 @@ void StepperMotor::setDirection(Direction direction) {
     m_direction = direction;
 }
 
-Direction StepperMotor::getDirection() {
+StepperMotor::Direction StepperMotor::getDirection() {
     return m_direction;
 }
 
@@ -133,8 +133,8 @@ void StepperMotor::stepHappened(int gpio, int level, uint32_t tick, void* data) 
     motor->incrementCurrentSteps();
     if(motor->getCurrentSteps() != motor->getStopSteps()) {
         gpioSetPWMfrequency(motor->getStepPin(), 0);
-        gpioSetPWMfrequency(motor->getStepPin(), mapSpeedToPulseFrequency(motor->getSpeed()));
-        gpioWrite(motor->getDirPin(), motor->getDirection()); 
+        gpioSetPWMfrequency(motor->getStepPin(), StepperMotor::mapSpeedToPulseFrequency(motor->getSpeed()));
+        gpioWrite(motor->getDirPin(), motor->getDirection());
     }
 }
 
@@ -143,7 +143,7 @@ void StepperMotor::stepHappened(int gpio, int level, uint32_t tick, void* data) 
  *  \brief
  *  \param
  */
- int StepperMotor::mapSpeedToPulseFrequency(float speed) {
+int StepperMotor::mapSpeedToPulseFrequency(float speed) {
     if(speed <= 0.0)
         return MIN_PF;
 

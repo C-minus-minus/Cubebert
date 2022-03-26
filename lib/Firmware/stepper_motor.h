@@ -39,7 +39,8 @@ public:
     int getStopSteps();
     
     static void stepHappened(int gpio, int level, uint32_t tick, void* data);
-    
+    static int mapSpeedToPulseFrequency(float speed);
+
 private:
     Direction m_direction;
     float m_speed;
@@ -50,8 +51,6 @@ private:
     
     int m_curSteps;
     int m_stopSteps;
-    
-    int mapSpeedToPulseFrequency(float speed);
 };
 
 #endif // STEPPER_MOTOR_H
