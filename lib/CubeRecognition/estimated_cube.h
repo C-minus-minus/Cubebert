@@ -8,6 +8,7 @@ public:
     EstimatedCube();
     ~EstimatedCube();
 
+    void beginCapture();
     void captureSide();
 private:
 };
