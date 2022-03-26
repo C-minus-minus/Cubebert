@@ -12,22 +12,22 @@ public:
     };
 
     struct XYZ {
-        unsigned double X;
-        unsigned double Y;
-        unsigned double Z;
-    }
+        float X;
+        float Y;
+        float Z;
+    };
 
     struct CIELAB {
         unsigned char lStar;
         unsigned long long aStar;
         unsigned long long bStar;
-    }
+    };
 
     static CIELAB* rgb2CIE(RGB pixel);
 
 private:
     static XYZ* rgb2xyz(RGB pixel);
-    static CIELAB* xyz2cielab(XYZ datum);
-}
+    static CIELAB* xyz2cielab(XYZ datum, XYZ ref);
+};
 
 #endif // COLOR_MATH_H
