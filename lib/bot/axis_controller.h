@@ -13,7 +13,7 @@ typedef struct MotorMove {
 class AxisController {
 public:
     AxisController();
-    AxisController(std::map<char*, StepperMotor*> motors)
+    AxisController(std::map<char*, StepperMotor*> motors);
     ~AxisController();
     
     void addMotor(char* name, StepperMotor* motor);
