@@ -34,8 +34,8 @@ int main() {
     std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
 
     //  output complete solution
-    std::cout << "Solution " << phase1Solution << " " << phase2Solution << "\n";
+    std::cout << "Solution " << phase1Solution << phase2Solution << "\n";
     
     //  output efficient rotations
-    std::cout << "\nSolution With Optimal Rotations " << convertTo4Arm(phase1Solution + " " + phase2Solution) << "\n";
+    std::cout << "\nSolution With Optimal Rotations " << convertTo4Arm(phase1Solution + phase2Solution) << "\n";
 }
