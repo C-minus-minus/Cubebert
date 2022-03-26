@@ -22,8 +22,9 @@ if(HAS_PIGS)
 
     target_link_libraries(
         cubebert-eyes
-        PUBLIC libstb_image
+        PUBLIC stb_image
         PUBLIC CubeRecognition
+        PUBLIC -lraspicam
     )
 
     install(TARGETS cubebert-eyes DESTINATION sbin)

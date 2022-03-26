@@ -3,9 +3,11 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(Cubebert VERSION 0.1)
 
-add_subdirectory(bin)
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES /usr/local/lib ${CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES})
+
 add_subdirectory(lib)
 add_subdirectory(libext)
+add_subdirectory(bin)
 
 # Setup packaging information
 include(InstallRequiredSystemLibraries)
