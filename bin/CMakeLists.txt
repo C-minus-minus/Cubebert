@@ -10,6 +10,8 @@ if(HAS_PIGS)
     target_link_libraries(
         cubebert-bot
         PUBLIC Firmware
+        PUBLIC -lrt
+        PUBLIC -lpigpio
     )
 
     install(TARGETS cubebert-bot DESTINATION sbin)
