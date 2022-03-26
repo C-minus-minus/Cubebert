@@ -22,9 +22,23 @@ public:
     };
 
     void step(int steps, Direction direction = Direction::NO_DIR, float speed = -1);
+    
     void setDirection(Direction direction);
+    Direction getDirection();
+    
     void setSpeed(float speed);
-    static void stepHappened(int gpio, int level, uint32_t tick);
+    float getSpeed();
+
+    int getDirPin();
+    int getStepPin();
+    int getEnablePin();
+
+    void incrementCurrentSteps();
+    int getCurrentSteps();
+
+    int getStopSteps();
+    
+    static void stepHappened(int gpio, int level, uint32_t tick, void* data);
     
 private:
     Direction m_direction;
@@ -34,8 +48,9 @@ private:
     int m_stepPin;
     int m_enablePin;
     
-    static int m_curSteps;
-
+    int m_curSteps;
+    int m_stopSteps;
+    
     int mapSpeedToPulseFrequency(float speed);
 };
 
