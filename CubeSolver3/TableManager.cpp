@@ -7,9 +7,7 @@ TableManager::TableManager() {
     this->generatePhase1MoveTables();
     this->generatePhase1PruningTables();
     this->generatePhase2MoveTables();
-    std::cout << "boom";
     this->generatePhase2PruningTables();
-    std::cout << "pow";
 }
 
 TableManager* TableManager::getInstance() {
@@ -177,13 +175,9 @@ void TableManager::generatePhase2MoveTables() {
         }
     }*/
 
-    std::cout << "zero";
     this->generatePhase2EdgeMoveTable();
-    std::cout << "uno";
     this->generatePhase2CornerMoveTable();
-    std::cout << "dos";
     this->generatePhase2UdsliceMoveTable();
-    std::cout << "tress";
 }
 
 void TableManager::generatePhase1EdgePruningTable() {
@@ -325,11 +319,7 @@ void TableManager::generatePhase1PruningTables() {
 }
 
 void TableManager::generatePhase2PruningTables() {
-    std::cout << "meowwerwer";
     this->generatePhase2EdgePruningTable();
-    std::cout << "Moo";
     this->generatePhase2CornerPruningTable();
-    std::cout << "spine";
     this->generatePhase2UDSlicePruningTable();
-    std::cout << "book";
 }
