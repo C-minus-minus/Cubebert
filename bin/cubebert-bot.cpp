@@ -1,4 +1,5 @@
 #include "stepper_motor.h"
+#include "stb_image.h"
 
 #include <chrono>
 #include <thread>
