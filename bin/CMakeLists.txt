@@ -8,7 +8,7 @@ if(HAS_PIGS)
 
     target_link_libraries(
         cubebert-bot
-        PUBLIC libBot
+        PUBLIC Firmware
     )
 
     install(TARGETS cubebert-bot DESTINATION sbin)
@@ -33,7 +33,7 @@ target_compile_features(cubebert-solver PUBLIC cxx_std_11)
 
 target_link_libraries(
     cubebert-solver
-    PUBLIC libSolver
+    PUBLIC CubeSolver
 )
 
 install(TARGETS cubebert-solver DESTINATION sbin)
