@@ -12,19 +12,20 @@ if(HAS_PIGS)
     )
 
     install(TARGETS cubebert-bot DESTINATION sbin)
+
+    # cubebert-eyes binary
+    add_executable(cubebert-eyes cubebert-eyes.cpp)
+
+    target_compile_features(cubebert-eyes PUBLIC cxx_std_11)
+
+    target_link_libraries(
+        cubebert-eyes
+        PUBLIC libstb_image
+        PUBLIC CubeRecognition
+    )
+
+    install(TARGETS cubebert-eyes DESTINATION sbin)
 endif()
-
-# cubebert-eyes binary
-add_executable(cubebert-eyes cubebert-eyes.cpp)
-
-target_compile_features(cubebert-eyes PUBLIC cxx_std_11)
-
-target_link_libraries(
-    cubebert-eyes
-    PUBLIC libstb_image
-)
-
-install(TARGETS cubebert-eyes DESTINATION sbin)
 
 # cubebert-solver binary
 add_executable(cubebert-solver cubebert-solver.cpp)
