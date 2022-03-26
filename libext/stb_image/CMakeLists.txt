@@ -1,5 +1,7 @@
 add_library(libstb_image stb_image.h)
 
+set_target_properties(libstb_image PROPERTIES LINKER_LANGUAGE CXX)
+
 target_include_directories(
     libstb_image
     INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}

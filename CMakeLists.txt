@@ -7,8 +7,6 @@ add_subdirectory(bin)
 add_subdirectory(lib)
 add_subdirectory(libext)
 
-target_compile_features(Cubebert PUBLIC cxx_std_11)
-
 # Setup packaging information
 include(InstallRequiredSystemLibraries)
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")

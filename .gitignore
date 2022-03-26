@@ -53,6 +53,10 @@ lib/*
 bin/*
 test/test_runner
 
+# CPack Ignoreables
+CPackConfig.cmake
+CPackSourceConfig.cmake
+
 # CMake Ignoreables
 CMakeLists.txt.user
 CMakeCache.txt
