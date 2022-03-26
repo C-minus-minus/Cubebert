@@ -1,4 +1,4 @@
-add_library(CubeRecognition estimated_cube.cpp)
+add_library(CubeRecognition estimated_cube.cpp color_math.cpp)
 
 target_include_directories(
     CubeRecognition

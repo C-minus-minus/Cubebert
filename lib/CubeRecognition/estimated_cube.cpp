@@ -21,12 +21,9 @@ void EstimatedCube::endCapture() {
     m_camera->release();
 }
 
-void EstimatedCube::captureSide() {
+void EstimatedCube::captureSide(int side) {
     m_camera->grab();
     unsigned char *data = new unsigned char[m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB)];
     m_camera->retrieve(data);
-    std::ofstream outFile ( "raspicam_image.ppm",std::ios::binary );
-    outFile << "P6\n" << m_camera->getWidth() << " " << m_camera->getHeight() << " 255\n";
-    outFile.write ( ( char* ) data, m_camera->getImageTypeSize ( raspicam::RASPICAM_FORMAT_RGB ) );
     delete data;
 }

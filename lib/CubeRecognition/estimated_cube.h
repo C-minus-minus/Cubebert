@@ -10,7 +10,8 @@ public:
 
     void beginCapture();
     void endCapture();
-    void captureSide();
+    void captureSide(int side);
+
 private:
     raspicam::RaspiCam *m_camera;
 };
