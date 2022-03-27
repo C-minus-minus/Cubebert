@@ -9,11 +9,11 @@ int main(int argc, char* argv[]) {
     std::cout << "Starting Snapping\r\n";
 
     ec.captureSide(0);
-    ec.captureSide(1);
-    ec.captureSide(2);
-    ec.captureSide(3);
-    ec.captureSide(4);
-    ec.captureSide(5);
+    //ec.captureSide(1);
+    //ec.captureSide(2);
+    //ec.captureSide(3);
+    //ec.captureSide(4);
+    //ec.captureSide(5);
 
     ec.endCapture();
 

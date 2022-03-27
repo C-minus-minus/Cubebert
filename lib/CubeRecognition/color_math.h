@@ -24,6 +24,7 @@ public:
     };
 
     static CIELAB* rgb2CIE(RGB pixel);
+    static RGB* subsample(unsigned char *data[][], int initX, int initY, size_t subsampleWidth=64, size_t subsampleHeight=64);
 
 private:
     static XYZ* rgb2xyz(RGB pixel);

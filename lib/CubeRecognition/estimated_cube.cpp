@@ -26,21 +26,37 @@ void EstimatedCube::endCapture() {
 
 void EstimatedCube::captureSide(int side) {
     m_camera->grab();
-    unsigned char *data = new unsigned char[m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB)];
+    
+    int subPixelCount = m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB);
+    int pixelCount = subPixelCount / 3;
+    int width = m_camera->getWidth();
+    int height = m_camera->getHeight();
+
+    unsigned char *data = new unsigned char[];
     m_camera->retrieve(data);
 
-    std::ofstream outFile ( "cube.ppm",std::ios::binary );
-    outFile<<"P6\n"<<m_camera->getWidth() <<" "<<m_camera->getHeight() <<" 255\n";
-    outFile.write ( ( char* ) data, m_camera->getImageTypeSize ( raspicam::RASPICAM_FORMAT_RGB ) );
+    std::ofstream outFile("cube.ppm", std::ios::binary);
+    outFile << "P6\n" << width <<" "<< height << " 255\n";
+    outFile.write ((char*) data, subPixelCount);
 
-    for(int i=0; i<m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB) / 3; i += 3) {
-        ColorMath::RGB pixel;
-        pixel.red = data[i];
-        pixel.green = data[i+1];
-        pixel.blue = data[i+2];
+    int pixelsProcessed = 0;
+    RGB **pixel1D = new RGB*[pixelCount];
+    for(int i=0; i < subPixelCount; i += 3) {
+        ColorMath::RGB *pixel = new ColorMath::RGB;
+        pixel->red = data[i];
+        pixel->green = data[i+1];
+        pixel->blue = data[i+2];
 
-//        ColorMath::CIELAB *lab = ColorMath::rgb2CIE(pixel);
-        //m_cieCubeSides[side]
+        pixel1D[pixelsProcessed] = pixel;
+        ++pixelsProcessed;
+    }
+
+    RGB ***imgObj = new RGB**[pixelCount / 2];
+    for(int x=0; x<width; ++x) {
+        imgObj[x] = new RGB*[pixelCount / 2];
+        for(int y=0; y<height; ++y) {
+            imgObj[x][y] = pixel1D[(x * width) + y];
+        }
     }
 
     delete data;
