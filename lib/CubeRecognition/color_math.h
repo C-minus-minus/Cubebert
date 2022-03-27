@@ -6,9 +6,9 @@
 class ColorMath {
 public:
     struct RGB {
-        unsigned char red:8;
-        unsigned char green:8;
-        unsigned char blue:8;
+        unsigned char red;
+        unsigned char green;
+        unsigned char blue;
     };
 
     struct XYZ {

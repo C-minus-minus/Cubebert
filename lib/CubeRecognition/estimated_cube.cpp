@@ -35,9 +35,9 @@ void EstimatedCube::captureSide(int side) {
     unsigned char *data = new unsigned char[subPixelCount];
     m_camera->retrieve(data);
 
-    std::ofstream outFile("cube.ppm", std::ios::binary);
-    outFile << "P6\n" << width <<" "<< height << " 255\n";
-    outFile.write ((char*) data, subPixelCount);
+    //std::ofstream outFile("cube.ppm", std::ios::binary);
+    //outFile << "P6\n" << width <<" "<< height << " 255\n";
+    //outFile.write ((char*) data, subPixelCount);
 
     int pixelsProcessed = 0;
     ColorMath::RGB **pixel1D = new ColorMath::RGB*[pixelCount];
@@ -54,17 +54,16 @@ void EstimatedCube::captureSide(int side) {
     // We're done with our RAW values
     delete data;
 
-    ColorMath::RGB ***imgObj = new ColorMath::RGB**[pixelCount / 2];
+    ColorMath::RGB ***imgObj = new ColorMath::RGB**[width];
     for(int x=0; x<width; ++x) {
-        std::cout << "Alloc: " << x << '\n';
-        imgObj[x] = new ColorMath::RGB*[pixelCount / 2];
+        imgObj[x] = new ColorMath::RGB*[height];
         for(int y=0; y<height; ++y) {
             imgObj[x][y] = pixel1D[(x * width) + y];
         }
     }
- std::cout << "Alloc: " << -1 << '\n';
+
     ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 0, 0);
-    std::cout << "Red: " << testColor->red << '\n';
-    std::cout << "Green: " << testColor->green << '\n';
-    std::cout << "Blue: " << testColor->blue << '\n';
+    std::cout << "Red: " << (int)testColor->red << '\n';
+    std::cout << "Green: " << (int)testColor->green << '\n';
+    std::cout << "Blue: " << (int)testColor->blue << '\n';
 }
