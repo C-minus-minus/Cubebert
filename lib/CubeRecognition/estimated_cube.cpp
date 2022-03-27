@@ -28,12 +28,12 @@ void EstimatedCube::captureSide(int side) {
 
 
     for(int i=0; i<m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB) / 3; i += 3) {
-        RGB pixel;
+        ColorMath::RGB pixel;
         pixel.red = data[i];
         pixel.green = data[i+1];
         pixel.blue = data[i+2];
 
-        CIELAB *lab = rgb2CIE(pixel);
+        ColorMath::CIELAB *lab = ColorMath::rgb2CIE(pixel);
         //m_cieCubeSides[side]
     }
 

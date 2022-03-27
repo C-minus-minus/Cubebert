@@ -17,7 +17,7 @@ public:
 private:
     raspicam::RaspiCam *m_camera;
 
-    CIELAB *m_cieCubeSides[6];
+    ColorMath::CIELAB *m_cieCubeSides[6];
 };
 
 #endif // ESTIMATED_CUBE_H
