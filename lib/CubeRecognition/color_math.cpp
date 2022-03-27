@@ -8,9 +8,9 @@ ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int init
     unsigned long long green = 0;
     unsigned long long blue = 0;
 
-    for(int x=initX; x<initX+subsampleWidth; ++x) {
-        for(int y=initY; y<initY+subsampleHeight; ++y) {
-            ColorMath::RGB pixel = *data[x][y];
+    for(int y=initY; y<initY+subsampleHeight; ++y) {
+        for(int x=initX; x<initX+subsampleWidth; ++x) {
+            ColorMath::RGB pixel = *data[y][x];
             red += pixel.red;
             green += pixel.green;
             blue += pixel.blue;
