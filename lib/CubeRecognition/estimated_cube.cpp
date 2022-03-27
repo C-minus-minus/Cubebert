@@ -66,55 +66,55 @@ void EstimatedCube::captureSide(int side) {
     {
         std::cout << "Cubie: TL \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 0, 0);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: TC \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 928, 0);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: TR \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 1856, 0);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: CL \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 928, 0);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: CC \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 928, 928);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: CR \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 928, 1856);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: BL \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 1856, 0);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: BC \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 1856, 928);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
     {
         std::cout << "Cubie: BR \n";
         ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 1856, 1856);
-        std::cout << '#' << std::hex << (int)testColor->red << (int)testColor->green << (int)testColor->blue;
+        std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
         std::cout << '\n';
     }
 }
