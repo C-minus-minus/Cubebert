@@ -22,7 +22,6 @@ if(HAS_PIGS)
 
     target_link_libraries(
         cubebert-eyes
-        PUBLIC stb_image
         PUBLIC CubeRecognition
         PUBLIC -lraspicam
     )
