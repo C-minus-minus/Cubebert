@@ -3,8 +3,11 @@
 #include <iostream>
 #include <fstream>
 
+#define IMG_DIM 1920
+
 EstimatedCube::EstimatedCube() {
     m_camera = new raspicam::RaspiCam();
+    m_camera->setCaptureSize(IMG_DIM, IMG_DIM);
 }
 
 EstimatedCube::~EstimatedCube() {
@@ -26,6 +29,9 @@ void EstimatedCube::captureSide(int side) {
     unsigned char *data = new unsigned char[m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB)];
     m_camera->retrieve(data);
 
+    std::ofstream outFile ( "cube.ppm",std::ios::binary );
+    outFile<<"P6\n"<<m_camera->getWidth() <<" "<<m_camera->getHeight() <<" 255\n";
+    outFile.write ( ( char* ) data, m_camera->getImageTypeSize ( raspicam::RASPICAM_FORMAT_RGB ) );
 
     for(int i=0; i<m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB) / 3; i += 3) {
         ColorMath::RGB pixel;
@@ -33,7 +39,7 @@ void EstimatedCube::captureSide(int side) {
         pixel.green = data[i+1];
         pixel.blue = data[i+2];
 
-        ColorMath::CIELAB *lab = ColorMath::rgb2CIE(pixel);
+//        ColorMath::CIELAB *lab = ColorMath::rgb2CIE(pixel);
         //m_cieCubeSides[side]
     }
 
