@@ -26,13 +26,13 @@ void EstimatedCube::endCapture() {
 
 void EstimatedCube::captureSide(int side) {
     m_camera->grab();
-    
+
     int subPixelCount = m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB);
     int pixelCount = subPixelCount / 3;
     int width = m_camera->getWidth();
     int height = m_camera->getHeight();
 
-    unsigned char *data = new unsigned char[];
+    unsigned char *data = new unsigned char[subPixelCount];
     m_camera->retrieve(data);
 
     std::ofstream outFile("cube.ppm", std::ios::binary);
@@ -40,7 +40,7 @@ void EstimatedCube::captureSide(int side) {
     outFile.write ((char*) data, subPixelCount);
 
     int pixelsProcessed = 0;
-    RGB **pixel1D = new RGB*[pixelCount];
+    ColorMath::RGB **pixel1D = new ColorMath::RGB*[pixelCount];
     for(int i=0; i < subPixelCount; i += 3) {
         ColorMath::RGB *pixel = new ColorMath::RGB;
         pixel->red = data[i];
@@ -51,13 +51,20 @@ void EstimatedCube::captureSide(int side) {
         ++pixelsProcessed;
     }
 
-    RGB ***imgObj = new RGB**[pixelCount / 2];
+    // We're done with our RAW values
+    delete data;
+
+    ColorMath::RGB ***imgObj = new ColorMath::RGB**[pixelCount / 2];
     for(int x=0; x<width; ++x) {
-        imgObj[x] = new RGB*[pixelCount / 2];
+        std::cout << "Alloc: " << x << '\n';
+        imgObj[x] = new ColorMath::RGB*[pixelCount / 2];
         for(int y=0; y<height; ++y) {
             imgObj[x][y] = pixel1D[(x * width) + y];
         }
     }
-
-    delete data;
+ std::cout << "Alloc: " << -1 << '\n';
+    ColorMath::RGB* testColor = ColorMath::subsample(imgObj, 0, 0);
+    std::cout << "Red: " << testColor->red << '\n';
+    std::cout << "Green: " << testColor->green << '\n';
+    std::cout << "Blue: " << testColor->blue << '\n';
 }

@@ -3,21 +3,21 @@
 #include <math.h>
 
 // NOTE: subsample is assumed to be within data bounds
-ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int initY, size_t subsampleWidth, size_t subsampleHeight) {
+ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int initY, int subsampleWidth, int subsampleHeight) {
     unsigned long long red = 0;
     unsigned long long green = 0;
     unsigned long long blue = 0;
 
     for(int x=initX; x<initX+subsampleWidth; ++x) {
         for(int y=initY; y<initY+subsampleHeight; ++y) {
-            ColorMath::RGB pixel = &data[x][y];
+            ColorMath::RGB pixel = *data[x][y];
             red += pixel.red;
             green += pixel.green;
             blue += pixel.blue;
         }
     }
 
-    size_t totalPixels = subsampleWidth * subsampleHeight;
+    int totalPixels = subsampleWidth * subsampleHeight;
 
     ColorMath::RGB *averagePixel = new ColorMath::RGB;
     averagePixel->red = red / totalPixels;

@@ -6,9 +6,9 @@
 class ColorMath {
 public:
     struct RGB {
-        unsigned char red;
-        unsigned char green;
-        unsigned char blue;
+        unsigned char red:8;
+        unsigned char green:8;
+        unsigned char blue:8;
     };
 
     struct XYZ {
@@ -24,7 +24,7 @@ public:
     };
 
     static CIELAB* rgb2CIE(RGB pixel);
-    static RGB* subsample(unsigned char *data[][], int initX, int initY, size_t subsampleWidth=64, size_t subsampleHeight=64);
+    static RGB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 
 private:
     static XYZ* rgb2xyz(RGB pixel);
