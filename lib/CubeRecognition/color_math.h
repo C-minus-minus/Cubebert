@@ -18,17 +18,17 @@ public:
     };
 
     struct CIELAB {
-        unsigned char lStar;
-        unsigned long long aStar;
-        unsigned long long bStar;
+        long lStar;
+        long aStar;
+        long bStar;
     };
 
-    static CIELAB* rgb2cie(RGB pixel);
+    static CIELAB* rgb2cie(RGB* pixel);
     static RGB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 
 private:
-    static XYZ* rgb2xyz(RGB pixel);
-    static CIELAB* xyz2cielab(XYZ datum, XYZ ref);
+    static XYZ* rgb2xyz(RGB* pixel);
+    static CIELAB* xyz2cielab(XYZ* datum, XYZ ref);
 };
 
 #endif // COLOR_MATH_H

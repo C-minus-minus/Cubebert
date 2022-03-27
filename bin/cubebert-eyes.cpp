@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\nSide: " << side << "\n";
         for(int y=0; y<3; ++y) {
             for(int x=0; x<3; ++x) {
-                std::cout << zeCube[y][z];
+                std::cout << zeCube[y][x];
                 if(x == 2)
                     std::cout << '|';
             }

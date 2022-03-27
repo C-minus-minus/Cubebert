@@ -74,17 +74,17 @@ void EstimatedCube::captureSide(int side) {
         }
     }
 
-    m_ciePalette[side] = m_cieCubeSides[5];
+    m_ciePalette[side] = m_cieCubeSides[side][5];
 }
 
 int** EstimatedCube::zeCube() {
-    int **outCube = new int[6];
+    int **outCube = new int*[6];
 
-    int matchColor = [m_ciePalette](CIELAB* cielab) {
+    auto matchColor = [](ColorMath::CIELAB* cielab, ColorMath::CIELAB** ref) {
         int lowest = 2147483647;
         int lowestIdx = 2147483647;
         for(int i=0; i<6; ++i) {
-            int deltaE = abs(m_ciePalette[i]->lStar - cielab->lStar) + abs(m_ciePalette[i]->aStar - cielab->aStar) + abs(m_ciePalette[i]->bStar - cielab->bStar);
+            int deltaE = abs(ref[i]->lStar - cielab->lStar) + abs(ref[i]->aStar - cielab->aStar) + abs(ref[i]->bStar - cielab->bStar);
             if(deltaE < lowest) {
                 lowest = deltaE;
                 lowestIdx = i;
@@ -96,7 +96,8 @@ int** EstimatedCube::zeCube() {
     for(int side=0; side<6; ++side) {
         outCube[side] = new int[9];
         for(int cubie=0; cubie<9; ++cubie) {
-            outCube[side][cubie] = matchColor(m_cieCubeSides[side][cubie]);
+            int color =  matchColor(m_cieCubeSides[side][cubie], m_ciePalette);
+            outCube[side][cubie] = color;
         }
     }
 
