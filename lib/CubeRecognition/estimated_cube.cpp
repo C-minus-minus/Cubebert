@@ -59,7 +59,7 @@ void EstimatedCube::captureSide(int side) {
     for(int x=0; x<width; ++x) {
         imgObj[x] = new ColorMath::RGB*[height];
         for(int y=0; y<height; ++y) {
-            imgObj[x][y] = pixel1D[(x * width) + y];
+            imgObj[x][y] = pixel1D[x + (y * height)];
         }
     }
 
