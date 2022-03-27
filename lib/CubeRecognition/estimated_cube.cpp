@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <math.h>
 
 #define IMG_DIM 1920
 
@@ -36,9 +37,11 @@ void EstimatedCube::captureSide(int side) {
     unsigned char *data = new unsigned char[subPixelCount];
     m_camera->retrieve(data);
 
-    std::ofstream outFile("cube.ppm", std::ios::binary);
+    char* file;
+    sprintf(file, "cube%d.ppm", side);
+    std::ofstream outFile(file, std::ios::binary);
     outFile << "P6\n" << width <<" "<< height << " 255\n";
-    outFile.write ((char*) data, subPixelCount);
+    outFile.write((char*) data, subPixelCount);
 
     int pixelsProcessed = 0;
     ColorMath::RGB **pixel1D = new ColorMath::RGB*[pixelCount];
@@ -59,15 +62,43 @@ void EstimatedCube::captureSide(int side) {
     for(int y=0; y<height; ++y) {
         imgObj[y] = new ColorMath::RGB*[width];
         for(int x=0; x<width; ++x) {
-            imgObj[y][x] = pixel1D[(x * width) + y];
+            imgObj[y][x] = pixel1D[x + (y * height)];
         }
     }
 
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
             ColorMath::RGB* testColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
-            std::cout << '#' << std::hex << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue;
-            std::cout << '\n';
+            m_cieCubeSides[side][x+(y*3)] = ColorMath::rgb2cie(testColor);
+            delete testColor;
         }
     }
+
+    m_ciePalette[side] = m_cieCubeSides[5];
+}
+
+int** EstimatedCube::zeCube() {
+    int **outCube = new int[6];
+
+    int matchColor = [m_ciePalette](CIELAB* cielab) {
+        int lowest = 2147483647;
+        int lowestIdx = 2147483647;
+        for(int i=0; i<6; ++i) {
+            int deltaE = abs(m_ciePalette[i]->lStar - cielab->lStar) + abs(m_ciePalette[i]->aStar - cielab->aStar) + abs(m_ciePalette[i]->bStar - cielab->bStar);
+            if(deltaE < lowest) {
+                lowest = deltaE;
+                lowestIdx = i;
+            }
+        }
+        return lowestIdx;
+    };
+
+    for(int side=0; side<6; ++side) {
+        outCube[side] = new int[9];
+        for(int cubie=0; cubie<9; ++cubie) {
+            outCube[side][cubie] = matchColor(m_cieCubeSides[side][cubie]);
+        }
+    }
+
+    return outCube;
 }

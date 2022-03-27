@@ -27,18 +27,23 @@ ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int init
     return averagePixel;
 }
 
-ColorMath::CIELAB* ColorMath::rgb2CIE(RGB pixel) {
+ColorMath::CIELAB *ColorMath::rgb2cie(RGB *pixel) {
     XYZ ref;
     ref.X = 99.187;
     ref.Y = 100.00;
     ref.Z = 67.395;
-    return xyz2cielab(*rgb2xyz(pixel), ref);
+    
+    XYZ *xyz = rgb2xyz(pixel);
+    CIELAB *cielab = xyz2cielab(xyz, ref);
+
+    delete xyz;
+    return cielab;
 }
 
-ColorMath::XYZ* ColorMath::rgb2xyz(RGB pixel) {
-    double red = pixel.red / 255.0;
-    double green = pixel.green / 255.0;
-    double blue = pixel.blue / 255.0;
+ColorMath::XYZ *ColorMath::rgb2xyz(RGB *pixel) {
+    double red = pixel->red / 255.0;
+    double green = pixel->green / 255.0;
+    double blue = pixel->blue / 255.0;
 
     if(red > 0.04045)
         red = pow((red + 0.055) / 1.055, 2.4);
@@ -67,10 +72,10 @@ ColorMath::XYZ* ColorMath::rgb2xyz(RGB pixel) {
     return datum;
 }
 
-ColorMath::CIELAB* ColorMath::xyz2cielab(XYZ datum, XYZ ref) {
-    double x = datum.X / ref.X;
-    double y = datum.Y / ref.Y;
-    double z = datum.Z / ref.Z;
+ColorMath::CIELAB *ColorMath::xyz2cielab(XYZ *datum, XYZ ref) {
+    double x = datum->X / ref.X;
+    double y = datum->Y / ref.Y;
+    double z = datum->Z / ref.Z;
 
     if(x > 0.008856)
         x = pow(x, 0.33);

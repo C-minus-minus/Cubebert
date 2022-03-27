@@ -14,9 +14,12 @@ public:
     void endCapture();
     void captureSide(int side);
 
+    int** zeCube(); 
+
 private:
     raspicam::RaspiCam *m_camera;
 
+    ColorMath::CIELAB *m_ciePalette[6];
     ColorMath::CIELAB *m_cieCubeSides[6][9];
 };
 

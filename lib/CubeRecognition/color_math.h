@@ -23,7 +23,7 @@ public:
         unsigned long long bStar;
     };
 
-    static CIELAB* rgb2CIE(RGB pixel);
+    static CIELAB* rgb2cie(RGB pixel);
     static RGB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 
 private:
