@@ -37,15 +37,17 @@ void EstimatedCube::captureSide(int side) {
     unsigned char *data = new unsigned char[subPixelCount];
     m_camera->retrieve(data);
 
-    char* file;
-    sprintf(file, "cube%d.ppm", side);
-    std::ofstream outFile(file, std::ios::binary);
+    char* filepath;
+    sprintf(filepath, "cube%d.ppm", side);
+    std::ofstream outFile(filepath, std::ios::binary);
     outFile << "P6\n" << width <<" "<< height << " 255\n";
-    outFile.write((char*) data, subPixelCount);
+    outFile.write((char*)data, subPixelCount);
+    outFile.flush();
+    outFile.close();
 
     int pixelsProcessed = 0;
     ColorMath::RGB **pixel1D = new ColorMath::RGB*[pixelCount];
-    for(int i=0; i < subPixelCount; i += 3) {
+    for(int i=0; pixelsProcessed < pixelCount; i += 3) {
         ColorMath::RGB *pixel = new ColorMath::RGB;
         pixel->red = data[i];
         pixel->green = data[i+1];
@@ -70,7 +72,7 @@ void EstimatedCube::captureSide(int side) {
         for(int x=0; x<3; ++x) {
             ColorMath::RGB* testColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
             m_cieCubeSides[side][x+(y*3)] = ColorMath::rgb2cie(testColor);
-            delete testColor;
+//            delete testColor;
         }
     }
 

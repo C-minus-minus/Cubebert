@@ -10,19 +10,12 @@ int main(int argc, char* argv[]) {
 
     int n;
 
-    std::cout << "Enter a number between every picture";
-    std::cin >> n;
-    ec.captureSide(0);
-    std::cin >> n;
-    ec.captureSide(1);
-    std::cin >> n;
-    ec.captureSide(2);
-    std::cin >> n;
-    ec.captureSide(3);
-    std::cin >> n;
-    ec.captureSide(4);
-    std::cin >> n;
-    ec.captureSide(5);
+    std::cout << "Enter a number between every picture\n";
+    for(int i=0; i<6; ++i) {
+        std::cout << "Please: ";
+        std::cin >> n;
+        ec.captureSide(i);
+    }
 
     ec.endCapture();
 
@@ -31,7 +24,7 @@ int main(int argc, char* argv[]) {
         std::cout << "\n\nSide: " << side << "\n";
         for(int y=0; y<3; ++y) {
             for(int x=0; x<3; ++x) {
-                std::cout << zeCube[y][x];
+                std::cout << zeCube[side][x + (y * 3)];
                 if(x == 2)
                     std::cout << '|';
             }
