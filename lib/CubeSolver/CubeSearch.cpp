@@ -10,27 +10,30 @@ std::string CubeSearch::getPhase1Solution(StickerCube* scrambledCube) {
     //  Get raw phase 1 coordinates from cube state
     int phase1EdgeCoordinate = scrambledCube->getPhase1EdgeCoordinate();
     int phase1CornerCoordinate = scrambledCube->getPhase1CornerCoordinate();
-    int phase1UDSliceCoordinate = scrambledCube->getPhase1UdsliceCoordinate();
+    int phase1UDSliceCoordinate = scrambledCube->getPhase1UdsliceCoordinate(); 
 
     //  Incrementally check deeper and deeper into the search tree
-    std::string solution = "";
+    std::vector<std::string> solution;
     for (int goalDepth = 0; goalDepth < CubeConstants::MAX_PHASE_1_DEPTH; goalDepth++) {
 
         //  search for solution at this depth
-        solution = CubeSearch::phase1IterativeDeepeningAStar(
+        if(CubeSearch::phase1IterativeDeepeningAStar(
             phase1EdgeCoordinate,
             phase1CornerCoordinate,
             phase1UDSliceCoordinate,
             goalDepth,
-            0
-        );
-
-        //  check if we found a solution
-        if (solution != "") {
+            0,
+            &solution
+        )) {
             break;
         }
     }
-    return solution;
+
+    std::string solutionString = "";
+    for (int i = solution.size() - 1; i >= 0; i--) {
+        solutionString += " " + solution[i];
+    }
+    return solutionString;
 }
 
 /**
@@ -40,9 +43,10 @@ std::string CubeSearch::getPhase1Solution(StickerCube* scrambledCube) {
 * @param sliceCoord - phase 1 UDSlice partial permutation coordinate
 * @param goalDepth - The maximum depth we want to search this time through
 * @param currDepth - The current search depth
+* @param solution - empty vector to store the solution when we find it
 * @return - If it exists at this depth, this will return the algorithm to solve phase 1, returns an empty string otherwise
 **/
-std::string CubeSearch::phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth) {
+bool CubeSearch::phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution) {
 
     //  calculate a lower bound for the amount of moves it will take to solve from here
     int lowerBound = std::max(
@@ -66,17 +70,16 @@ std::string CubeSearch::phase1IterativeDeepeningAStar(int edgeCoord, int cornerC
 
             //  check if we solved the cube, else dive deeper
             if (currEdge == 0 && currCorner == 0 && currSlice == 0) {
-                return CubeConstants::PHASE_1_MOVES[move];
+                solution->push_back(CubeConstants::PHASE_1_MOVES[move]);
+                return true;
             }
-            else {
-                std::string t = phase1IterativeDeepeningAStar(currEdge, currCorner, currSlice, goalDepth, currDepth + 1);
-                if (t != "") {
-                    return CubeConstants::PHASE_1_MOVES[move] + " " + t;
-                }
+            else if(phase1IterativeDeepeningAStar(currEdge, currCorner, currSlice, goalDepth, currDepth + 1, solution)) {
+                solution->push_back(CubeConstants::PHASE_1_MOVES[move]);
+                return true;
             }
         }
     }
-    return "";
+    return false;
 }
 
 /**
@@ -92,24 +95,28 @@ std::string CubeSearch::getPhase2Solution(StickerCube* scrambledCube) {
     int phase2UDSliceCoordinate = scrambledCube->getPhase2UdsliceCoordinate();
 
     //  Incrementally check deeper and deeper into the search tree
-    std::string solution = "";
+    std::vector<std::string> solution;
     for (int goalDepth = 0; goalDepth < CubeConstants::MAX_PHASE_2_DEPTH; goalDepth++) {
 
         //  search for solution at this depth
-        solution = CubeSearch::phase2IterativeDeepeningAStar(
+        if(CubeSearch::phase2IterativeDeepeningAStar(
             phase2EdgeCoordinate,
             phase2CornerCoordinate,
             phase2UDSliceCoordinate,
             goalDepth,
-            0
-        );
-
-        //  check if we found a solution
-        if (solution != "") {
+            0,
+            &solution
+        )) {
             break;
         }
     }
-    return solution;
+
+
+    std::string solutionString = "";
+    for (int i = solution.size() - 1; i >= 0; i--) {
+        solutionString += " " + solution[i];
+    }
+    return solutionString;
 }
 
 /**
@@ -119,9 +126,10 @@ std::string CubeSearch::getPhase2Solution(StickerCube* scrambledCube) {
  * @param sliceCoord - phase 2 UDSlice partial permutation coordinate
  * @param goalDepth - The maximum depth we want to search this time through
  * @param currDepth - The current search depth
+ * @param solution - empty vector to store the solution when we find it
  * @return - If it exists at this depth, this will return the algorithm to solve phase 2, returns an empty string otherwise
  */
-std::string CubeSearch::phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth) {
+bool CubeSearch::phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution) {
 
     //  calculate a lower bound for the amount of moves it will take to solve from here
     int lowerBound = std::max(
@@ -145,15 +153,14 @@ std::string CubeSearch::phase2IterativeDeepeningAStar(int edgeCoord, int cornerC
 
             //  check if we solved the cube, else dive deeper
             if (currEdge == 0 && currCorner == 0 && currSlice == 0) {
-                return CubeConstants::PHASE_2_MOVES[move];
+                solution->push_back(CubeConstants::PHASE_2_MOVES[move]);
+                return true;
             }
-            else {
-                std::string t = phase2IterativeDeepeningAStar(currEdge, currCorner, currSlice, goalDepth, currDepth + 1);
-                if (t != "") {
-                    return CubeConstants::PHASE_2_MOVES[move] + " " + t;
-                }
+            else if(phase2IterativeDeepeningAStar(currEdge, currCorner, currSlice, goalDepth, currDepth + 1, solution)) {
+                solution->push_back(CubeConstants::PHASE_2_MOVES[move]);
+                return true;
             }
         }
     }
-    return "";
+    return false;
 }

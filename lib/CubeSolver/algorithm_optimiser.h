@@ -29,7 +29,7 @@ std::string convertTo4Arm(std::string solution) {
     std::unordered_map<std::string, std::string> zMoves;
     std::unordered_map<std::string, std::string> xPrimeMoves;
     std::unordered_map<std::string, std::string> zPrimeMoves;
-    std::vector<std::string> rotations = { "X", "X'", "Z", "Z'" };
+    std::vector<std::string> rotations = { "X", "Z"};
 
     for (int i = 0; i < CubeConstants::PHASE_1_MOVE_COUNT; i++) {
         xMoves[CubeConstants::PHASE_1_MOVES[i]] = CubeConstants::PHASE_1_X_ROTATE_MOVES[i];
@@ -70,18 +70,15 @@ std::string convertTo4Arm(std::string solution) {
                 if (current.rotations[i] == "X") {
                     convertedMove = xMoves[convertedMove];
                 }
-                else if (current.rotations[i] == "X'") {
-                    convertedMove = xPrimeMoves[convertedMove];
-                }
                 else if (current.rotations[i] == "Z") {
                     convertedMove = zMoves[convertedMove];
                 }
-                else if (current.rotations[i] == "Z'") {
-                    convertedMove = zPrimeMoves[convertedMove];
-                }
             }
 
-            if (convertedMove == "U" || convertedMove == "D" || convertedMove == "U'" || convertedMove == "D'") {
+            if (convertedMove == "U" || convertedMove == "D" || 
+                convertedMove == "U'" || convertedMove == "D'" || 
+                convertedMove == "U2" || convertedMove == "D2") {
+
                 int finalMove = move;
                 for (int rotation = 0; rotation < rotations.size(); rotation++) {
                     std::vector<std::string> newRotations = current.rotations;
