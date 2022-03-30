@@ -37,12 +37,13 @@ void EstimatedCube::captureSide(int side) {
     unsigned char *data = new unsigned char[subPixelCount];
     m_camera->retrieve(data);
 
-    char* filepath;
-    sprintf(filepath, "cube%d.ppm", side);
+    std::string filepath;
+    filepath += "cube";
+    filepath += std::to_string(side);
+    filepath += ".ppm";
     std::ofstream outFile(filepath, std::ios::binary);
     outFile << "P6\n" << width <<" "<< height << " 255\n";
     outFile.write((char*)data, subPixelCount);
-    outFile.flush();
     outFile.close();
 
     int pixelsProcessed = 0;
@@ -56,7 +57,6 @@ void EstimatedCube::captureSide(int side) {
         pixel1D[pixelsProcessed] = pixel;
         ++pixelsProcessed;
     }
-
     // We're done with our RAW values
     delete data;
 
@@ -68,13 +68,26 @@ void EstimatedCube::captureSide(int side) {
         }
     }
 
+    std::cout << "Side[" << side << "] RGB Hex Values\n";
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
             ColorMath::RGB* testColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
+            std::cout << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue << '\t';
             m_cieCubeSides[side][x+(y*3)] = ColorMath::rgb2cie(testColor);
-//            delete testColor;
+            delete testColor;
         }
+        std::cout << '\n';
     }
+    std::cout << "\n\n\n";
+
+    for(int y=0; y<3; ++y) {
+        for(int x=0; x<3; ++x) {
+            ColorMath::CIELAB* testColor = m_cieCubeSides[side][x+(y*3)];
+            std::cout << testColor->lStar << ' ' << testColor->aStar << ' ' << testColor->bStar << '\t';
+        }
+        std::cout << '\n';
+    }
+    std::cout << "\n\n\n";
 
     m_ciePalette[side] = m_cieCubeSides[side][5];
 }
@@ -86,7 +99,7 @@ int** EstimatedCube::zeCube() {
         int lowest = 2147483647;
         int lowestIdx = 2147483647;
         for(int i=0; i<6; ++i) {
-            int deltaE = abs(ref[i]->lStar - cielab->lStar) + abs(ref[i]->aStar - cielab->aStar) + abs(ref[i]->bStar - cielab->bStar);
+            double deltaE = sqrt(pow(ref[i]->lStar - cielab->lStar, 2) + pow(ref[i]->aStar - cielab->aStar, 2) + pow(ref[i]->bStar - cielab->bStar, 2));
             if(deltaE < lowest) {
                 lowest = deltaE;
                 lowestIdx = i;

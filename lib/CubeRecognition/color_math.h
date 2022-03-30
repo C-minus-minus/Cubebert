@@ -18,9 +18,9 @@ public:
     };
 
     struct CIELAB {
-        long lStar;
-        long aStar;
-        long bStar;
+        double lStar;
+        double aStar;
+        double bStar;
     };
 
     static CIELAB* rgb2cie(RGB* pixel);

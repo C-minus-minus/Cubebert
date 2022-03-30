@@ -29,10 +29,10 @@ ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int init
 
 ColorMath::CIELAB *ColorMath::rgb2cie(RGB *pixel) {
     XYZ ref;
-    ref.X = 99.187;
+    ref.X = 95.047;
     ref.Y = 100.00;
-    ref.Z = 67.395;
-    
+    ref.Z = 108.883;
+
     XYZ *xyz = rgb2xyz(pixel);
     CIELAB *cielab = xyz2cielab(xyz, ref);
 
