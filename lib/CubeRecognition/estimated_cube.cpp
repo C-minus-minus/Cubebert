@@ -89,7 +89,7 @@ void EstimatedCube::captureSide(int side) {
     }
     std::cout << "\n\n\n";
 
-    m_ciePalette[side] = m_cieCubeSides[side][5];
+    m_ciePalette[side] = m_cieCubeSides[side][4];
 }
 
 int** EstimatedCube::zeCube() {
