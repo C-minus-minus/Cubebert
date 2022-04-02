@@ -2,10 +2,9 @@ add_subdirectory(CubeSolver)
 
 include(CheckIncludeFile)
 
-#find_path(HAS_RASPICAM raspicam.h PATHS /usr/local/include/raspicam)
-#if(HAS_RASPICAM)
+if(EXISTS /usr/local/include/raspicam)
     add_subdirectory(CubeRecognition)
-#endif()
+endif()
 
 check_include_file(pigpio.h HAS_PIGS)
 if(HAS_PIGS)
