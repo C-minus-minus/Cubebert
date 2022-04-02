@@ -25,7 +25,7 @@ public:
 
     static double deltaE(CIELAB* x, CIELAB* y);
     static CIELAB* rgb2cie(RGB* pixel);
-    static RGB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
+    static CIELAB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 
 private:
     static XYZ* rgb2xyz(RGB* pixel);

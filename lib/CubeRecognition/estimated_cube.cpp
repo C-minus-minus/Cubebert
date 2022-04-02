@@ -71,10 +71,8 @@ void EstimatedCube::captureSide(int side) {
     std::cout << "Side[" << side << "] RGB Hex Values\n";
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
-            ColorMath::RGB* testColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
-            std::cout << (int)testColor->red << ' ' << (int)testColor->green << ' ' << (int)testColor->blue << '\t';
-            m_cieCubeSides[side][x+(y*3)] = ColorMath::rgb2cie(testColor);
-            delete testColor;
+            ColorMath::CIELAB* sampleColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
+            m_cieCubeSides[side][x+(y*3)] = sampleColor;
         }
         std::cout << '\n';
     }
@@ -82,8 +80,8 @@ void EstimatedCube::captureSide(int side) {
 
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
-            ColorMath::CIELAB* testColor = m_cieCubeSides[side][x+(y*3)];
-            std::cout << testColor->lStar << ' ' << testColor->aStar << ' ' << testColor->bStar << '\t';
+            ColorMath::CIELAB* sampleColor = m_cieCubeSides[side][x+(y*3)];
+            std::cout << sampleColor->lStar << ' ' << sampleColor->aStar << ' ' << sampleColor->bStar << '\t';
         }
         std::cout << '\n';
     }

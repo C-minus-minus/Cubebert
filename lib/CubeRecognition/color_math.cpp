@@ -3,26 +3,27 @@
 #include <math.h>
 
 // NOTE: subsample is assumed to be within data bounds
-ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int initY, int subsampleWidth, int subsampleHeight) {
-    unsigned long long red = 0;
-    unsigned long long green = 0;
-    unsigned long long blue = 0;
+ColorMath::CIELAB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int initY, int subsampleWidth, int subsampleHeight) {
+    double LStar = 0;
+    double AStar = 0;
+    double BStar = 0;
 
     for(int y=initY; y<initY+subsampleHeight; ++y) {
         for(int x=initX; x<initX+subsampleWidth; ++x) {
-            ColorMath::RGB pixel = *data[y][x];
-            red += pixel.red;
-            green += pixel.green;
-            blue += pixel.blue;
+            ColorMath::CIELAB *pixel = ColorMath::rgb2cie(*data[y][x]);
+            LStar += pixell->lStar;
+            AStar += pixel->aStar;
+            BStar += pixel->bStar;
+            delete pixel;
         }
     }
 
     int totalPixels = subsampleWidth * subsampleHeight;
 
-    ColorMath::RGB *averagePixel = new ColorMath::RGB;
-    averagePixel->red = red / totalPixels;
-    averagePixel->green = green / totalPixels;
-    averagePixel->blue = blue / totalPixels;
+    ColorMath::CIELAB *averagePixel = new ColorMath::CIELAB;
+    averagePixel->lStar = LStar / totalPixels;
+    averagePixel->aStar = AStar / totalPixels;
+    averagePixel->bStar = BStar / totalPixels;
 
     return averagePixel;
 }
