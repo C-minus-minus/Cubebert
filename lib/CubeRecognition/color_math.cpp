@@ -10,8 +10,8 @@ ColorMath::CIELAB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int i
 
     for(int y=initY; y<initY+subsampleHeight; ++y) {
         for(int x=initX; x<initX+subsampleWidth; ++x) {
-            ColorMath::CIELAB *pixel = ColorMath::rgb2cie(*data[y][x]);
-            LStar += pixell->lStar;
+            ColorMath::CIELAB *pixel = ColorMath::rgb2cie(data[y][x]);
+            LStar += pixel->lStar;
             AStar += pixel->aStar;
             BStar += pixel->bStar;
             delete pixel;
