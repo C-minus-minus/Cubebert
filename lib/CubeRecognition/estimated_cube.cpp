@@ -96,12 +96,12 @@ int** EstimatedCube::zeCube() {
     int **outCube = new int*[6];
 
     auto matchColor = [](ColorMath::CIELAB* cielab, ColorMath::CIELAB** ref) {
-        int lowest = 2147483647;
-        int lowestIdx = 2147483647;
-        for(int i=0; i<6; ++i) {
-            double deltaE = sqrt(pow(ref[i]->lStar - cielab->lStar, 2) + pow(ref[i]->aStar - cielab->aStar, 2) + pow(ref[i]->bStar - cielab->bStar, 2));
-            if(deltaE < lowest) {
-                lowest = deltaE;
+        double lowest = ColorMath::deltaE(cielab, ref[0]);
+        int lowestIdx = 0;
+        for(int i=1; i<6; ++i) {
+            double dE = ColorMath::deltaE(cielab, ref[i]);
+            if(dE < lowest) {
+                lowest = dE;
                 lowestIdx = i;
             }
         }

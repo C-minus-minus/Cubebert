@@ -23,6 +23,7 @@ public:
         double bStar;
     };
 
+    static double deltaE(CIELAB* x, CIELAB* y);
     static CIELAB* rgb2cie(RGB* pixel);
     static RGB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 

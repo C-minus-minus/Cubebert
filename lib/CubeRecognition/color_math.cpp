@@ -27,6 +27,11 @@ ColorMath::RGB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int init
     return averagePixel;
 }
 
+double ColorMath::deltaE(ColorMath::CIELAB* x, ColorMath::CIELAB* y) {
+    return sqrt(pow(x->lStar - y->lStar, 2) + pow(x->aStar - y->aStar, 2) + pow(x->bStar - y->bStar, 2));
+}
+
+
 ColorMath::CIELAB *ColorMath::rgb2cie(RGB *pixel) {
     XYZ ref;
     ref.X = 95.047;
