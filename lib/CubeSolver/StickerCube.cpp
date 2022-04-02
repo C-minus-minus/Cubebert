@@ -22,6 +22,40 @@ StickerCube::StickerCube(int** faces) {
     }
 }
 
+/**
+* Checks to see if there is a solution to phase 1 at the specified depth
+* @param faces - 6x9 2D array representing cube state
+* @param orientation - value at index N represents how many times side N needs rotate counter clockwise
+**/
+StickerCube::StickerCube(int** faces, int* orientation) {
+
+    for(int side = 0; side < CubeConstants::SIDE_COUNT; side++) {
+
+        for(int rotation = 0; rotation < orientation[side]; rotation++) {
+
+            //  rotate side counter clockwise
+            int corners[4] = {0, 2, 8, 6};
+            int edges[4] = {1, 5, 7, 3};
+            int bufferCorner = faces[side][corners[0]];
+            int bufferEdge = faces[side][edges[0]];;
+            for(int sticker = 0; sticker < 3; sticker++) {
+                faces[side][corners[sticker]] = faces[side][corners[sticker + 1]];
+                faces[side][edges[sticker]] = faces[side][edges[sticker + 1]];
+            }
+            faces[side][corners[3]] = bufferCorner;
+            faces[side][edges[3]] = bufferEdge;
+        }
+    }
+
+    this->cubeState = new int*[CubeConstants::SIDE_COUNT];
+    for (int side = 0; side < CubeConstants::SIDE_COUNT; side++) {
+        this->cubeState[side] = new int[CubeConstants::STICKER_COUNT];
+        for (int sticker = 0; sticker < CubeConstants::STICKER_COUNT; sticker++) {
+            this->cubeState[side][sticker] = faces[side][sticker];
+        }
+    }
+}
+
 StickerCube::StickerCube(std::string scramble) : StickerCube::StickerCube() {
     this->applyScramble(scramble);
 }

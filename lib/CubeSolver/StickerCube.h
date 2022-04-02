@@ -16,6 +16,7 @@ class StickerCube {
 
 		StickerCube();
 		StickerCube(int** faces);
+		StickerCube(int** faces, int* orientation);
 		StickerCube(std::string scramble);
 		~StickerCube();
 
