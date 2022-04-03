@@ -40,7 +40,7 @@ class CubeSearch {
          * @param solution - empty vector to store the solution when we find it
          * @return - If it exists at this depth, this will return the algorithm to solve phase 1, returns an empty string otherwise
          */
-        static bool phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution);
+        static bool phase1IterativeDeepeningAStar(TableManager *instance, int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution);
  
         /**
          * Checks to see if there is a solution to phase 2 at the specified depth
@@ -52,7 +52,7 @@ class CubeSearch {
          * @param solution - empty vector to store the solution when we find it
          * @return - If it exists at this depth, this will return the algorithm to solve phase 2, returns an empty string otherwise
          */
-        static bool phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution);
+        static bool phase2IterativeDeepeningAStar(TableManager *instance, int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution);
 
 };
 
