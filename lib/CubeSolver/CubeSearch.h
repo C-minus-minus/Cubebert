@@ -37,9 +37,10 @@ class CubeSearch {
          * @param sliceCoord - phase 1 UDSlice partial permutation coordinate
          * @param goalDepth - The maximum depth we want to search this time through
          * @param currDepth - The current search depth
+         * @param solution - empty vector to store the solution when we find it
          * @return - If it exists at this depth, this will return the algorithm to solve phase 1, returns an empty string otherwise
          */
-        static std::string phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth);
+        static bool phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution);
  
         /**
          * Checks to see if there is a solution to phase 2 at the specified depth
@@ -48,9 +49,10 @@ class CubeSearch {
          * @param sliceCoord - phase 2 UDSlice partial permutation coordinate
          * @param goalDepth - The maximum depth we want to search this time through
          * @param currDepth - The current search depth
+         * @param solution - empty vector to store the solution when we find it
          * @return - If it exists at this depth, this will return the algorithm to solve phase 2, returns an empty string otherwise
          */
-        static std::string phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth);
+        static bool phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution);
 
 };
 
