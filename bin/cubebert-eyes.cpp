@@ -1,7 +1,9 @@
 #include "estimated_cube.h"
 
 // Solver
-#include "sticker_cube.h"
+#include "algorithm_optimiser.h"
+#include "CubeSearch.h"
+#include "StickerCube.h"
 #include "TableManager.h"
 
 #include <iostream>
@@ -29,14 +31,17 @@ int main(int argc, char* argv[]) {
         for(int y=0; y<3; ++y) {
             for(int x=0; x<3; ++x) {
                 std::cout << zeCube[side][x + (y * 3)];
-                if(x == 2)
-                    std::cout << '|';
             }
             std::cout << "\n";
         }
     }
 
-    StickerCube *cube = new StickerCube(zeCube);
+    std::cout << "Enter -1 if this cube detection is invalid: ";
+    std::cin >> n;
+
+    if(n != -1) {
+
+    StickerCube *scrambleCube = new StickerCube(zeCube);
 
     TableManager* tableManager = TableManager::getInstance();
 
@@ -54,9 +59,10 @@ int main(int argc, char* argv[]) {
 
     //  output complete solution
     std::cout << "Solution " << phase1Solution << phase2Solution << "\n";
-    
+
     //  output efficient rotations
     std::cout << "\nSolution With Optimal Rotations " << convertTo4Arm(phase1Solution + phase2Solution) << "\n";
+}
 
     return 0;
 }

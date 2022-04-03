@@ -12,18 +12,18 @@ public:
     };
 
     struct XYZ {
-        float X;
-        float Y;
-        float Z;
+        long double X;
+        long double Y;
+        long double Z;
     };
 
     struct CIELAB {
-        double lStar;
-        double aStar;
-        double bStar;
+        long double lStar;
+        long double aStar;
+        long double bStar;
     };
 
-    static double deltaE(CIELAB* x, CIELAB* y);
+    static long double deltaE(CIELAB* x, CIELAB* y);
     static CIELAB* rgb2cie(RGB* pixel);
     static CIELAB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 
