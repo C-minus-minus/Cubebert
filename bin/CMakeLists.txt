@@ -23,6 +23,7 @@ if(HAS_PIGS)
     target_link_libraries(
         cubebert-eyes
         PUBLIC CubeRecognition
+        PUBLIC CubeSolver
         PUBLIC -lraspicam
     )
 

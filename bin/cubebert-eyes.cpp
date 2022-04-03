@@ -1,5 +1,9 @@
 #include "estimated_cube.h"
 
+// Solver
+#include "sticker_cube.h"
+#include "TableManager.h"
+
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -31,6 +35,28 @@ int main(int argc, char* argv[]) {
             std::cout << "\n";
         }
     }
+
+    StickerCube *cube = new StickerCube(zeCube);
+
+    TableManager* tableManager = TableManager::getInstance();
+
+    //  solve phase 1
+    std::cout << "\nStarting phase 1...\n";
+    std::string phase1Solution = CubeSearch::getPhase1Solution(scrambleCube);
+    //std::cout << phase1Solution << "\n";
+
+    //  apply phase 1  solution to scrambled cube
+    scrambleCube->applyScramble(phase1Solution);
+
+    //  solve phase 2
+    std::cout << "Starting phase 2...\n\n";
+    std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
+
+    //  output complete solution
+    std::cout << "Solution " << phase1Solution << phase2Solution << "\n";
+    
+    //  output efficient rotations
+    std::cout << "\nSolution With Optimal Rotations " << convertTo4Arm(phase1Solution + phase2Solution) << "\n";
 
     return 0;
 }
