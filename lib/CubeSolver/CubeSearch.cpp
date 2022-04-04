@@ -18,6 +18,7 @@ std::string CubeSearch::getPhase1Solution(StickerCube* scrambledCube) {
 
         //  search for solution at this depth
         if(CubeSearch::phase1IterativeDeepeningAStar(
+            TableManager::getInstance(),
             phase1EdgeCoordinate,
             phase1CornerCoordinate,
             phase1UDSliceCoordinate,
@@ -46,14 +47,13 @@ std::string CubeSearch::getPhase1Solution(StickerCube* scrambledCube) {
 * @param solution - empty vector to store the solution when we find it
 * @return - If it exists at this depth, this will return the algorithm to solve phase 1, returns an empty string otherwise
 **/
-bool CubeSearch::phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution) {
-
+bool CubeSearch::phase1IterativeDeepeningAStar(TableManager *instance, int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution) {
     //  calculate a lower bound for the amount of moves it will take to solve from here
     int lowerBound = std::max(
-        TableManager::getInstance()->phase1EdgePruningTable[edgeCoord],
+        instance->phase1EdgePruningTable[edgeCoord],
         std::max(
-            TableManager::getInstance()->phase1CornerPruningTable[cornerCoord],
-            TableManager::getInstance()->phase1UdslicePruningTable[sliceCoord]
+            instance->phase1CornerPruningTable[cornerCoord],
+            instance->phase1UdslicePruningTable[sliceCoord]
         )
     );
 
@@ -64,16 +64,16 @@ bool CubeSearch::phase1IterativeDeepeningAStar(int edgeCoord, int cornerCoord, i
         for (int move = 0; move < CubeConstants::PHASE_1_MOVE_COUNT; move++) {
 
             //  calculate new cube state after move
-            int currEdge = TableManager::getInstance()->phase1EdgeMoveTable[edgeCoord][move];
-            int currCorner = TableManager::getInstance()->phase1CornerMoveTable[cornerCoord][move];
-            int currSlice = TableManager::getInstance()->phase1UdsliceMoveTable[sliceCoord][move];
+            int currEdge = instance->phase1EdgeMoveTable[edgeCoord][move];
+            int currCorner = instance->phase1CornerMoveTable[cornerCoord][move];
+            int currSlice = instance->phase1UdsliceMoveTable[sliceCoord][move];
 
             //  check if we solved the cube, else dive deeper
             if (currEdge == 0 && currCorner == 0 && currSlice == 0) {
                 solution->push_back(CubeConstants::PHASE_1_MOVES[move]);
                 return true;
             }
-            else if(phase1IterativeDeepeningAStar(currEdge, currCorner, currSlice, goalDepth, currDepth + 1, solution)) {
+            else if(phase1IterativeDeepeningAStar(instance, currEdge, currCorner, currSlice, goalDepth, currDepth + 1, solution)) {
                 solution->push_back(CubeConstants::PHASE_1_MOVES[move]);
                 return true;
             }
@@ -100,6 +100,7 @@ std::string CubeSearch::getPhase2Solution(StickerCube* scrambledCube) {
 
         //  search for solution at this depth
         if(CubeSearch::phase2IterativeDeepeningAStar(
+            TableManager::getInstance(),
             phase2EdgeCoordinate,
             phase2CornerCoordinate,
             phase2UDSliceCoordinate,
@@ -129,14 +130,13 @@ std::string CubeSearch::getPhase2Solution(StickerCube* scrambledCube) {
  * @param solution - empty vector to store the solution when we find it
  * @return - If it exists at this depth, this will return the algorithm to solve phase 2, returns an empty string otherwise
  */
-bool CubeSearch::phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution) {
-
+bool CubeSearch::phase2IterativeDeepeningAStar(TableManager *instance, int edgeCoord, int cornerCoord, int sliceCoord, int goalDepth, int currDepth, std::vector<std::string>* solution) {
     //  calculate a lower bound for the amount of moves it will take to solve from here
     int lowerBound = std::max(
-        TableManager::getInstance()->phase2EdgePruningTable[edgeCoord],
+        instance->phase2EdgePruningTable[edgeCoord],
         std::max(
-            TableManager::getInstance()->phase2CornerPruningTable[cornerCoord],
-            TableManager::getInstance()->phase2UdslicePruningTable[sliceCoord]
+            instance->phase2CornerPruningTable[cornerCoord],
+            instance->phase2UdslicePruningTable[sliceCoord]
         )
     );
 
@@ -147,16 +147,16 @@ bool CubeSearch::phase2IterativeDeepeningAStar(int edgeCoord, int cornerCoord, i
         for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
 
             //  calculate new cube state after move
-            int currEdge = TableManager::getInstance()->phase2EdgeMoveTable[edgeCoord][move];
-            int currCorner = TableManager::getInstance()->phase2CornerMoveTable[cornerCoord][move];
-            int currSlice = TableManager::getInstance()->phase2UdsliceMoveTable[sliceCoord][move];
+            int currEdge = instance->phase2EdgeMoveTable[edgeCoord][move];
+            int currCorner = instance->phase2CornerMoveTable[cornerCoord][move];
+            int currSlice = instance->phase2UdsliceMoveTable[sliceCoord][move];
 
             //  check if we solved the cube, else dive deeper
             if (currEdge == 0 && currCorner == 0 && currSlice == 0) {
                 solution->push_back(CubeConstants::PHASE_2_MOVES[move]);
                 return true;
             }
-            else if(phase2IterativeDeepeningAStar(currEdge, currCorner, currSlice, goalDepth, currDepth + 1, solution)) {
+            else if(phase2IterativeDeepeningAStar(instance, currEdge, currCorner, currSlice, goalDepth, currDepth + 1, solution)) {
                 solution->push_back(CubeConstants::PHASE_2_MOVES[move]);
                 return true;
             }
