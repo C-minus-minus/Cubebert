@@ -69,10 +69,13 @@ void EstimatedCube::captureSide(int side) {
     }
 
     std::cout << "Side[" << side << "] CIEL*A*B* Values\n";
+    std::cout << std::fixed << std::setprecision(4);
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
             ColorMath::CIELAB* sampleColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
             m_cieCubeSides[side][x+(y*3)] = sampleColor;
+            
+            std::cout << '(' << sampleColor->lStar << ", " << sampleColor->aStar << ", " << sampleColor->bStar << ")\t";
         }
         std::cout << '\n';
     }

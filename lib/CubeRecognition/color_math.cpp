@@ -4,9 +4,9 @@
 
 // NOTE: subsample is assumed to be within data bounds
 ColorMath::CIELAB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int initY, int subsampleWidth, int subsampleHeight) {
-    long double LStar = 0;
-    long double AStar = 0;
-    long double BStar = 0;
+    double LStar = 0;
+    double AStar = 0;
+    double BStar = 0;
 
     for(int y=initY; y<initY+subsampleHeight; ++y) {
         for(int x=initX; x<initX+subsampleWidth; ++x) {
@@ -28,7 +28,7 @@ ColorMath::CIELAB* ColorMath::subsample(ColorMath::RGB ***data, int initX, int i
     return averagePixel;
 }
 
-long double ColorMath::deltaE(ColorMath::CIELAB* x, ColorMath::CIELAB* y) {
+double ColorMath::deltaE(ColorMath::CIELAB* x, ColorMath::CIELAB* y) {
     return sqrt(pow(x->lStar - y->lStar, 2) + pow(x->aStar - y->aStar, 2) + pow(x->bStar - y->bStar, 2));
 }
 
@@ -47,9 +47,9 @@ ColorMath::CIELAB *ColorMath::rgb2cie(RGB *pixel) {
 }
 
 ColorMath::XYZ *ColorMath::rgb2xyz(RGB *pixel) {
-    long double red = pixel->red / 255.0;
-    long double green = pixel->green / 255.0;
-    long double blue = pixel->blue / 255.0;
+    double red = pixel->red / 255.0;
+    double green = pixel->green / 255.0;
+    double blue = pixel->blue / 255.0;
 
     if(red > 0.04045)
         red = pow((red + 0.055) / 1.055, 2.4);
@@ -79,9 +79,9 @@ ColorMath::XYZ *ColorMath::rgb2xyz(RGB *pixel) {
 }
 
 ColorMath::CIELAB *ColorMath::xyz2cielab(XYZ *datum, XYZ ref) {
-    long double x = datum->X / ref.X;
-    long double y = datum->Y / ref.Y;
-    long double z = datum->Z / ref.Z;
+    double x = datum->X / ref.X;
+    double y = datum->Y / ref.Y;
+    double z = datum->Z / ref.Z;
 
     if(x > 0.008856)
         x = pow(x, 0.33);
