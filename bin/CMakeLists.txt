@@ -1,7 +1,7 @@
-# cubebert-bot binary]
 include(CheckIncludeFile)
 check_include_file(pigpio.h HAS_PIGS)
 if(HAS_PIGS)
+    # cubebert-bot binary
     add_executable(cubebert-bot cubebert-bot.cpp)
 
     target_compile_features(cubebert-bot PUBLIC cxx_std_11)
