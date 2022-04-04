@@ -23,7 +23,7 @@ StickerCube::StickerCube(int** faces) {
 }
 
 /**
-* Checks to see if there is a solution to phase 1 at the specified depth
+* Builds a sticker cube from an array, and rotates the faces based on 'orientation' settings
 * @param faces - 6x9 2D array representing cube state
 * @param orientation - value at index N represents how many times side N needs rotate counter clockwise
 **/
