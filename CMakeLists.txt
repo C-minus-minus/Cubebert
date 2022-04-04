@@ -7,7 +7,6 @@ project(Cubebert VERSION 0.1)
 # -Ofast - optimises as much as reasonably possible
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 
-
 add_subdirectory(lib)
 add_subdirectory(libext)
 add_subdirectory(bin)
