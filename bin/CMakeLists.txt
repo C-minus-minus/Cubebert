@@ -1,8 +1,7 @@
-# cubebert-bot binary
-
 include(CheckIncludeFile)
 check_include_file(pigpio.h HAS_PIGS)
 if(HAS_PIGS)
+    # cubebert-bot binary
     add_executable(cubebert-bot cubebert-bot.cpp)
 
     target_compile_features(cubebert-bot PUBLIC cxx_std_11)
@@ -15,6 +14,20 @@ if(HAS_PIGS)
     )
 
     install(TARGETS cubebert-bot DESTINATION sbin)
+
+    # cubebert-eyes binary
+    add_executable(cubebert-eyes cubebert-eyes.cpp)
+
+    target_compile_features(cubebert-eyes PUBLIC cxx_std_11)
+
+    target_link_libraries(
+        cubebert-eyes
+        PUBLIC CubeRecognition
+        PUBLIC CubeSolver
+        PUBLIC -lraspicam
+    )
+
+    install(TARGETS cubebert-eyes DESTINATION sbin)
 endif()
 
 # cubebert-solver binary
@@ -25,11 +38,6 @@ target_compile_features(cubebert-solver PUBLIC cxx_std_11)
 target_link_libraries(
     cubebert-solver
     PUBLIC CubeSolver
-)
-
-target_include_directories(
-    cubebert-solver
-    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 install(TARGETS cubebert-solver DESTINATION sbin)
