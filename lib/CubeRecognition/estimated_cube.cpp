@@ -10,6 +10,11 @@
 EstimatedCube::EstimatedCube() {
     m_camera = new raspicam::RaspiCam();
     m_camera->setCaptureSize(IMG_DIM, IMG_DIM);
+    m_camera->setRotation(90);
+    m_camera->setISO(100);
+    m_camera->setBrightness(44);
+    m_camera->setSaturation(-10);
+    m_camera->setAWB(raspicam::RASPICAM_AWB::RASPICAM_AWB_SUNLIGHT);
 }
 
 EstimatedCube::~EstimatedCube() {
@@ -72,7 +77,7 @@ void EstimatedCube::captureSide(int side) {
     std::cout << std::fixed << std::setprecision(4);
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
-            ColorMath::CIELAB* sampleColor = ColorMath::subsample(imgObj, (x * 960) - (32 * x), (y * 960) - (32 * y));
+            ColorMath::CIELAB* sampleColor = ColorMath::subsample(imgObj, (x * 960) - (64 * x), (y * 960) - (64 * y), 128, 128);
             m_cieCubeSides[side][x+(y*3)] = sampleColor;
             
             std::cout << '(' << sampleColor->lStar << ", " << sampleColor->aStar << ", " << sampleColor->bStar << ")\t";
