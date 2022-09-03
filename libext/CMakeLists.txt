@@ -1,24 +1,13 @@
 include(ExternalProject)
 
 ExternalProject_Add(
-  RaspicamDownload
+  raspicam
   PREFIX libext
   GIT_REPOSITORY https://github.com/pdfkpb/raspicam
   GIT_TAG origin/adding-include-dir
+  DOWNLOAD_NO_PROGRESS true
   INSTALL_COMMAND cmake -E echo "Skipping install step."
 )
-
-
-#SET(RASPICAM_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libext/src/RaspicamDownload/include)
-#SET(RASPICAM_LIB_DIR ${CMAKE_CURRENT_BINARY_DIR}/libext/src/RaspicamDownload-build/src)
-
-#add_library(raspicam SHARED IMPORTED)
-#set_target_properties(
-#  raspicam
-#  PROPERTIES
-#  IMPORTED_LOCATION
-#  ${RASPICAM_LIB_DIR}/libraspicam.so
-#)
 
 ExternalProject_Add(
   pico-neopixel

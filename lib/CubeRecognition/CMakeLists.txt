@@ -5,10 +5,12 @@ set(LIB_NAME CubeRecognition)
 
 add_library(${LIB_NAME} estimated_cube.cpp color_math.cpp)
 
-#target_include_directories(
-#  ${LIB_NAME}
-#  INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
-#)
+link_directories(${CMAKE_BINARY_DIR}/libext/raspicam/)
+
+target_include_directories(
+  ${LIB_NAME}
+  INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   ${LIB_NAME}
@@ -17,7 +19,7 @@ target_link_libraries(
 
 add_dependencies(
   ${LIB_NAME}
-  RaspicamDownload
+  raspicam
 )
 
 install(TARGETS CubeRecognition DESTINATION lib)
