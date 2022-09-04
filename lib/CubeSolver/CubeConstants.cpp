@@ -20,6 +20,7 @@ const int CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE = 495;
 const int CubeConstants::PHASE_2_MAX_EDGE_COORDINATE = 40320;
 const int CubeConstants::PHASE_2_MAX_CORNER_COORDINATE = 40320;
 const int CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE = 24;
+const int CubeConstants::PHASE_2_MAX_BAR1_COORDINATE = 3136;
 
 const std::string CubeConstants::PHASE_1_MOVES[] = {
             "U", "U'", "U2",

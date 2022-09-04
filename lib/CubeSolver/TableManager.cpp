@@ -88,6 +88,54 @@ void TableManager::generatePhase2UdsliceMoveTable() {
     }
 }
 
+void TableManager::generatePhase2Bar1MoveTable(StickerCube* cube, int coord, int depth) {
+    if (this->phase2Bar1MoveTable[coord][0] == -1) {
+        for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            cube->applyMove(CubeConstants::PHASE_2_MOVES[move]);
+            int newCoord = cube->getPhase2Bar1Coordinate();
+            this->phase2Bar1MoveTable[coord][move] = newCoord;
+            this->generatePhase2Bar1MoveTable(cube, newCoord, depth + 1);
+            cube->applyMove(CubeConstants::PHASE_2_ANTIMOVES[move]);
+        }
+    }
+}
+
+void TableManager::generatePhase2Bar2MoveTable(StickerCube* cube, int coord, int depth) {
+    if (this->phase2Bar2MoveTable[coord][0] == -1) {
+        for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            cube->applyMove(CubeConstants::PHASE_2_MOVES[move]);
+            int newCoord = cube->getPhase2Bar2Coordinate();
+            this->phase2Bar2MoveTable[coord][move] = newCoord;
+            this->generatePhase2Bar2MoveTable(cube, newCoord, depth + 1);
+            cube->applyMove(CubeConstants::PHASE_2_ANTIMOVES[move]);
+        }
+    }
+}
+
+void TableManager::generatePhase2Bar3MoveTable(StickerCube* cube, int coord, int depth) {
+    if (this->phase2Bar3MoveTable[coord][0] == -1) {
+        for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            cube->applyMove(CubeConstants::PHASE_2_MOVES[move]);
+            int newCoord = cube->getPhase2Bar3Coordinate();
+            this->phase2Bar3MoveTable[coord][move] = newCoord;
+            this->generatePhase2Bar3MoveTable(cube, newCoord, depth + 1);
+            cube->applyMove(CubeConstants::PHASE_2_ANTIMOVES[move]);
+        }
+    }
+}
+
+void TableManager::generatePhase2Bar4MoveTable(StickerCube* cube, int coord, int depth) {
+    if (this->phase2Bar4MoveTable[coord][0] == -1) {
+        for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            cube->applyMove(CubeConstants::PHASE_2_MOVES[move]);
+            int newCoord = cube->getPhase2Bar4Coordinate();
+            this->phase2Bar4MoveTable[coord][move] = newCoord;
+            this->generatePhase2Bar4MoveTable(cube, newCoord, depth + 1);
+            cube->applyMove(CubeConstants::PHASE_2_ANTIMOVES[move]);
+        }
+    }
+}
+
 void TableManager::generatePhase1MoveTables() {
 
     //  Allocate memory for tables
@@ -158,6 +206,38 @@ void TableManager::generatePhase2MoveTables() {
             this->phase2UdsliceMoveTable[i][a] = -1;
         }
     }
+
+    this->phase2Bar1MoveTable = new int*[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar1MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            this->phase2Bar1MoveTable[i][a] = -1;
+        }
+    }
+
+    this->phase2Bar2MoveTable = new int*[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar2MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            this->phase2Bar2MoveTable[i][a] = -1;
+        }
+    }
+
+    this->phase2Bar3MoveTable = new int*[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar3MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            this->phase2Bar3MoveTable[i][a] = -1;
+        }
+    }
+
+    this->phase2Bar4MoveTable = new int*[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar4MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            this->phase2Bar4MoveTable[i][a] = -1;
+        }
+    }
     
     /*
     for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
@@ -178,6 +258,11 @@ void TableManager::generatePhase2MoveTables() {
     this->generatePhase2EdgeMoveTable();
     this->generatePhase2CornerMoveTable();
     this->generatePhase2UdsliceMoveTable();
+    StickerCube* solvedCube = new StickerCube();
+    this->generatePhase2Bar1MoveTable(solvedCube, solvedCube->getPhase2Bar1Coordinate(), 0);
+    this->generatePhase2Bar2MoveTable(solvedCube, solvedCube->getPhase2Bar2Coordinate(), 0);
+    this->generatePhase2Bar3MoveTable(solvedCube, solvedCube->getPhase2Bar3Coordinate(), 0);
+    this->generatePhase2Bar4MoveTable(solvedCube, solvedCube->getPhase2Bar4Coordinate(), 0);
 }
 
 void TableManager::generatePhase1EdgePruningTable() {
@@ -312,6 +397,96 @@ void TableManager::generatePhase2UDSlicePruningTable() {
     }
 }
 
+void TableManager::generatePhase2Bar1PruningTable() {
+    
+    this->phase2Bar1PruningTable = new int[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar1PruningTable[i] = -1;
+    }
+
+    std::queue<SearchNode*> que;
+    que.emplace(new SearchNode(0, 1539));
+    while (!que.empty()) {
+        SearchNode* curr = que.front();
+        que.pop();
+        if (this->phase2Bar1PruningTable[curr->value] == -1) {
+            this->phase2Bar1PruningTable[curr->value] = curr->depth;
+            for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+                int coord = this->phase2Bar1MoveTable[curr->value][move];
+                que.emplace(new SearchNode(curr->depth + 1, coord));
+            }
+        }
+    }
+}
+
+void TableManager::generatePhase2Bar2PruningTable() {
+    
+    this->phase2Bar2PruningTable = new int[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar2PruningTable[i] = -1;
+    }
+
+    std::queue<SearchNode*> que;
+    que.emplace(new SearchNode(0, 1254));
+    while (!que.empty()) {
+        SearchNode* curr = que.front();
+        que.pop();
+        if (this->phase2Bar2PruningTable[curr->value] == -1) {
+            this->phase2Bar2PruningTable[curr->value] = curr->depth;
+            for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+                int coord = this->phase2Bar2MoveTable[curr->value][move];
+                que.emplace(new SearchNode(curr->depth + 1, coord));
+            }
+        }
+    }
+}
+
+void TableManager::generatePhase2Bar3PruningTable() {
+    
+    this->phase2Bar3PruningTable = new int[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar3PruningTable[i] = -1;
+    }
+
+    std::queue<SearchNode*> que;
+    que.emplace(new SearchNode(0, 741));
+    while (!que.empty()) {
+        SearchNode* curr = que.front();
+        que.pop();
+        if (this->phase2Bar3PruningTable[curr->value] == -1) {
+            this->phase2Bar3PruningTable[curr->value] = curr->depth;
+            for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+                int coord = this->phase2Bar3MoveTable[curr->value][move];
+                que.emplace(new SearchNode(curr->depth + 1, coord));
+            }
+        }
+    }
+}
+
+void TableManager::generatePhase2Bar4PruningTable() {
+    
+    this->phase2Bar4PruningTable = new int[CubeConstants::PHASE_2_MAX_BAR1_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        this->phase2Bar4PruningTable[i] = -1;
+    }
+
+    std::queue<SearchNode*> que;
+    que.emplace(new SearchNode(0, 0));
+    while (!que.empty()) {
+        SearchNode* curr = que.front();
+        que.pop();
+        if (this->phase2Bar4PruningTable[curr->value] == -1) {
+            this->phase2Bar4PruningTable[curr->value] = curr->depth;
+            for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+                int coord = this->phase2Bar4MoveTable[curr->value][move];
+                que.emplace(new SearchNode(curr->depth + 1, coord));
+            }
+        }
+    }
+}
+
+
+
 void TableManager::generatePhase1PruningTables() {
     this->generatePhase1EdgePruningTable();
     this->generatePhase1CornerPruningTable();
@@ -322,4 +497,8 @@ void TableManager::generatePhase2PruningTables() {
     this->generatePhase2EdgePruningTable();
     this->generatePhase2CornerPruningTable();
     this->generatePhase2UDSlicePruningTable();
+    this->generatePhase2Bar1PruningTable();
+    this->generatePhase2Bar2PruningTable();
+    this->generatePhase2Bar3PruningTable();
+    this->generatePhase2Bar4PruningTable();
 }
