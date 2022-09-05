@@ -256,9 +256,9 @@ bool CubeSearch::phase2IterativeDeepeningAStarE(TableManager *instance, int edge
             int currCorner = instance->phase2CornerMoveTable[cornerCoord][move];
             int currSlice = instance->phase2UdsliceMoveTable[sliceCoord][move];
             int currBar1 = instance->phase2Bar1MoveTable[bar1Coord][move];
-            int currBar2 = instance->phase2Bar1MoveTable[bar2Coord][move];
-            int currBar3 = instance->phase2Bar1MoveTable[bar3Coord][move];
-            int currBar4 = instance->phase2Bar1MoveTable[bar4Coord][move];
+            int currBar2 = instance->phase2Bar2MoveTable[bar2Coord][move];
+            int currBar3 = instance->phase2Bar3MoveTable[bar3Coord][move];
+            int currBar4 = instance->phase2Bar4MoveTable[bar4Coord][move];
 
             //  check if we solved the cube, else dive deeper
             if (currEdge == 0 && currCorner == 0 && currSlice == 0) {
