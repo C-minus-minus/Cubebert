@@ -709,7 +709,12 @@ int StickerCube::getPhase2Bar1Coordinate() {
     const int goalCornerSticker2PrimarySide = 0;
     const int goalCornerSticker2SecondarySide = 2;
     const int goalCornerSticker2ThirdSide = 4;
+
+    const int goalCornerSticker3PrimarySide = 0;
+    const int goalCornerSticker3SecondarySide = 5;
+    const int goalCornerSticker3ThirdSide = 2;
     firstFound = -1;
+    int digit = 0;
     for (int i = 0; i < stickerCount; i++) {
         positions[i] = 0;
     }
@@ -721,17 +726,54 @@ int StickerCube::getPhase2Bar1Coordinate() {
         if(sticker1 == goalCornerSticker1PrimarySide 
             && sticker2 == goalCornerSticker1SecondarySide
             && sticker3 == goalCornerSticker1ThirdSide) {
-            if(firstFound == -1) {
+            if(digit == 0) {
                 firstFound = 0;
+                digit++;
             }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
             positions[i] = true;
         }
         else if(sticker1 == goalCornerSticker2PrimarySide 
             && sticker2 == goalCornerSticker2SecondarySide
             && sticker3 == goalCornerSticker2ThirdSide) {
-            if(firstFound == -1) {
-                firstFound = 1;
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
             }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
             positions[i] = true;
         }
     }
@@ -744,9 +786,9 @@ int StickerCube::getPhase2Bar1Coordinate() {
             phase2Bar1CornerCoordinate += CubeMath::choose(n, k);
         }
     }
-    phase2Bar1CornerCoordinate = phase2Bar1CornerCoordinate + 28 * firstFound;
+    phase2Bar1CornerCoordinate = phase2Bar1CornerCoordinate + 56 * firstFound;
 
-    return phase2Bar1EdgeCoordinate + phase2Bar1CornerCoordinate * 56;
+    return phase2Bar1EdgeCoordinate * 336 + phase2Bar1CornerCoordinate ;
 }
 
 /**
@@ -835,7 +877,12 @@ int StickerCube::getPhase2Bar2Coordinate() {
     const int goalCornerSticker2PrimarySide = 0;
     const int goalCornerSticker2SecondarySide = 1;
     const int goalCornerSticker2ThirdSide = 5;
+
+    const int goalCornerSticker3PrimarySide = 0;
+    const int goalCornerSticker3SecondarySide = 4;
+    const int goalCornerSticker3ThirdSide = 1;
     firstFound = -1;
+    int digit = 0;
     for (int i = 0; i < stickerCount; i++) {
         positions[i] = 0;
     }
@@ -847,17 +894,54 @@ int StickerCube::getPhase2Bar2Coordinate() {
         if(sticker1 == goalCornerSticker1PrimarySide 
             && sticker2 == goalCornerSticker1SecondarySide
             && sticker3 == goalCornerSticker1ThirdSide) {
-            if(firstFound == -1) {
+            if(digit == 0) {
                 firstFound = 0;
+                digit++;
             }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
             positions[i] = true;
         }
         else if(sticker1 == goalCornerSticker2PrimarySide 
             && sticker2 == goalCornerSticker2SecondarySide
             && sticker3 == goalCornerSticker2ThirdSide) {
-            if(firstFound == -1) {
-                firstFound = 1;
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
             }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
             positions[i] = true;
         }
     }
@@ -870,9 +954,9 @@ int StickerCube::getPhase2Bar2Coordinate() {
             phase2Bar2CornerCoordinate += CubeMath::choose(n, k);
         }
     }
-    phase2Bar2CornerCoordinate = phase2Bar2CornerCoordinate + 28 * firstFound;
+    phase2Bar2CornerCoordinate = phase2Bar2CornerCoordinate + 56 * firstFound;
 
-    return phase2Bar2EdgeCoordinate + phase2Bar2CornerCoordinate * 56;
+    return phase2Bar2EdgeCoordinate * 336 + phase2Bar2CornerCoordinate;
 }
 
 /**
@@ -961,7 +1045,12 @@ int StickerCube::getPhase2Bar3Coordinate() {
     const int goalCornerSticker2PrimarySide = 3;
     const int goalCornerSticker2SecondarySide = 2;
     const int goalCornerSticker2ThirdSide = 5;
+
+    const int goalCornerSticker3PrimarySide = 3;
+    const int goalCornerSticker3SecondarySide = 4;
+    const int goalCornerSticker3ThirdSide = 2;
     firstFound = -1;
+    int digit = 0;
     for (int i = 0; i < stickerCount; i++) {
         positions[i] = 0;
     }
@@ -973,17 +1062,54 @@ int StickerCube::getPhase2Bar3Coordinate() {
         if(sticker1 == goalCornerSticker1PrimarySide 
             && sticker2 == goalCornerSticker1SecondarySide
             && sticker3 == goalCornerSticker1ThirdSide) {
-            if(firstFound == -1) {
+            if(digit == 0) {
                 firstFound = 0;
+                digit++;
             }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
             positions[i] = true;
         }
         else if(sticker1 == goalCornerSticker2PrimarySide 
             && sticker2 == goalCornerSticker2SecondarySide
             && sticker3 == goalCornerSticker2ThirdSide) {
-            if(firstFound == -1) {
-                firstFound = 1;
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
             }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
             positions[i] = true;
         }
     }
@@ -996,9 +1122,9 @@ int StickerCube::getPhase2Bar3Coordinate() {
             phase2Bar3CornerCoordinate += CubeMath::choose(n, k);
         }
     }
-    phase2Bar3CornerCoordinate = phase2Bar3CornerCoordinate + 28 * firstFound;
+    phase2Bar3CornerCoordinate = phase2Bar3CornerCoordinate + 56 * firstFound;
 
-    return phase2Bar3EdgeCoordinate + phase2Bar3CornerCoordinate * 56;
+    return phase2Bar3EdgeCoordinate * 336 + phase2Bar3CornerCoordinate ;
 }
 
 /**
@@ -1087,7 +1213,12 @@ int StickerCube::getPhase2Bar4Coordinate() {
     const int goalCornerSticker2PrimarySide = 3;
     const int goalCornerSticker2SecondarySide = 1;
     const int goalCornerSticker2ThirdSide = 4;
+
+    const int goalCornerSticker3PrimarySide = 3;
+    const int goalCornerSticker3SecondarySide = 5;
+    const int goalCornerSticker3ThirdSide = 1;
     firstFound = -1;
+    int digit = 0;
     for (int i = 0; i < stickerCount; i++) {
         positions[i] = 0;
     }
@@ -1099,17 +1230,54 @@ int StickerCube::getPhase2Bar4Coordinate() {
         if(sticker1 == goalCornerSticker1PrimarySide 
             && sticker2 == goalCornerSticker1SecondarySide
             && sticker3 == goalCornerSticker1ThirdSide) {
-            if(firstFound == -1) {
+            if(digit == 0) {
                 firstFound = 0;
+                digit++;
             }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
             positions[i] = true;
         }
         else if(sticker1 == goalCornerSticker2PrimarySide 
             && sticker2 == goalCornerSticker2SecondarySide
             && sticker3 == goalCornerSticker2ThirdSide) {
-            if(firstFound == -1) {
-                firstFound = 1;
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
             }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
             positions[i] = true;
         }
     }
@@ -1122,7 +1290,7 @@ int StickerCube::getPhase2Bar4Coordinate() {
             phase2Bar4CornerCoordinate += CubeMath::choose(n, k);
         }
     }
-    phase2Bar4CornerCoordinate = phase2Bar4CornerCoordinate + 28 * firstFound;
+    phase2Bar4CornerCoordinate = phase2Bar4CornerCoordinate + 56 * firstFound;
 
-    return phase2Bar4EdgeCoordinate + phase2Bar4CornerCoordinate * 56;
+    return phase2Bar4EdgeCoordinate * 336 + phase2Bar4CornerCoordinate;
 }
