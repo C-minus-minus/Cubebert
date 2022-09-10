@@ -667,7 +667,7 @@ void TableManager::generatePhase2Side1PruningTable() {
     }
 
     std::queue<SearchNode*> que;
-    que.emplace(new SearchNode(0, 225));
+    que.emplace(new SearchNode(0, 1882720));
     while (!que.empty()) {
         SearchNode* curr = que.front();
         que.pop();
@@ -688,7 +688,7 @@ void TableManager::generatePhase2Side2PruningTable() {
     }
 
     std::queue<SearchNode*> que;
-    que.emplace(new SearchNode(0, 225));
+    que.emplace(new SearchNode(0, 115989));
     while (!que.empty()) {
         SearchNode* curr = que.front();
         que.pop();
