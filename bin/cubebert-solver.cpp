@@ -46,8 +46,8 @@ int main() {
     int minE = 0;
     for(int i=0;i<CubeConstants::PHASE_2_MAX_SIDE_COORDINATE;i++) {
         for(int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
-            maxE = std::max(maxE, tableManager->getInstance()->phase2Side1MoveTable[i][move]);
-            minE = std::min(minE, tableManager->getInstance()->phase2Side1MoveTable[i][move]);
+            maxE = std::max(maxE, tableManager->getInstance()->phase2Side2MoveTable[i][move]);
+            minE = std::min(minE, tableManager->getInstance()->phase2Side2MoveTable[i][move]);
         }
     }
     std::cout<<"Max side 2 coord is: "<<maxE<<"\n";
