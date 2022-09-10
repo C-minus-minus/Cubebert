@@ -64,13 +64,13 @@ int main() {
 
     int max1 = 0;
     double avg1 = 0;
-    for(int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+    for(int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
         max1 = std::min(tableManager->getInstance()->phase2Side1PruningTable[i],max1);
         avg1 += tableManager->getInstance()->phase2Side1PruningTable[i];
     }
     int max2 = 0;
     double avg2 = 0;
-    for(int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
+    for(int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
         max2 = std::max(tableManager->getInstance()->phase2Side2PruningTable[i],max2);
         avg2 += tableManager->getInstance()->phase2Side2PruningTable[i];
     }
