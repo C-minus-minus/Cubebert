@@ -109,7 +109,7 @@ int main() {
         //  solve phase 2
         std::cout << "Starting phase 2E...\n";
         start = high_resolution_clock::now();
-        phase2Solution = CubeSearch::getPhase2SolutionE(scrambleCube);
+        phase2Solution = CubeSearch::getPhase2SolutionE(scrambleCubeE);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         std::cout << "Time taken by functionE: "<< duration.count() << " microseconds\n";
@@ -117,7 +117,7 @@ int main() {
         //  solve phase 2
         std::cout << "Starting phase 2F...\n";
         start = high_resolution_clock::now();
-        phase2Solution = CubeSearch::getPhase2SolutionF(scrambleCube);
+        phase2Solution = CubeSearch::getPhase2SolutionF(scrambleCubeF);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         std::cout << "Time taken by functionF: "<< duration.count() << " microseconds\n";
