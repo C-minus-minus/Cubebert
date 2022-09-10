@@ -31,14 +31,28 @@ int main() {
 
     
 
-    // int max = 0;
-    // for(int i=0;i<CubeConstants::PHASE_2_MAX_BAR1_COORDINATE;i++) {
-    //     for(int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
-    //         max = std::max(max, tableManager->getInstance()->phase2Bar4MoveTable[i][move]);
-    //     }
-    // }
-    // std::cout<<max;
-    // return 0;
+    int max = 0;
+    int min = 0;
+    for(int i=0;i<CubeConstants::PHASE_2_MAX_SIDE_COORDINATE;i++) {
+        for(int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            max = std::max(max, tableManager->getInstance()->phase2Side1MoveTable[i][move]);
+            min = std::min(min, tableManager->getInstance()->phase2Side1MoveTable[i][move]);
+        }
+    }
+    std::cout<<"Max side 1 coord is: "<<max<<"\n";
+    std::cout<<"Min side 1 coord is: "<<min<<"\n";
+
+    int maxE = 0;
+    int minE = 0;
+    for(int i=0;i<CubeConstants::PHASE_2_MAX_SIDE_COORDINATE;i++) {
+        for(int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            maxE = std::max(maxE, tableManager->getInstance()->phase2Side1MoveTable[i][move]);
+            minE = std::min(minE, tableManager->getInstance()->phase2Side1MoveTable[i][move]);
+        }
+    }
+    std::cout<<"Max side 2 coord is: "<<maxE<<"\n";
+    std::cout<<"Min side 2 coord is: "<<minE<<"\n";
+  
 
     // StickerCube* stickerCube = new StickerCube();
     // stickerCube->applyMove("");
@@ -48,29 +62,30 @@ int main() {
     // std::cout<< "4: "<< stickerCube->getPhase2Bar4Coordinate()<<"\n";
     // return 0;
 
-    // int max1 = 0;
-    // double avg1 = 0;
-    // for(int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
-    //     max1 = std::min(tableManager->getInstance()->phase2Bar4PruningTable[i],max1);
-    //     avg1 += tableManager->getInstance()->phase2Bar4PruningTable[i];
-    // }
-    // int max2 = 0;
-    // double avg2 = 0;
-    // for(int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
-    //     max2 = std::max(tableManager->getInstance()->phase2CornerPruningTable[i],max2);
-    //     avg2 += tableManager->getInstance()->phase2CornerPruningTable[i];
-    // }
+    int max1 = 0;
+    double avg1 = 0;
+    for(int i = 0; i < CubeConstants::PHASE_2_MAX_BAR1_COORDINATE; i++) {
+        max1 = std::min(tableManager->getInstance()->phase2Side1PruningTable[i],max1);
+        avg1 += tableManager->getInstance()->phase2Side1PruningTable[i];
+    }
+    int max2 = 0;
+    double avg2 = 0;
+    for(int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
+        max2 = std::max(tableManager->getInstance()->phase2Side2PruningTable[i],max2);
+        avg2 += tableManager->getInstance()->phase2Side2PruningTable[i];
+    }
     // int max3 = 0;
     // double avg3 = 0;
     // for(int i = 0; i < CubeConstants::PHASE_2_MAX_EDGE_COORDINATE; i++) {
     //     max3 = std::max(tableManager->getInstance()->phase2EdgePruningTable[i],max3);
     //     avg3 += tableManager->getInstance()->phase2EdgePruningTable[i];
     // }
-    // std::cout<<"\nThe furthest prune is: "<<max1;
-    // std::cout<<"\nThe average prune is: "<<avg1 / CubeConstants::PHASE_2_MAX_BAR1_COORDINATE;
+    std::cout<<"\nThe furthest side1 prune is: "<<max1;
+    std::cout<<"\nThe average side1 prune is: "<<avg1 / CubeConstants::PHASE_2_MAX_SIDE_COORDINATE;
 
-    // std::cout<<"\nThe furthest prune is: "<<max2;
-    // std::cout<<"\nThe average prune is: "<<avg2 / CubeConstants::PHASE_2_MAX_CORNER_COORDINATE;
+    std::cout<<"\nThe furthest side2 prune is: "<<max2;
+    std::cout<<"\nThe average side2 prune is: "<<avg2 / CubeConstants::PHASE_2_MAX_SIDE_COORDINATE;
+    return;
 
     // std::cout<<"\nThe furthest prune is: "<<max3;
     // std::cout<<"\nThe average prune is: "<<avg3 / CubeConstants::PHASE_2_MAX_EDGE_COORDINATE;
@@ -101,7 +116,7 @@ int main() {
         //  solve phase 2
         std::cout << "Starting phase 2...\n";
         auto start = high_resolution_clock::now();
-        std::string phase2Solution = CubeSearch::getPhase2SolutionE(scrambleCube);
+        std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         std::cout << "Time taken by function: "<< duration.count() << " microseconds\n";
