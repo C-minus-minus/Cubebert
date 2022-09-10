@@ -26,19 +26,27 @@ class TableManager {
         int** phase2EdgeMoveTable;
         int** phase2CornerMoveTable;
         int** phase2UdsliceMoveTable;
+
+        //  experimental move tables
         int** phase2Bar1MoveTable;
         int** phase2Bar2MoveTable;
         int** phase2Bar3MoveTable;
         int** phase2Bar4MoveTable;
+        int** phase2Side1MoveTable;
+        int** phase2Side2MoveTable;
 
         //  Phase 2 pruning tables
         int* phase2EdgePruningTable;
         int* phase2CornerPruningTable;
         int* phase2UdslicePruningTable;
+
+        //  experimental prune tables
         int* phase2Bar1PruningTable;
         int* phase2Bar2PruningTable;
         int* phase2Bar3PruningTable;
         int* phase2Bar4PruningTable;
+        int* phase2Side1PruningTable;
+        int* phase2Side2PruningTable;
         
         static TableManager* instance;
     
@@ -57,6 +65,8 @@ class TableManager {
         void generatePhase2Bar2MoveTable(StickerCube* cube, int coord, int depth);
         void generatePhase2Bar3MoveTable(StickerCube* cube, int coord, int depth);
         void generatePhase2Bar4MoveTable(StickerCube* cube, int coord, int depth);
+        void generatePhase2Side1MoveTable();
+        void generatePhase2Side2MoveTable();
 
         void generatePhase1PruningTables();
         void generatePhase1EdgePruningTable();
@@ -71,6 +81,8 @@ class TableManager {
         void generatePhase2Bar2PruningTable();
         void generatePhase2Bar3PruningTable();
         void generatePhase2Bar4PruningTable();
+        void generatePhase2Side1PruningTable();
+        void generatePhase2Side2PruningTable();
 
         class SearchNode {
             public:

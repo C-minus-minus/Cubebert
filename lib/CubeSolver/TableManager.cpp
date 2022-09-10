@@ -139,6 +139,64 @@ void TableManager::generatePhase2Bar1MoveTable(StickerCube* cube, int coord, int
 
 }
 
+void TableManager::generatePhase2Side1MoveTable() {
+
+    std::queue<int> que;
+    std::unordered_map<int, StickerCube*> map;
+    StickerCube* stickerCube = new StickerCube();
+    map.emplace(stickerCube->getPhase2Side1Coordinate(), stickerCube);
+    que.emplace(stickerCube->getPhase2Side1Coordinate());
+    int count = 0;
+    while(!que.empty()) {
+        int coord = que.front();
+        count++;
+        if(count % 100000 == 0) {
+            std::cout<< (count / 3000000.0)*100<<"%\n";
+        }
+        StickerCube* currCube = map[coord];
+        que.pop();
+        for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            currCube->applyMove(CubeConstants::PHASE_2_MOVES[move]);
+            int newCoord = currCube->getPhase2Side1Coordinate();
+            if(map.find(newCoord) == map.end()) {
+                que.emplace(newCoord);
+                map[newCoord] = new StickerCube(currCube->getCubeState());
+            }
+            this->phase2Side1MoveTable[coord][move] = newCoord;
+            currCube->applyMove(CubeConstants::PHASE_2_ANTIMOVES[move]);
+        }
+    }
+}
+
+void TableManager::generatePhase2Side2MoveTable() {
+
+    std::queue<int> que;
+    std::unordered_map<int, StickerCube*> map;
+    StickerCube* stickerCube = new StickerCube();
+    map.emplace(stickerCube->getPhase2Side2Coordinate(), stickerCube);
+    que.emplace(stickerCube->getPhase2Side2Coordinate());
+    int count = 0;
+    while(!que.empty()) {
+        int coord = que.front();
+        count++;
+        if(count % 100000 == 0) {
+            std::cout<< (count / 3000000.0)*100<<"%\n";
+        }
+        StickerCube* currCube = map[coord];
+        que.pop();
+        for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+            currCube->applyMove(CubeConstants::PHASE_2_MOVES[move]);
+            int newCoord = currCube->getPhase2Side2Coordinate();
+            if(map.find(newCoord) == map.end()) {
+                que.emplace(newCoord);
+                map[newCoord] = new StickerCube(currCube->getCubeState());
+            }
+            this->phase2Side2MoveTable[coord][move] = newCoord;
+            currCube->applyMove(CubeConstants::PHASE_2_ANTIMOVES[move]);
+        }
+    }
+}
+
 void TableManager::generatePhase2Bar2MoveTable(StickerCube* cube, int coord, int depth) {
     // if (this->phase2Bar2MoveTable[coord][0] == -1) {
     //     for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
@@ -334,6 +392,22 @@ void TableManager::generatePhase2MoveTables() {
             this->phase2Bar4MoveTable[i][a] = -1;
         }
     }
+
+    this->phase2Side1MoveTable = new int*[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        this->phase2Side1MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            this->phase2Side1MoveTable[i][a] = -1;
+        }
+    }
+
+    this->phase2Side2MoveTable = new int*[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        this->phase2Side2MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            this->phase2Side2MoveTable[i][a] = -1;
+        }
+    }
     
     /*
     for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
@@ -359,6 +433,11 @@ void TableManager::generatePhase2MoveTables() {
     this->generatePhase2Bar2MoveTable(solvedCube, solvedCube->getPhase2Bar2Coordinate(), 0);
     this->generatePhase2Bar3MoveTable(solvedCube, solvedCube->getPhase2Bar3Coordinate(), 0);
     this->generatePhase2Bar4MoveTable(solvedCube, solvedCube->getPhase2Bar4Coordinate(), 0);
+
+    std::cout<<"Starting side 1 move table\n";
+    this->generatePhase2Side1MoveTable();
+    std::cout<<"Starting side 2 move table\n";
+    this->generatePhase2Side2MoveTable();
 }
 
 void TableManager::generatePhase1EdgePruningTable() {
@@ -581,6 +660,48 @@ void TableManager::generatePhase2Bar4PruningTable() {
     }
 }
 
+void TableManager::generatePhase2Side1PruningTable() {
+    this->phase2Side1PruningTable = new int[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        this->phase2Side1PruningTable[i] = -1;
+    }
+
+    std::queue<SearchNode*> que;
+    que.emplace(new SearchNode(0, 225));
+    while (!que.empty()) {
+        SearchNode* curr = que.front();
+        que.pop();
+        if (this->phase2Side1PruningTable[curr->value] == -1) {
+            this->phase2Side1PruningTable[curr->value] = curr->depth;
+            for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+                int coord = this->phase2Side1MoveTable[curr->value][move];
+                que.emplace(new SearchNode(curr->depth + 1, coord));
+            }
+        }
+    }
+}
+
+void TableManager::generatePhase2Side2PruningTable() {
+    this->phase2Side2PruningTable = new int[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        this->phase2Side2PruningTable[i] = -1;
+    }
+
+    std::queue<SearchNode*> que;
+    que.emplace(new SearchNode(0, 225));
+    while (!que.empty()) {
+        SearchNode* curr = que.front();
+        que.pop();
+        if (this->phase2Side2PruningTable[curr->value] == -1) {
+            this->phase2Side2PruningTable[curr->value] = curr->depth;
+            for (int move = 0; move < CubeConstants::PHASE_2_MOVE_COUNT; move++) {
+                int coord = this->phase2Side2MoveTable[curr->value][move];
+                que.emplace(new SearchNode(curr->depth + 1, coord));
+            }
+        }
+    }
+}
+
 void TableManager::generatePhase1PruningTables() {
     this->generatePhase1EdgePruningTable();
     this->generatePhase1CornerPruningTable();
@@ -595,4 +716,9 @@ void TableManager::generatePhase2PruningTables() {
     this->generatePhase2Bar2PruningTable();
     this->generatePhase2Bar3PruningTable();
     this->generatePhase2Bar4PruningTable();
+
+    std::cout<<"Starting side 1 prunning table\n";
+    this->generatePhase2Side1PruningTable();
+    std::cout<<"Starting side 2 prunning table\n";
+    this->generatePhase2Side2PruningTable();
 }

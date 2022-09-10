@@ -49,6 +49,11 @@ class StickerCube {
 		int getPhase2Bar3Coordinate();
 		int getPhase2Bar4Coordinate();
 
+		//int getPhase2Side1Coordinate(int** edges, int sizeEdges, int** corners, int sizeCorners);
+		int getPhase2Side1Coordinate();
+		int getPhase2Side2Coordinate();
+
+
 	private:
 
 		void applyTurn(
