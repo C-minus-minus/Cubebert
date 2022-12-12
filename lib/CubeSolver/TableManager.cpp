@@ -906,7 +906,7 @@ void TableManager::readPhase1MoveTablesFromFile() {
     phase1EdgeMoveTableFile.close();
 
     //  read phase1CornerMoveTable from file
-    std::ifstream phase1CornerMoveTableFile("tables/Phase1CornerMoveTableFile.txt");
+    std::ifstream phase1CornerMoveTableFile("tables/Phase1CornerMoveTable.txt");
     this->phase1CornerMoveTable = new int*[CubeConstants::PHASE_1_MAX_CORNER_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_1_MAX_CORNER_COORDINATE; i++) {
         this->phase1CornerMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
@@ -918,7 +918,7 @@ void TableManager::readPhase1MoveTablesFromFile() {
     phase1CornerMoveTableFile.close();
 
     //  read phase1UdsliceMoveTable from file
-    std::ifstream phase1UdsliceMoveTableFile("tables/Phase1UdsliceMoveTableFile.txt");
+    std::ifstream phase1UdsliceMoveTableFile("tables/Phase1UdsliceMoveTable.txt");
     this->phase1UdsliceMoveTable = new int*[CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE; i++) {
         this->phase1UdsliceMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
@@ -970,7 +970,7 @@ void TableManager::readPhase2MoveTablesFromFile() {
     phase2UdsliceMoveTableFile.close();
 
     //  read phase2Side1MoveTable from file
-    std::ifstream phase2Side1MoveTableFile("tables/Phase2Side1MoveTableTable.txt");
+    std::ifstream phase2Side1MoveTableFile("tables/Phase2Side1MoveTable.txt");
     this->phase2Side1MoveTable = new int*[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
         this->phase2Side1MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
@@ -982,7 +982,7 @@ void TableManager::readPhase2MoveTablesFromFile() {
     phase2Side1MoveTableFile.close();
 
     //  read phase2Side2MoveTable from file
-    std::ifstream phase2Side2MoveTableFile("tables/Phase2Side2MoveTableTable.txt");
+    std::ifstream phase2Side2MoveTableFile("tables/Phase2Side2MoveTable.txt");
     this->phase2Side2MoveTable = new int*[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
         this->phase2Side2MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
