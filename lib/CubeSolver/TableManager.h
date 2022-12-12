@@ -3,6 +3,7 @@
 #include <queue>
 #include <unordered_map>
 #include "StickerCube.h"
+#include <fstream>
 
 class TableManager {
 
@@ -11,6 +12,10 @@ class TableManager {
 		TableManager();
 
         static TableManager* getInstance();
+
+         //  FILE FLAGS
+        static const bool WRITE_TABLES_TO_FILE;
+        static const bool READ_TABLES_FROM_FILE;
 
         //  Phase 1 move tables
         int** phase1EdgeMoveTable;
@@ -49,6 +54,9 @@ class TableManager {
         int* phase2Side2PruningTable;
         
         static TableManager* instance;
+
+        void writeTablesToFile();
+        void readTablesFromFile();
     
     private:
 
@@ -83,6 +91,16 @@ class TableManager {
         void generatePhase2Bar4PruningTable();
         void generatePhase2Side1PruningTable();
         void generatePhase2Side2PruningTable();
+
+        void writePhase1MoveTablesToFile();
+        void writePhase2MoveTablesToFile();
+        void writePhase1PruningTablesToFile();
+        void writePhase2PruningTablesToFile();
+
+        void readPhase1MoveTablesFromFile();
+        void readPhase2MoveTablesFromFile();
+        void readPhase1PruningTablesFromFile();
+        void readPhase2PruningTablesFromFile();
 
         class SearchNode {
             public:

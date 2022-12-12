@@ -1,13 +1,24 @@
 #include "TableManager.h"
 
+//  FILE FLAGS
+const bool TableManager::WRITE_TABLES_TO_FILE = false;
+const bool TableManager::READ_TABLES_FROM_FILE = false;
+
 TableManager* TableManager::instance = NULL;
 
 TableManager::TableManager() {
 
-    this->generatePhase1MoveTables();
-    this->generatePhase1PruningTables();
-    this->generatePhase2MoveTables();
-    this->generatePhase2PruningTables();
+    if(READ_TABLES_FROM_FILE) {
+        this->readTablesFromFile();
+    } else {
+        this->generatePhase1MoveTables();
+        this->generatePhase1PruningTables();
+        this->generatePhase2MoveTables();
+        this->generatePhase2PruningTables();
+        if(WRITE_TABLES_TO_FILE) {
+            this->writeTablesToFile();
+        }
+    }
 }
 
 TableManager* TableManager::getInstance() {
@@ -712,13 +723,315 @@ void TableManager::generatePhase2PruningTables() {
     this->generatePhase2EdgePruningTable();
     this->generatePhase2CornerPruningTable();
     this->generatePhase2UDSlicePruningTable();
-    this->generatePhase2Bar1PruningTable();
-    this->generatePhase2Bar2PruningTable();
-    this->generatePhase2Bar3PruningTable();
-    this->generatePhase2Bar4PruningTable();
+    // this->generatePhase2Bar1PruningTable();
+    // this->generatePhase2Bar2PruningTable();
+    // this->generatePhase2Bar3PruningTable();
+    // this->generatePhase2Bar4PruningTable();
 
     std::cout<<"Starting side 1 prunning table\n";
     this->generatePhase2Side1PruningTable();
     std::cout<<"Starting side 2 prunning table\n";
     this->generatePhase2Side2PruningTable();
+}
+
+void TableManager::writeTablesToFile() {
+
+    this->writePhase1MoveTablesToFile();
+    this->writePhase2MoveTablesToFile();
+    this->writePhase1PruningTablesToFile();
+    this->writePhase2PruningTablesToFile();
+}
+
+void TableManager::readTablesFromFile() {
+
+    this->readPhase1MoveTablesFromFile();
+    this->readPhase2MoveTablesFromFile();
+    this->readPhase1PruningTablesFromFile();
+    this->readPhase2PruningTablesFromFile();
+}
+
+void TableManager::writePhase1MoveTablesToFile() {
+
+    //  write phase1EdgeMoveTable to file
+    std::ofstream phase1EdgeMoveTableFile("tables/Phase1EdgeMoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_EDGE_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
+            phase1EdgeMoveTableFile << phase1EdgeMoveTable[i][a] << "\n";
+        }
+    }
+    phase1EdgeMoveTableFile.close();
+
+    //  write phase1CornerMoveTable to file
+    std::ofstream phase1CornerMoveTableFile("tables/Phase1CornerMoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_CORNER_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
+            phase1CornerMoveTableFile << phase1CornerMoveTable[i][a] << "\n";
+        }
+    }
+    phase1CornerMoveTableFile.close();
+
+    //  write phase1UdsliceMoveTable to file
+    std::ofstream phase1UdsliceMoveTableFile("tables/Phase1UdsliceMoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
+            phase1UdsliceMoveTableFile << phase1UdsliceMoveTable[i][a] << "\n";
+        }
+    }
+    phase1UdsliceMoveTableFile.close();
+}
+
+void TableManager::writePhase2MoveTablesToFile() {
+
+    //  write phase2EdgeMoveTable to file
+    std::ofstream phase2EdgeMoveTableFile("tables/Phase2EdgeMoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_EDGE_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            phase2EdgeMoveTableFile << phase2EdgeMoveTable[i][a] << "\n";
+        }
+    }
+    phase2EdgeMoveTableFile.close();
+
+    //  write phase1CornerMoveTable to file
+    std::ofstream phase2CornerMoveTableFile("tables/Phase2CornerMoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            phase2CornerMoveTableFile << phase2CornerMoveTable[i][a] << "\n";
+        }
+    }
+    phase2CornerMoveTableFile.close();
+
+    //  write phase1UdsliceMoveTable to file
+    std::ofstream phase2UdsliceMoveTableFile("tables/Phase2UdsliceMoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            phase2UdsliceMoveTableFile << phase2UdsliceMoveTable[i][a] << "\n";
+        }
+    }
+    phase2UdsliceMoveTableFile.close();
+}
+
+void TableManager::writePhase1PruningTablesToFile() {
+    
+    //  write phase1EdgePrunningTable to file
+    std::ofstream phase1EdgePruningTableFile("tables/Phase1EdgePruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_EDGE_COORDINATE; i++) {
+        phase1EdgePruningTableFile << phase1EdgePruningTable[i] << "\n";
+    }
+    phase1EdgePruningTableFile.close();
+
+    //  write phase1CornerPrunningTable to file
+    std::ofstream phase1CornerPruningTableFile("tables/Phase1CornerPruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_CORNER_COORDINATE; i++) {
+        phase1CornerPruningTableFile << phase1CornerPruningTable[i] << "\n";
+    }
+    phase1CornerPruningTableFile.close();
+
+    //  write phase1UdslicePrunningTable to file
+    std::ofstream phase1UdslicePruningTableFile("tables/Phase1UdslicePruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE; i++) {
+        phase1UdslicePruningTableFile << phase1UdslicePruningTable[i] << "\n";
+    }
+    phase1UdslicePruningTableFile.close();
+}
+
+void TableManager::writePhase2PruningTablesToFile() {
+
+    //  write phase2EdgePrunningTable to file
+    std::ofstream phase2EdgePruningTableFile("tables/Phase2EdgePruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_EDGE_COORDINATE; i++) {
+        phase2EdgePruningTableFile << phase2EdgePruningTable[i] << "\n";
+    }
+    phase2EdgePruningTableFile.close();
+
+    //  write phase2CornerPrunningTable to file
+    std::ofstream phase2CornerPruningTableFile("tables/Phase2CornerPruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
+        phase2CornerPruningTableFile << phase2CornerPruningTable[i] << "\n";
+    }
+    phase2CornerPruningTableFile.close();
+
+    //  write phase2UdslicePrunningTable to file
+    std::ofstream phase2UdslicePruningTableFile("tables/Phase2UdslicePruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE; i++) {
+        phase2UdslicePruningTableFile << phase2UdslicePruningTable[i] << "\n";
+    }
+    phase2UdslicePruningTableFile.close();
+
+    //  write side 1 prunning table to file
+    std::ofstream side1PruningTableFile("tables/Side1PruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        side1PruningTableFile << phase2Side1PruningTable[i] << "\n";
+    }
+    side1PruningTableFile.close();
+
+    //  write side 2 prunning table to file
+    std::ofstream side2PruningTableFile("tables/Side2PruningTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        side2PruningTableFile << phase2Side2PruningTable[i] << "\n";
+    }
+    side2PruningTableFile.close();
+}
+
+void TableManager::readPhase1MoveTablesFromFile() {
+
+    //  read phase1EdgeMoveTable from file
+    std::ifstream phase1EdgeMoveTableFile("tables/Phase1EdgeMoveTable.txt");
+    std::string line;
+    this->phase1EdgeMoveTable = new int*[CubeConstants::PHASE_1_MAX_EDGE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_EDGE_COORDINATE; i++) {
+        this->phase1EdgeMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
+            std::getline(phase1EdgeMoveTableFile, line);
+            this->phase1EdgeMoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase1EdgeMoveTableFile.close();
+
+    //  read phase1CornerMoveTable from file
+    std::ifstream phase1CornerMoveTableFile("tables/Phase1CornerMoveTableFile.txt");
+    std::string line;
+    this->phase1CornerMoveTable = new int*[CubeConstants::PHASE_1_MAX_CORNER_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_CORNER_COORDINATE; i++) {
+        this->phase1CornerMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
+            std::getline(phase1CornerMoveTableFile, line);
+            this->phase1CornerMoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase1CornerMoveTableFile.close();
+
+    //  read phase1UdsliceMoveTable from file
+    std::ifstream phase1UdsliceMoveTableFile("tables/Phase1UdsliceMoveTableFile.txt");
+    std::string line;
+    this->phase1UdsliceMoveTable = new int*[CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE; i++) {
+        this->phase1UdsliceMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
+            std::getline(phase1UdsliceMoveTableFile, line);
+            this->phase1UdsliceMoveTable[i][a] = -1;
+        }
+    }
+    phase1UdsliceMoveTableFile.close();
+}
+
+void TableManager::readPhase2MoveTablesFromFile() {
+
+    //  read phase2EdgeMoveTable from file
+    std::ifstream phase2EdgeMoveTableFile("tables/Phase2EdgeMoveTable.txt");
+    std::string line;
+    this->phase2EdgeMoveTable = new int*[CubeConstants::PHASE_2_MAX_EDGE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_EDGE_COORDINATE; i++) {
+        this->phase2EdgeMoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            std::getline(phase2EdgeMoveTableFile, line);
+            this->phase2EdgeMoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase2EdgeMoveTableFile.close();
+
+    //  read phase2CornerMoveTable from file
+    std::ifstream phase2CornerMoveTableFile("tables/Phase2CornerMoveTable.txt");
+    std::string line;
+    this->phase2CornerMoveTable = new int*[CubeConstants::PHASE_2_MAX_CORNER_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
+        this->phase2CornerMoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            std::getline(phase2CornerMoveTableFile, line);
+            this->phase2CornerMoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase2CornerMoveTableFile.close();
+
+    //  read phase2UdsliceMoveTable from file
+    std::ifstream phase2UdsliceMoveTableFile("tables/Phase2UdsliceMoveTable.txt");
+    std::string line;
+    this->phase2UdsliceMoveTable = new int*[CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE; i++) {
+        this->phase2UdsliceMoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            std::getline(phase2UdsliceMoveTableFile, line);
+            this->phase2UdsliceMoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase2UdsliceMoveTableFile.close();
+}
+
+void TableManager::readPhase1PruningTablesFromFile() {
+
+    //  read phase1EdgePruningTable from file
+    std::ifstream phase1EdgePruningTableFile("tables/Phase1EdgePruningTable.txt");
+    std::string line;
+    this->phase1EdgePruningTable = new int[CubeConstants::PHASE_1_MAX_EDGE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_EDGE_COORDINATE; i++) {
+        std::getline(phase1EdgePruningTableFile, line);
+        this->phase1EdgePruningTable[i] = std::stoi(line);
+    }
+    phase1EdgePruningTableFile.close();
+
+    //  read phase1CornerPruningTable from file
+    std::ifstream phase1CornerPruningTableFile("tables/Phase1CornerPruningTable.txt");
+    this->phase1CornerPruningTable = new int[CubeConstants::PHASE_1_MAX_CORNER_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_CORNER_COORDINATE; i++) {
+        std::getline(phase1CornerPruningTableFile, line);
+        this->phase1CornerPruningTable[i] = std::stoi(line);
+    }
+    phase1CornerPruningTableFile.close();
+
+    //  read phase1UdslicePruningTable from file
+    std::ifstream phase1UdslicePruningTableFile("tables/Phase1UdslicePruningTable.txt");
+    this->phase1UdslicePruningTable = new int[CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE; i++) {
+        std::getline(phase1UdslicePruningTableFile, line);
+        this->phase1UdslicePruningTable[i] = std::stoi(line);
+    }
+    phase1UdslicePruningTableFile.close();
+}
+
+void TableManager::readPhase2PruningTablesFromFile() {
+
+    //  read phase2EdgePruningTable from file
+    std::ifstream phase2EdgePruningTableFile("tables/Phase2EdgePruningTable.txt");
+    std::string line;
+    this->phase2EdgePruningTable = new int[CubeConstants::PHASE_2_MAX_EDGE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_EDGE_COORDINATE; i++) {
+        std::getline(phase2EdgePruningTableFile, line);
+        this->phase2EdgePruningTable[i] = std::stoi(line);
+    }
+    phase2EdgePruningTableFile.close();
+
+    //  read phase2CornerPruningTable from file
+    std::ifstream phase2CornerPruningTableFile("tables/Phase2CornerPruningTable.txt");
+    this->phase2CornerPruningTable = new int[CubeConstants::PHASE_2_MAX_CORNER_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
+        std::getline(phase2CornerPruningTableFile, line);
+        this->phase2CornerPruningTable[i] = std::stoi(line);
+    }
+    phase2CornerPruningTableFile.close();
+
+    //  read phase2UdslicePruningTable from file
+    std::ifstream phase2UdslicePruningTableFile("tables/Phase2UdslicePruningTable.txt");
+    this->phase2UdslicePruningTable = new int[CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE; i++) {
+        std::getline(phase2UdslicePruningTableFile, line);
+        this->phase2UdslicePruningTable[i] = std::stoi(line);
+    }
+    phase2UdslicePruningTableFile.close();
+
+    //  read side 1 prunning table from file
+    std::ifstream side1PruningTableFile("tables/Side1PruningTable.txt");
+    this->phase2Side1PruningTable = new int[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        std::getline(side1PruningTableFile, line);
+        this->phase2Side1PruningTable[i] = std::stoi(line);
+    }
+    side1PruningTableFile.close();
+
+    //  read side 2 prunning table from file
+    std::ifstream side2PruningTableFile("tables/Side2PruningTable.txt");
+    this->phase2Side2PruningTable = new int[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        std::getline(side2PruningTableFile, line);
+        this->phase2Side2PruningTable[i] = std::stoi(line);
+    }
+    side2PruningTableFile.close();
 }
