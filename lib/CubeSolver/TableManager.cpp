@@ -924,7 +924,7 @@ void TableManager::readPhase1MoveTablesFromFile() {
         this->phase1UdsliceMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
         for (int a = 0; a < CubeConstants::PHASE_1_MOVE_COUNT; a++) {
             std::getline(phase1UdsliceMoveTableFile, line);
-            this->phase1UdsliceMoveTable[i][a] = -1;
+            this->phase1UdsliceMoveTable[i][a] = std::stoi(line);
         }
     }
     phase1UdsliceMoveTableFile.close();
