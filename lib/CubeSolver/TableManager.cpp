@@ -889,7 +889,6 @@ void TableManager::readPhase1MoveTablesFromFile() {
 
     //  read phase1CornerMoveTable from file
     std::ifstream phase1CornerMoveTableFile("tables/Phase1CornerMoveTableFile.txt");
-    std::string line;
     this->phase1CornerMoveTable = new int*[CubeConstants::PHASE_1_MAX_CORNER_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_1_MAX_CORNER_COORDINATE; i++) {
         this->phase1CornerMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
@@ -902,7 +901,6 @@ void TableManager::readPhase1MoveTablesFromFile() {
 
     //  read phase1UdsliceMoveTable from file
     std::ifstream phase1UdsliceMoveTableFile("tables/Phase1UdsliceMoveTableFile.txt");
-    std::string line;
     this->phase1UdsliceMoveTable = new int*[CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE; i++) {
         this->phase1UdsliceMoveTable[i] = new int[CubeConstants::PHASE_1_MOVE_COUNT];
@@ -931,7 +929,6 @@ void TableManager::readPhase2MoveTablesFromFile() {
 
     //  read phase2CornerMoveTable from file
     std::ifstream phase2CornerMoveTableFile("tables/Phase2CornerMoveTable.txt");
-    std::string line;
     this->phase2CornerMoveTable = new int*[CubeConstants::PHASE_2_MAX_CORNER_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_2_MAX_CORNER_COORDINATE; i++) {
         this->phase2CornerMoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
@@ -944,7 +941,6 @@ void TableManager::readPhase2MoveTablesFromFile() {
 
     //  read phase2UdsliceMoveTable from file
     std::ifstream phase2UdsliceMoveTableFile("tables/Phase2UdsliceMoveTable.txt");
-    std::string line;
     this->phase2UdsliceMoveTable = new int*[CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE];
     for (int i = 0; i < CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE; i++) {
         this->phase2UdsliceMoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
