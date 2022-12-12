@@ -808,6 +808,24 @@ void TableManager::writePhase2MoveTablesToFile() {
         }
     }
     phase2UdsliceMoveTableFile.close();
+
+    //  write phase2Side1MoveTable to file
+    std::ofstream phase2Side1MoveTableFile("tables/Phase2Side1MoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            phase2Side1MoveTableFile << phase2Side1MoveTable[i][a] << "\n";
+        }
+    }
+    phase2Side1MoveTableFile.close();
+
+    //  write phase2Side2MoveTable to file
+    std::ofstream phase2Side2MoveTableFile("tables/Phase2Side2MoveTable.txt");
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            phase2Side2MoveTableFile << phase2Side2MoveTable[i][a] << "\n";
+        }
+    }
+    phase2Side2MoveTableFile.close();
 }
 
 void TableManager::writePhase1PruningTablesToFile() {
@@ -950,6 +968,30 @@ void TableManager::readPhase2MoveTablesFromFile() {
         }
     }
     phase2UdsliceMoveTableFile.close();
+
+    //  read phase2Side1MoveTable from file
+    std::ifstream phase2Side1MoveTableFile("tables/Phase2Side1MoveTableTable.txt");
+    this->phase2Side1MoveTable = new int*[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        this->phase2Side1MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            std::getline(phase2Side1MoveTableFile, line);
+            this->phase2Side1MoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase2Side1MoveTableFile.close();
+
+    //  read phase2Side2MoveTable from file
+    std::ifstream phase2Side2MoveTableFile("tables/Phase2Side2MoveTableTable.txt");
+    this->phase2Side2MoveTable = new int*[CubeConstants::PHASE_2_MAX_SIDE_COORDINATE];
+    for (int i = 0; i < CubeConstants::PHASE_2_MAX_SIDE_COORDINATE; i++) {
+        this->phase2Side2MoveTable[i] = new int[CubeConstants::PHASE_2_MOVE_COUNT];
+        for (int a = 0; a < CubeConstants::PHASE_2_MOVE_COUNT; a++) {
+            std::getline(phase2Side2MoveTableFile, line);
+            this->phase2Side2MoveTable[i][a] = std::stoi(line);
+        }
+    }
+    phase2Side2MoveTableFile.close();
 }
 
 void TableManager::readPhase1PruningTablesFromFile() {
