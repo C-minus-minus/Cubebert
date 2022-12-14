@@ -31,12 +31,6 @@ class TableManager {
         int** phase2EdgeMoveTable;
         int** phase2CornerMoveTable;
         int** phase2UdsliceMoveTable;
-
-        //  experimental move tables
-        int** phase2Bar1MoveTable;
-        int** phase2Bar2MoveTable;
-        int** phase2Bar3MoveTable;
-        int** phase2Bar4MoveTable;
         int** phase2Side1MoveTable;
         int** phase2Side2MoveTable;
 
@@ -44,64 +38,56 @@ class TableManager {
         int* phase2EdgePruningTable;
         int* phase2CornerPruningTable;
         int* phase2UdslicePruningTable;
-
-        //  experimental prune tables
-        int* phase2Bar1PruningTable;
-        int* phase2Bar2PruningTable;
-        int* phase2Bar3PruningTable;
-        int* phase2Bar4PruningTable;
         int* phase2Side1PruningTable;
         int* phase2Side2PruningTable;
         
         static TableManager* instance;
-
-        void writeTablesToFile();
-        void readTablesFromFile();
     
     private:
 
+        //  Generation of phase 1 move tables
         void generatePhase1MoveTables();
         void generatePhase1EdgeMoveTable(StickerCube* cube, int coord, int depth);
         void generatePhase1CornerMoveTable(StickerCube* cube, int coord, int depth);
         void generatePhase1UdsliceMoveTable(StickerCube* cube, int coord, int depth);
 
+        //  Generation of phase 2 move tables
         void generatePhase2MoveTables();
         void generatePhase2EdgeMoveTable();
         void generatePhase2CornerMoveTable();
         void generatePhase2UdsliceMoveTable();
-        void generatePhase2Bar1MoveTable(StickerCube* cube, int coord, int depth);
-        void generatePhase2Bar2MoveTable(StickerCube* cube, int coord, int depth);
-        void generatePhase2Bar3MoveTable(StickerCube* cube, int coord, int depth);
-        void generatePhase2Bar4MoveTable(StickerCube* cube, int coord, int depth);
         void generatePhase2Side1MoveTable();
         void generatePhase2Side2MoveTable();
 
+        //  Generation of phase 1 prunning tables
         void generatePhase1PruningTables();
         void generatePhase1EdgePruningTable();
         void generatePhase1CornerPruningTable();
         void generatePhase1UDSlicePruningTable();
 
+        //  Generation of phase 2 prunning tables
         void generatePhase2PruningTables();
         void generatePhase2EdgePruningTable();
         void generatePhase2CornerPruningTable();
         void generatePhase2UDSlicePruningTable();
-        void generatePhase2Bar1PruningTable();
-        void generatePhase2Bar2PruningTable();
-        void generatePhase2Bar3PruningTable();
-        void generatePhase2Bar4PruningTable();
         void generatePhase2Side1PruningTable();
         void generatePhase2Side2PruningTable();
 
-        void writePhase1MoveTablesToFile();
-        void writePhase2MoveTablesToFile();
-        void writePhase1PruningTablesToFile();
-        void writePhase2PruningTablesToFile();
+        //  writes move and prunning tables to file
+        void writeTablesToFile();
+        void writeMoveTablesToFile();
+        void writeMoveTableToFile(std::string fileName, int** moveTable, int size, int moveCount);
+        void writePruningTablesToFile();
+        void writePruningTableToFile(std::string fileName, int* pruningTable, int size);
+        
+        //  reads move and prunning tables from file
+        void readTablesFromFile();
+        void readMoveTablesFromFile();
+        void readMoveTableFromFile(std::string fileName, int*** moveTable, int size, int moveCount);
+        void readPruningTablesFromFile();
+        void readPruningTableFromFile(std::string fileName, int** prunningTable, int size);
 
-        void readPhase1MoveTablesFromFile();
-        void readPhase2MoveTablesFromFile();
-        void readPhase1PruningTablesFromFile();
-        void readPhase2PruningTablesFromFile();
-
+        //  Used in BFS when generating prunning tables
         class SearchNode {
             public:
                 int depth, value;
