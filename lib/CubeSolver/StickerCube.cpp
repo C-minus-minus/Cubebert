@@ -449,7 +449,7 @@ int StickerCube::getPhase1CornerCoordinate() {
 * @return phase 1 UDSlice partial permutation coordinate [0, (12 choose 4)]
 */
 int StickerCube::getPhase1UdsliceCoordinate() {
-
+    
     int phase1UDSliceCoordinate = 0;
 
     int** cubeState = this->getCubeState();
@@ -621,4 +621,1102 @@ int StickerCube::getPhase2UdsliceCoordinate() {
     }
 
     return phase2UDSliceCoordinate;
+}
+
+/**
+* Calculates a number in the range [0, (2 * (8 choose 2)) ^ 2]
+* Each possible UDSlice partial permutation state maps to a unique ID
+* @param stickerCube - Cube on facelet level
+* @return phase 1 UDSlice partial permutation coordinate [0, (12 choose 4)]
+*/
+int StickerCube::getPhase2Bar1Coordinate() {
+    
+    int phase2Bar1EdgeCoordinate = 0;
+
+    int** cubeState = this->getCubeState();
+
+    //  EDGES
+
+    // const int stickerCount = 12;
+    // const int primarySticker[] = { 1, 5, 7, 3, 1, 5, 7, 3, 3, 5, 3, 5 };
+    // const int primaryStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3, 4, 4, 5, 5 };
+    const int stickerCount = 8;
+    const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    // const int secondarySticker[] = { 1, 1, 1, 1, 7, 7, 7, 7, 5, 3, 5, 3 };
+    // const int secondaryStickerSide[] = { 5, 2, 4, 1, 4, 2, 5, 1, 1, 2, 2, 1 };
+    const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int goalEdgeSticker1PrimarySide = 0;
+    const int goalEdgeSticker1SecondarySide = 4;
+
+    const int goalEdgeSticker2PrimarySide = 0;
+    const int goalEdgeSticker2SecondarySide = 2;
+
+    int firstFound = -1;
+    bool positions[8];
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+        int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+        if ( (goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2)
+            || (goalEdgeSticker1PrimarySide == sticker2 && goalEdgeSticker1SecondarySide == sticker1)) {
+            if(firstFound == -1) {
+                firstFound = 0;
+            }
+            positions[i] = true;
+        }
+        else if ( (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2)
+            || (goalEdgeSticker2PrimarySide == sticker2 && goalEdgeSticker2SecondarySide == sticker1)) {
+            if(firstFound == -1) {
+                firstFound = 1;
+            }
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar1EdgeCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar1EdgeCoordinate = phase2Bar1EdgeCoordinate + 28 * firstFound;
+
+    //  Corners
+    int phase2Bar1CornerCoordinate = 0;
+    const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    const int goalCornerSticker1PrimarySide = 0;
+    const int goalCornerSticker1SecondarySide = 4;
+    const int goalCornerSticker1ThirdSide = 1;
+
+    const int goalCornerSticker2PrimarySide = 0;
+    const int goalCornerSticker2SecondarySide = 2;
+    const int goalCornerSticker2ThirdSide = 4;
+
+    const int goalCornerSticker3PrimarySide = 0;
+    const int goalCornerSticker3SecondarySide = 5;
+    const int goalCornerSticker3ThirdSide = 2;
+    firstFound = -1;
+    int digit = 0;
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+        int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+        int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+        if(sticker1 == goalCornerSticker1PrimarySide 
+            && sticker2 == goalCornerSticker1SecondarySide
+            && sticker3 == goalCornerSticker1ThirdSide) {
+            if(digit == 0) {
+                firstFound = 0;
+                digit++;
+            }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker2PrimarySide 
+            && sticker2 == goalCornerSticker2SecondarySide
+            && sticker3 == goalCornerSticker2ThirdSide) {
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar1CornerCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar1CornerCoordinate = phase2Bar1CornerCoordinate + 56 * firstFound;
+
+    return phase2Bar1EdgeCoordinate * 336 + phase2Bar1CornerCoordinate ;
+}
+
+/**
+* Calculates a number in the range [0, (2 * (8 choose 2)) ^ 2]
+* Each possible UDSlice partial permutation state maps to a unique ID
+* @param stickerCube - Cube on facelet level
+* @return phase 1 UDSlice partial permutation coordinate [0, (12 choose 4)]
+*/
+int StickerCube::getPhase2Bar2Coordinate() {
+    
+    int phase2Bar2EdgeCoordinate = 0;
+
+    int** cubeState = this->getCubeState();
+
+    //  EDGES
+
+    // const int stickerCount = 12;
+    // const int primarySticker[] = { 1, 5, 7, 3, 1, 5, 7, 3, 3, 5, 3, 5 };
+    // const int primaryStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3, 4, 4, 5, 5 };
+    const int stickerCount = 8;
+    const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    // const int secondarySticker[] = { 1, 1, 1, 1, 7, 7, 7, 7, 5, 3, 5, 3 };
+    // const int secondaryStickerSide[] = { 5, 2, 4, 1, 4, 2, 5, 1, 1, 2, 2, 1 };
+    const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int goalEdgeSticker1PrimarySide = 0;
+    const int goalEdgeSticker1SecondarySide = 5;
+
+    const int goalEdgeSticker2PrimarySide = 0;
+    const int goalEdgeSticker2SecondarySide = 1;
+
+    int firstFound = -1;
+    bool positions[8];
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+        int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+        if ( (goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2)
+            || (goalEdgeSticker1PrimarySide == sticker2 && goalEdgeSticker1SecondarySide == sticker1)) {
+            if(firstFound == -1) {
+                firstFound = 0;
+            }
+            positions[i] = true;
+        }
+        else if ( (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2)
+            || (goalEdgeSticker2PrimarySide == sticker2 && goalEdgeSticker2SecondarySide == sticker1)) {
+            if(firstFound == -1) {
+                firstFound = 1;
+            }
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar2EdgeCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar2EdgeCoordinate = phase2Bar2EdgeCoordinate + 28 * firstFound;
+
+    //  Corners
+    int phase2Bar2CornerCoordinate = 0;
+    const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    const int goalCornerSticker1PrimarySide = 0;
+    const int goalCornerSticker1SecondarySide = 5;
+    const int goalCornerSticker1ThirdSide = 2;
+
+    const int goalCornerSticker2PrimarySide = 0;
+    const int goalCornerSticker2SecondarySide = 1;
+    const int goalCornerSticker2ThirdSide = 5;
+
+    const int goalCornerSticker3PrimarySide = 0;
+    const int goalCornerSticker3SecondarySide = 4;
+    const int goalCornerSticker3ThirdSide = 1;
+    firstFound = -1;
+    int digit = 0;
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+        int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+        int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+        if(sticker1 == goalCornerSticker1PrimarySide 
+            && sticker2 == goalCornerSticker1SecondarySide
+            && sticker3 == goalCornerSticker1ThirdSide) {
+            if(digit == 0) {
+                firstFound = 0;
+                digit++;
+            }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker2PrimarySide 
+            && sticker2 == goalCornerSticker2SecondarySide
+            && sticker3 == goalCornerSticker2ThirdSide) {
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar2CornerCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar2CornerCoordinate = phase2Bar2CornerCoordinate + 56 * firstFound;
+
+    return phase2Bar2EdgeCoordinate * 336 + phase2Bar2CornerCoordinate;
+}
+
+/**
+* Calculates a number in the range [0, (2 * (8 choose 2)) ^ 2]
+* Each possible UDSlice partial permutation state maps to a unique ID
+* @param stickerCube - Cube on facelet level
+* @return phase 1 UDSlice partial permutation coordinate [0, (12 choose 4)]
+*/
+int StickerCube::getPhase2Bar3Coordinate() {
+    
+    int phase2Bar3EdgeCoordinate = 0;
+
+    int** cubeState = this->getCubeState();
+
+    //  EDGES
+
+    // const int stickerCount = 12;
+    // const int primarySticker[] = { 1, 5, 7, 3, 1, 5, 7, 3, 3, 5, 3, 5 };
+    // const int primaryStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3, 4, 4, 5, 5 };
+    const int stickerCount = 8;
+    const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    // const int secondarySticker[] = { 1, 1, 1, 1, 7, 7, 7, 7, 5, 3, 5, 3 };
+    // const int secondaryStickerSide[] = { 5, 2, 4, 1, 4, 2, 5, 1, 1, 2, 2, 1 };
+    const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int goalEdgeSticker1PrimarySide = 3;
+    const int goalEdgeSticker1SecondarySide = 5;
+
+    const int goalEdgeSticker2PrimarySide = 3;
+    const int goalEdgeSticker2SecondarySide = 2;
+
+    int firstFound = -1;
+    bool positions[8];
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+        int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+        if ( (goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2)
+            || (goalEdgeSticker1PrimarySide == sticker2 && goalEdgeSticker1SecondarySide == sticker1)) {
+            if(firstFound == -1) {
+                firstFound = 0;
+            }
+            positions[i] = true;
+        }
+        else if ( (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2)
+            || (goalEdgeSticker2PrimarySide == sticker2 && goalEdgeSticker2SecondarySide == sticker1)) {
+            if(firstFound == -1) {
+                firstFound = 1;
+            }
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar3EdgeCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar3EdgeCoordinate = phase2Bar3EdgeCoordinate + 28 * firstFound;
+
+    //  Corners
+    int phase2Bar3CornerCoordinate = 0;
+    const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    const int goalCornerSticker1PrimarySide = 3;
+    const int goalCornerSticker1SecondarySide = 5;
+    const int goalCornerSticker1ThirdSide = 1;
+
+    const int goalCornerSticker2PrimarySide = 3;
+    const int goalCornerSticker2SecondarySide = 2;
+    const int goalCornerSticker2ThirdSide = 5;
+
+    const int goalCornerSticker3PrimarySide = 3;
+    const int goalCornerSticker3SecondarySide = 4;
+    const int goalCornerSticker3ThirdSide = 2;
+    firstFound = -1;
+    int digit = 0;
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+        int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+        int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+        if(sticker1 == goalCornerSticker1PrimarySide 
+            && sticker2 == goalCornerSticker1SecondarySide
+            && sticker3 == goalCornerSticker1ThirdSide) {
+            if(digit == 0) {
+                firstFound = 0;
+                digit++;
+            }
+            else if(digit == 1) {
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 0;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker2PrimarySide 
+            && sticker2 == goalCornerSticker2SecondarySide
+            && sticker3 == goalCornerSticker2ThirdSide) {
+            if(digit == 0) {
+                firstFound = 2;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 4) {
+                    firstFound = 5;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            if(digit == 0) {
+                firstFound = 4;
+                digit++;
+            }
+            else if(digit == 1) {
+                if(firstFound == 0) {
+                    firstFound = 1;
+                } else if(firstFound == 2) {
+                    firstFound = 3;
+                }
+                digit++;
+            }
+            // if(firstFound == -1) {
+            //     firstFound = 1;
+            // }
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar3CornerCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar3CornerCoordinate = phase2Bar3CornerCoordinate + 56 * firstFound;
+
+    return phase2Bar3EdgeCoordinate * 336 + phase2Bar3CornerCoordinate ;
+}
+
+/**
+* Calculates a number in the range [0, (2 * (8 choose 2)) ^ 2]
+* Each possible UDSlice partial permutation state maps to a unique ID
+* @param stickerCube - Cube on facelet level
+* @return phase 1 UDSlice partial permutation coordinate [0, (12 choose 4)]
+*/
+int StickerCube::getPhase2Bar4Coordinate() {
+    
+    // int phase2Bar4EdgeCoordinate = 0;
+
+    // int** cubeState = this->getCubeState();
+
+    // //  EDGES
+
+    // // const int stickerCount = 12;
+    // // const int primarySticker[] = { 1, 5, 7, 3, 1, 5, 7, 3, 3, 5, 3, 5 };
+    // // const int primaryStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3, 4, 4, 5, 5 };
+    // const int stickerCount = 8;
+    // const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    // const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    // // const int secondarySticker[] = { 1, 1, 1, 1, 7, 7, 7, 7, 5, 3, 5, 3 };
+    // // const int secondaryStickerSide[] = { 5, 2, 4, 1, 4, 2, 5, 1, 1, 2, 2, 1 };
+    // const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    // const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    // const int goalEdgeSticker1PrimarySide = 3;
+    // const int goalEdgeSticker1SecondarySide = 4;
+
+    // const int goalEdgeSticker2PrimarySide = 3;
+    // const int goalEdgeSticker2SecondarySide = 1;
+
+    // int firstFound = -1;
+    // bool positions[8];
+    // for (int i = 0; i < stickerCount; i++) {
+    //     positions[i] = 0;
+    // }
+    // for (int i = 0; i < stickerCount; i++) {
+
+    //     int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+    //     int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+    //     if ( (goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2)
+    //         || (goalEdgeSticker1PrimarySide == sticker2 && goalEdgeSticker1SecondarySide == sticker1)) {
+    //         if(firstFound == -1) {
+    //             firstFound = 0;
+    //         }
+    //         positions[i] = true;
+    //     }
+    //     else if ( (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2)
+    //         || (goalEdgeSticker2PrimarySide == sticker2 && goalEdgeSticker2SecondarySide == sticker1)) {
+    //         if(firstFound == -1) {
+    //             firstFound = 1;
+    //         }
+    //         positions[i] = true;
+    //     }
+    // }
+
+    // for (int n = 0, k = -1; n < stickerCount; n++) {
+    //     if (positions[n]) {
+    //         k++;
+    //     }
+    //     else if (k != -1) {
+    //         phase2Bar4EdgeCoordinate += CubeMath::choose(n, k);
+    //     }
+    // }
+    // phase2Bar4EdgeCoordinate = phase2Bar4EdgeCoordinate + 28 * firstFound;
+
+    // //  Corners
+    // int phase2Bar4CornerCoordinate = 0;
+    // const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    // const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    // const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    // const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    // const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    // const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    // const int goalCornerSticker1PrimarySide = 3;
+    // const int goalCornerSticker1SecondarySide = 4;
+    // const int goalCornerSticker1ThirdSide = 2;
+
+    // const int goalCornerSticker2PrimarySide = 3;
+    // const int goalCornerSticker2SecondarySide = 1;
+    // const int goalCornerSticker2ThirdSide = 4;
+
+    // const int goalCornerSticker3PrimarySide = 3;
+    // const int goalCornerSticker3SecondarySide = 5;
+    // const int goalCornerSticker3ThirdSide = 1;
+    // firstFound = -1;
+    // int digit = 0;
+    // for (int i = 0; i < stickerCount; i++) {
+    //     positions[i] = 0;
+    // }
+    // for (int i = 0; i < stickerCount; i++) {
+
+    //     int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+    //     int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+    //     int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+
+        
+    //     if(sticker1 == goalCornerSticker1PrimarySide 
+    //         && sticker2 == goalCornerSticker1SecondarySide
+    //         && sticker3 == goalCornerSticker1ThirdSide) {
+    //         if(digit == 0) {
+    //             firstFound = 0;
+    //             digit++;
+    //         }
+    //         else if(digit == 1) {
+    //             digit++;
+    //         }
+    //         // if(firstFound == -1) {
+    //         //     firstFound = 0;
+    //         // }
+    //         positions[i] = true;
+    //     }
+    //     else if(sticker1 == goalCornerSticker2PrimarySide 
+    //         && sticker2 == goalCornerSticker2SecondarySide
+    //         && sticker3 == goalCornerSticker2ThirdSide) {
+    //         if(digit == 0) {
+    //             firstFound = 2;
+    //             digit++;
+    //         }
+    //         else if(digit == 1) {
+    //             if(firstFound == 4) {
+    //                 firstFound = 5;
+    //             }
+    //             digit++;
+    //         }
+    //         // if(firstFound == -1) {
+    //         //     firstFound = 1;
+    //         // }
+    //         positions[i] = true;
+    //     }
+    //     else if(sticker1 == goalCornerSticker3PrimarySide 
+    //         && sticker2 == goalCornerSticker3SecondarySide
+    //         && sticker3 == goalCornerSticker3ThirdSide) {
+    //         if(digit == 0) {
+    //             firstFound = 4;
+    //             digit++;
+    //         }
+    //         else if(digit == 1) {
+    //             if(firstFound == 0) {
+    //                 firstFound = 1;
+    //             } else if(firstFound == 2) {
+    //                 firstFound = 3;
+    //             }
+    //             digit++;
+    //         }
+    //         // if(firstFound == -1) {
+    //         //     firstFound = 1;
+    //         // }
+    //         positions[i] = true;
+    //     }
+    // }
+
+    // for (int n = 0, k = -1; n < stickerCount; n++) {
+    //     if (positions[n]) {
+    //         k++;
+    //     }
+    //     else if (k != -1) {
+    //         phase2Bar4CornerCoordinate += CubeMath::choose(n, k);
+    //     }
+    // }
+    // phase2Bar4CornerCoordinate = phase2Bar4CornerCoordinate + 56 * firstFound;
+
+    // return phase2Bar4EdgeCoordinate * 336 + phase2Bar4CornerCoordinate;
+
+    int phase2Bar4EdgeCoordinate = 0;
+
+    int** cubeState = this->getCubeState();
+
+    //  EDGES
+    const int stickerCount = 8;
+    const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int goalEdgeSticker1PrimarySide = 3;
+    const int goalEdgeSticker1SecondarySide = 4;
+
+    const int goalEdgeSticker2PrimarySide = 3;
+    const int goalEdgeSticker2SecondarySide = 1;
+
+    int edgePermutation[2];
+    int permutationIndex = 0;
+    bool positions[8];
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+        int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+        if ( goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 0;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 1;
+            permutationIndex++;
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar4EdgeCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar4EdgeCoordinate = phase2Bar4EdgeCoordinate + 28 * CubeMath::permuationCoordinate(edgePermutation, 2);
+
+    //  Corners
+    int phase2Bar4CornerCoordinate = 0;
+    const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    const int goalCornerSticker1PrimarySide = 3;
+    const int goalCornerSticker1SecondarySide = 4;
+    const int goalCornerSticker1ThirdSide = 2;
+
+    const int goalCornerSticker2PrimarySide = 3;
+    const int goalCornerSticker2SecondarySide = 1;
+    const int goalCornerSticker2ThirdSide = 4;
+
+    const int goalCornerSticker3PrimarySide = 3;
+    const int goalCornerSticker3SecondarySide = 5;
+    const int goalCornerSticker3ThirdSide = 1;
+    
+    int cornerPermutation[3];
+    permutationIndex = 0;
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+        int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+        int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+
+        
+        if(sticker1 == goalCornerSticker1PrimarySide 
+            && sticker2 == goalCornerSticker1SecondarySide
+            && sticker3 == goalCornerSticker1ThirdSide) {
+            cornerPermutation[permutationIndex] = 0;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker2PrimarySide 
+            && sticker2 == goalCornerSticker2SecondarySide
+            && sticker3 == goalCornerSticker2ThirdSide) {
+            cornerPermutation[permutationIndex] = 1;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            cornerPermutation[permutationIndex] = 2;
+            permutationIndex++;
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar4CornerCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar4CornerCoordinate = phase2Bar4CornerCoordinate + 56 * CubeMath::permuationCoordinate(cornerPermutation, 3);
+
+    return phase2Bar4EdgeCoordinate * 336 + phase2Bar4CornerCoordinate;
+}
+
+int StickerCube::getPhase2Side1Coordinate() {
+
+    int phase2Bar4EdgeCoordinate = 0;
+
+    int** cubeState = this->getCubeState();
+
+    //  EDGES
+    const int stickerCount = 8;
+    const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int goalEdgeSticker1PrimarySide = 3;
+    const int goalEdgeSticker1SecondarySide = 4;
+
+    const int goalEdgeSticker2PrimarySide = 3;
+    const int goalEdgeSticker2SecondarySide = 1;
+
+    const int goalEdgeSticker3PrimarySide = 3;
+    const int goalEdgeSticker3SecondarySide = 5;
+
+    const int goalEdgeSticker4PrimarySide = 3;
+    const int goalEdgeSticker4SecondarySide = 2;
+
+    int edgePermutation[4];
+    int permutationIndex = 0;
+    bool positions[8];
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+        int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+        if ( goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 0;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 1;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker3PrimarySide == sticker1 && goalEdgeSticker3SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 2;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker4PrimarySide == sticker1 && goalEdgeSticker4SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 3;
+            permutationIndex++;
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar4EdgeCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar4EdgeCoordinate = phase2Bar4EdgeCoordinate + 70 * CubeMath::permuationCoordinate(edgePermutation, 4);
+
+    //  Corners
+    int phase2Bar4CornerCoordinate = 0;
+    const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    const int goalCornerSticker1PrimarySide = 3;
+    const int goalCornerSticker1SecondarySide = 4;
+    const int goalCornerSticker1ThirdSide = 2;
+
+    const int goalCornerSticker2PrimarySide = 3;
+    const int goalCornerSticker2SecondarySide = 1;
+    const int goalCornerSticker2ThirdSide = 4;
+
+    const int goalCornerSticker3PrimarySide = 3;
+    const int goalCornerSticker3SecondarySide = 5;
+    const int goalCornerSticker3ThirdSide = 1;
+
+    const int goalCornerSticker4PrimarySide = 3;
+    const int goalCornerSticker4SecondarySide = 2;
+    const int goalCornerSticker4ThirdSide = 5;
+    
+    int cornerPermutation[4];
+    permutationIndex = 0;
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+        int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+        int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+
+        
+        if(sticker1 == goalCornerSticker1PrimarySide 
+            && sticker2 == goalCornerSticker1SecondarySide
+            && sticker3 == goalCornerSticker1ThirdSide) {
+            cornerPermutation[permutationIndex] = 0;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker2PrimarySide 
+            && sticker2 == goalCornerSticker2SecondarySide
+            && sticker3 == goalCornerSticker2ThirdSide) {
+            cornerPermutation[permutationIndex] = 1;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            cornerPermutation[permutationIndex] = 2;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker4PrimarySide 
+            && sticker2 == goalCornerSticker4SecondarySide
+            && sticker3 == goalCornerSticker4ThirdSide) {
+            cornerPermutation[permutationIndex] = 3;
+            permutationIndex++;
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar4CornerCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar4CornerCoordinate = phase2Bar4CornerCoordinate + 70 * CubeMath::permuationCoordinate(cornerPermutation, 4);
+
+    return phase2Bar4EdgeCoordinate * 1680 + phase2Bar4CornerCoordinate;
+
+}
+
+int StickerCube::getPhase2Side2Coordinate() {
+    
+    int phase2Bar4EdgeCoordinate = 0;
+
+    int** cubeState = this->getCubeState();
+
+    //  EDGES
+    const int stickerCount = 8;
+    const int primaryEdgeSticker[] = { 7, 5, 1, 3, 7, 5, 1, 3 };
+    const int primaryEdgeStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryEdgeSticker[] = { 1, 1, 1, 1, 7, 7, 7, 7 };
+    const int secondaryEdgeStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int goalEdgeSticker1PrimarySide = 0;
+    const int goalEdgeSticker1SecondarySide = 4;
+
+    const int goalEdgeSticker2PrimarySide = 0;
+    const int goalEdgeSticker2SecondarySide = 2;
+
+    const int goalEdgeSticker3PrimarySide = 0;
+    const int goalEdgeSticker3SecondarySide = 5;
+
+    const int goalEdgeSticker4PrimarySide = 0;
+    const int goalEdgeSticker4SecondarySide = 1;
+
+    int edgePermutation[4];
+    int permutationIndex = 0;
+    bool positions[8];
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryEdgeStickerSide[i]][primaryEdgeSticker[i]];
+        int sticker2 = cubeState[secondaryEdgeStickerSide[i]][secondaryEdgeSticker[i]];
+
+        if ( goalEdgeSticker1PrimarySide == sticker1 && goalEdgeSticker1SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 0;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker2PrimarySide == sticker1 && goalEdgeSticker2SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 1;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker3PrimarySide == sticker1 && goalEdgeSticker3SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 2;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if (goalEdgeSticker4PrimarySide == sticker1 && goalEdgeSticker4SecondarySide == sticker2) {
+            edgePermutation[permutationIndex] = 3;
+            permutationIndex++;
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar4EdgeCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar4EdgeCoordinate = phase2Bar4EdgeCoordinate + 70 * CubeMath::permuationCoordinate(edgePermutation, 4);
+
+    //  Corners
+    int phase2Bar4CornerCoordinate = 0;
+    const int primaryCornerSticker[] = { 6, 8, 2, 0, 6, 8, 2, 0 };
+    const int primaryCornerStickerSide[] = { 0, 0, 0, 0, 3, 3, 3, 3 };
+
+    const int secondaryCornerSticker[] = { 0, 0, 0, 0, 8, 8, 8, 8 };
+    const int secondaryCornerStickerSide[] = { 4, 2, 5, 1, 5, 2, 4, 1 };
+
+    const int thirdCornerSticker[] = { 2, 2, 2, 2, 6, 6, 6, 6 };
+    const int thirdCornerStickerSide[] = { 1, 4, 2, 5, 1, 5, 2, 4 };
+
+    const int goalCornerSticker1PrimarySide = 0;
+    const int goalCornerSticker1SecondarySide = 4;
+    const int goalCornerSticker1ThirdSide = 1;
+
+    const int goalCornerSticker2PrimarySide = 0;
+    const int goalCornerSticker2SecondarySide = 2;
+    const int goalCornerSticker2ThirdSide = 4;
+
+    const int goalCornerSticker3PrimarySide = 0;
+    const int goalCornerSticker3SecondarySide = 5;
+    const int goalCornerSticker3ThirdSide = 2;
+
+    const int goalCornerSticker4PrimarySide = 0;
+    const int goalCornerSticker4SecondarySide = 1;
+    const int goalCornerSticker4ThirdSide = 5;
+    
+    int cornerPermutation[4];
+    permutationIndex = 0;
+    for (int i = 0; i < stickerCount; i++) {
+        positions[i] = 0;
+    }
+    for (int i = 0; i < stickerCount; i++) {
+
+        int sticker1 = cubeState[primaryCornerStickerSide[i]][primaryCornerSticker[i]];
+        int sticker2 = cubeState[secondaryCornerStickerSide[i]][secondaryCornerSticker[i]];
+        int sticker3 = cubeState[thirdCornerStickerSide[i]][thirdCornerSticker[i]];
+
+        
+        if(sticker1 == goalCornerSticker1PrimarySide 
+            && sticker2 == goalCornerSticker1SecondarySide
+            && sticker3 == goalCornerSticker1ThirdSide) {
+            cornerPermutation[permutationIndex] = 0;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker2PrimarySide 
+            && sticker2 == goalCornerSticker2SecondarySide
+            && sticker3 == goalCornerSticker2ThirdSide) {
+            cornerPermutation[permutationIndex] = 1;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker3PrimarySide 
+            && sticker2 == goalCornerSticker3SecondarySide
+            && sticker3 == goalCornerSticker3ThirdSide) {
+            cornerPermutation[permutationIndex] = 2;
+            permutationIndex++;
+            positions[i] = true;
+        }
+        else if(sticker1 == goalCornerSticker4PrimarySide 
+            && sticker2 == goalCornerSticker4SecondarySide
+            && sticker3 == goalCornerSticker4ThirdSide) {
+            cornerPermutation[permutationIndex] = 3;
+            permutationIndex++;
+            positions[i] = true;
+        }
+    }
+
+    for (int n = 0, k = -1; n < stickerCount; n++) {
+        if (positions[n]) {
+            k++;
+        }
+        else if (k != -1) {
+            phase2Bar4CornerCoordinate += CubeMath::choose(n, k);
+        }
+    }
+    phase2Bar4CornerCoordinate = phase2Bar4CornerCoordinate + 70 * CubeMath::permuationCoordinate(cornerPermutation, 4);
+
+    return phase2Bar4EdgeCoordinate * 1680 + phase2Bar4CornerCoordinate;
 }

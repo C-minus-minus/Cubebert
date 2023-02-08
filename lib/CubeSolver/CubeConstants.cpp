@@ -1,6 +1,6 @@
 #include "CubeConstants.h"
 
-//  Six sides on a cube with 9 stickers on each face
+//  Six faces on a cube with 9 stickers on each face
 const int CubeConstants::SIDE_COUNT = 6;
 const int CubeConstants::STICKER_COUNT = 9;
 
@@ -20,6 +20,8 @@ const int CubeConstants::PHASE_1_MAX_UDSLICE_COORDINATE = 495;
 const int CubeConstants::PHASE_2_MAX_EDGE_COORDINATE = 40320;
 const int CubeConstants::PHASE_2_MAX_CORNER_COORDINATE = 40320;
 const int CubeConstants::PHASE_2_MAX_UDSLICE_COORDINATE = 24;
+const int CubeConstants::PHASE_2_MAX_BAR1_COORDINATE = 18816;
+const int CubeConstants::PHASE_2_MAX_SIDE_COORDINATE = 2822400;
 
 const std::string CubeConstants::PHASE_1_MOVES[] = {
             "U", "U'", "U2",
@@ -71,7 +73,6 @@ const std::string CubeConstants::PHASE_2_ANTIMOVES[] = {
 };
 
 int** CubeConstants::EDGE_ORDER_TABLE = CubeConstants::createEdgeOrderTable();
-//const std::map<std::string, int> CubeConstants::EDGE_ORDER_TABLE = CubeConstants::createEdgeOrderTable();
 int** CubeConstants::createEdgeOrderTable() {
     
     const int firstSticker[] = { 0, 0, 0, 0, 3, 2, 3, 1, 1, 2, 2, 1 };
@@ -85,15 +86,6 @@ int** CubeConstants::createEdgeOrderTable() {
         table[secondSticker[i]][firstSticker[i]] = i;
     }
     return table;
-    /*
-    const int edgeCount = 12;
-    const std::string edge[] = {"05","02","04","01","34","23","35","13","14","24","25","15"};
-    std::map<std::string, int> edgeOrderTable;
-    for (int i = 0; i < edgeCount; i++) {
-        edgeOrderTable[edge[i]] = i;
-    }
-    return edgeOrderTable;*/
-
 }
 
 int*** CubeConstants::CORNER_ORDER_TABLE = CubeConstants::createCornerOrderTable();
@@ -119,13 +111,6 @@ int*** CubeConstants::createCornerOrderTable() {
         table[thirdSticker[i]][secondSticker[i]][firstSticker[i]] = i;
     }
     return table;
-    /*const int cornerCount = 8;
-    const std::string corner[] = { "015","025","024","014","134","234","235","135" };
-    std::map<std::string, int> cornerOrderTable;
-    for (int i = 0; i < cornerCount; i++) {
-        cornerOrderTable[corner[i]] = i;
-    }
-    return cornerOrderTable;*/
 }
 
 int** CubeConstants::UDSLICE_ORDER_TABLE = CubeConstants::createUdsliceOrderTable();
@@ -143,13 +128,4 @@ int** CubeConstants::createUdsliceOrderTable() {
         table[secondSticker[i]][firstSticker[i]] = i;
     }
     return table;
-    /*
-    const int cornerCount = 4;
-    const std::string corner[] = { "14","24","25","15" };
-    std::map<std::string, int> cornerOrderTable;
-    for (int i = 0; i < cornerCount; i++) {
-        cornerOrderTable[corner[i]] = i;
-    }
-    return cornerOrderTable;
-    */
 }
