@@ -7,19 +7,19 @@
  * Represents a list of instruction for Cubert to execute an algorithm on the rubiks cube
  */
 class ClawAlgorithm2 {
-    
     public:
-        //  List of instruction to execute algorithm
-        std::vector<Step> steps;
-
         ClawAlgorithm2(std::string algorithm);
+        std::vector<Step> getSteps();
 
     private:
         /**
-         * Generates a set of instruction for Cubert to solve given an algorithm in standard notation
+         * Generates a set of instruction for Cubert to use to solve a cube, given an algorithm in standard notation
          * @param algorithm - standard notation rubiks cube algorithm with U and D type turns excluded.
          */
         void generateAlgorithm(std::string algorithm);
+
+        //  List of instruction to execute algorithm
+        std::vector<Step> steps;
 };
 
 /**
