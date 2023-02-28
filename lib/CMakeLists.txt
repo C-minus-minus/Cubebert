@@ -1,4 +1,5 @@
 add_subdirectory(CubeSolver)
+add_subdirectory(ClawControl)
 
 include(CheckIncludeFile)
 
