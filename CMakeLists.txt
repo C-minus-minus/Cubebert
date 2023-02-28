@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(Cubebert VERSION 0.1)
+project(Cubebert VERSION 0.0.1)
 
 # set compiler flags
 # -Ofast - optimises as much as reasonably possible
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 
+if(EXISTS /home/pi)
+    set(IS_RPI true)
+endif()
+
+add_subdirectory(bin)
 add_subdirectory(lib)
 add_subdirectory(libext)
-add_subdirectory(bin)
 
 # Setup packaging information
 include(InstallRequiredSystemLibraries)

@@ -26,6 +26,8 @@ class CubeConstants {
         static const int PHASE_2_MAX_EDGE_COORDINATE;
         static const int PHASE_2_MAX_CORNER_COORDINATE;
         static const int PHASE_2_MAX_UDSLICE_COORDINATE;
+        static const int PHASE_2_MAX_BAR1_COORDINATE;
+        static const int PHASE_2_MAX_SIDE_COORDINATE;
 
         //  Legal moves for phase 1
         static const int PHASE_1_MOVE_COUNT;
