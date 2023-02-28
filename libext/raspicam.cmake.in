@@ -1,0 +1,10 @@
+SET(RASPICAM_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/libext/src/RaspicamDownload/src)
+SET(RASPICAM_LIB_DIR ${CMAKE_CURRENT_BINARY_DIR}/libext/src/RaspicamDownload-build/src)
+
+add_library(raspicam SHARED IMPORTED)
+set_target_properties(
+  raspicam
+  PROPERTIES
+  IMPORTED_LOCATION
+  ${RASPICAM_LIB_DIR}/libraspicam.so
+)

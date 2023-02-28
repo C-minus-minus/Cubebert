@@ -3,7 +3,7 @@
 
 #include "color_math.h"
 
-#include <raspicam/raspicam.h>
+#include "raspicam"
 
 class EstimatedCube {
 public:
