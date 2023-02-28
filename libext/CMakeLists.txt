@@ -1,5 +1,6 @@
 include(ExternalProject)
 
+if(EXISTS /usr/local/include/raspicam)
 ExternalProject_Add(
   raspicam
   PREFIX libext
@@ -17,3 +18,4 @@ ExternalProject_Add(
   BUILD_COMMAND cmake -E echo "Skipping build step."
   INSTALL_COMMAND cmake -E echo "Skipping install step."
 )
+endif()
