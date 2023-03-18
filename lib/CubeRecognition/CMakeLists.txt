@@ -2,8 +2,7 @@ set(LIB_NAME CubeRecognition)
 
 add_library(${LIB_NAME} estimated_cube.cpp color_math.cpp)
 
-include(../../libext/pico_sdk_import.cmake)
-include(../../libext/pico_extras_import.cmake)
+include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
 pico_sdk_init()
 
