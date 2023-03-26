@@ -11,8 +11,4 @@ target_link_libraries(
   ${LIB_NAME}
 )
 
-add_dependencies(
-  ${LIB_NAME}
-)
-
 install(TARGETS ${LIB_NAME} DESTINATION lib)

@@ -25,6 +25,4 @@ add_dependencies(
   raspicam
 )
 
-install(TARGETS CubeRecognition DESTINATION lib)
-
-pico_add_extra_outputs(CubeRecognition)
+install(TARGETS ${LIB_NAME} DESTINATION lib)
