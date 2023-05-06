@@ -1,11 +1,14 @@
-include(${CMAKE_SOURCE_DIR}/libext/raspicam.cmake.in)
-include_directories(${RASPICAM_INCLUDE_DIR})
-
 set(LIB_NAME CubeRecognition)
 
 add_library(${LIB_NAME} estimated_cube.cpp color_math.cpp)
 
-link_directories(${CMAKE_BINARY_DIR}/libext/raspicam/)
+include(FetchContent)
+FetchContent_Declare(
+  raspicam
+  GIT_REPOSITORY https://github.com/cedricve/raspicam.git
+  GIT_TAG        651c56418a5a594fc12f1414eb14f2b899729cb1
+)
+FetchContent_MakeAvailable(raspicam)
 
 target_include_directories(
   ${LIB_NAME}
@@ -14,7 +17,7 @@ target_include_directories(
 
 target_link_libraries(
   ${LIB_NAME}
-  PUBLIC raspicam
+  raspicam
 )
 
 add_dependencies(
@@ -22,4 +25,4 @@ add_dependencies(
   raspicam
 )
 
-install(TARGETS CubeRecognition DESTINATION lib)
+install(TARGETS ${LIB_NAME} DESTINATION lib)
