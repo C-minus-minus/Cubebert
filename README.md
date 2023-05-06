@@ -45,4 +45,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Inspiration, code snippets, etc.
 * [Herbet Kociemba](http://kociemba.org/cube.htm) Two Phase Algorithm
-* [Geoffrey Hunter @ mbedded.ninja](https://blog.mbedded.ninja/programming/operating-systems/linux/linux-serial-ports-using-c-cpp/) Serial Port Base Code
+* [Geoffrey Hunter @ mbedded.ninja](https://blog.mbedded.ninja/programming/operating-systems/linux/linux-serial-ports-using-c-cpp/) Serial Port Base Code under MIT License
