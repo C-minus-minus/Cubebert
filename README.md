@@ -13,6 +13,7 @@ Cubebert is a Rubiks Cube solving robot with one goal in mind, it's cool and bec
 - RPi Pico
 - CMake >= 3.10
 - [raspicam](https://github.com/rmsalinas/raspicam)
+- [cubebert-firmware](https://github.com/pdfkpb/cubebert-firmware)
 
 ### Building
 ```sh
