@@ -1,0 +1,77 @@
+# /bin/sh
+
+set -eou pipefail
+
+function i2c_write_string() {
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: i2c_write_string <bus> <addr> <string>"
+        return 1
+    fi
+    
+    local bus=$1
+    local addr=$2
+    local str=$3
+    local bytes=()
+    
+    for (( i=0; i<${#str}; i++ )); do
+        bytes+=$(printf "0x%x " "'${str:$i:1}")
+    done
+    
+    i2cset -y $bus $addr ${bytes[@]} i
+}
+
+function i2c_read_string() {
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: i2c_read_string <bus> <addr> <length>"
+        return 1
+    fi
+    
+    local bus=$1
+    local addr=$2
+    
+    i2cget -y $bus $addr w | xargs printf "%b"
+}
+
+function i2c_write_byte() {
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: i2c_write_byte <bus> <addr> <byte>"
+        return 1
+    fi
+    
+    local bus=$1
+    local addr=$2
+    local byte=$3
+    
+    i2cset -y $bus $addr $byte
+}
+
+function i2c_read_byte() {
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: i2c_read_byte <bus> <addr>"
+        return 1
+    fi
+    
+    local bus=$1
+    local addr=$2
+    
+    i2cget -y $bus $addr
+}
+
+case "$1" in
+    "write_string")
+        i2c_write_string ${@:2}
+        ;;
+    "read_string")
+        i2c_read_string ${@:2}
+        ;;
+    "write_byte")
+        i2c_write_byte ${@:2}
+        ;;
+    "read_byte")
+        i2c_read_byte ${@:2}
+        ;;
+    *)
+        echo "Invalid command"
+        exit 1
+        ;;
+esac
