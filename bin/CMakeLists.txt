@@ -1,7 +1,4 @@
-add_subdirectory(solver)
-add_subdirectory(fipctest)
+# add_subdirectory(cubebert)
 # add_subdirectory(eyes)
-
-if(IS_RPI)
-  add_subdirectory(firmware)
-endif()
+add_subdirectory(fipctest)
+add_subdirectory(solver)
