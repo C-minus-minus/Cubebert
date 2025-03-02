@@ -7,7 +7,7 @@ project(Cubebert VERSION 0.0.1)
 # -Ofast - optimises as much as reasonably possible
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 
-if(EXISTS /home/pi)
+if(DEFINED ENV{ARCH} AND ENV{ARCH} STREQUAL "aarch64")
     set(IS_RPI true)
 endif()
 

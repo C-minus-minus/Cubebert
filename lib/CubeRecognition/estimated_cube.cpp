@@ -5,66 +5,90 @@
 #include <iostream>
 #include <math.h>
 
-#define IMG_DIM 1920
+#define WIDTH 640
+#define HEIGHT 640
 
-EstimatedCube::EstimatedCube() {
-    m_camera = new raspicam::RaspiCam();
-    m_camera->setCaptureSize(IMG_DIM, IMG_DIM);
-    m_camera->setRotation(90);
-    m_camera->setISO(100);
-    m_camera->setBrightness(44);
-    m_camera->setSaturation(-10);
-    m_camera->setAWB(raspicam::RASPICAM_AWB::RASPICAM_AWB_SUNLIGHT);
+EstimatedCube::EstimatedCube() : LibcameraApp() {
+    // Initialize camera manager
+    if (!camera_manager_) {
+        std::cerr << "Failed to initialize camera manager" << std::endl;
+        return;
+    }
+
+    // Configure camera settings through options
+    Options options;
+    options.width = WIDTH;
+    options.height = HEIGHT;
+    options.iso = 100;
+    options.brightness = 0.44;  // Scale 0-1.0
+    options.rotation = 90;
+    
+    // Set camera configuration
+    configure(options);
 }
 
 EstimatedCube::~EstimatedCube() {
     endCapture();
-    delete m_camera;
 }
 
 void EstimatedCube::beginCapture() {
-    m_camera->setFormat(raspicam::RASPICAM_FORMAT_RGB);
-    m_camera->open();
+    // Start the camera
+    if (start()) {
+        std::cerr << "Failed to start camera" << std::endl;
+        return;
+    }
 }
 
 void EstimatedCube::endCapture() {
-    m_camera->release();
+    stop();
 }
 
 void EstimatedCube::captureSide(int side) {
-    m_camera->grab();
+    // Capture a frame
+    CompletedRequestPtr result = wait_for_request();
+    if (!result) {
+        std::cerr << "Failed to capture image" << std::endl;
+        return;
+    }
 
-    int subPixelCount = m_camera->getImageTypeSize(raspicam::RASPICAM_FORMAT_RGB);
-    int pixelCount = subPixelCount / 3;
-    int width = m_camera->getWidth();
-    int height = m_camera->getHeight();
+    // Get the RGB buffer
+    const Stream *stream = app_.GetMainStream();
+    const StreamInfo &info = app_.GetStreamInfo(stream);
+    libcamera::Span<uint8_t> buffer = result->buffers[stream].data();
 
-    unsigned char *data = new unsigned char[subPixelCount];
-    m_camera->retrieve(data);
+    // Convert buffer to RGB format
+    unsigned char *data = new unsigned char[WIDTH * HEIGHT * 3];
+    for (int y = 0; y < HEIGHT; ++y) {
+        for (int x = 0; x < WIDTH; ++x) {
+            int yIndex = y * info.width + x;
+            int uIndex = (y / 2) * (info.width / 2) + (x / 2);
+            int vIndex = (y / 2) * (info.width / 2) + (x / 2);
 
-    std::string filepath;
-    filepath += "cube";
-    filepath += std::to_string(side);
-    filepath += ".ppm";
+            int Y = buffer[yIndex];
+            int U = buffer[info.planes[0].length + uIndex] - 128;
+            int V = buffer[info.planes[0].length + info.planes[1].length + vIndex] - 128;
+
+            int R = Y + 1.402 * V;
+            int G = Y - 0.344136 * U - 0.714136 * V;
+            int B = Y + 1.772 * U;
+
+            data[(y * IMG_DIM + x) * 3]     = std::clamp(R, 0, 255);
+            data[(y * IMG_DIM + x) * 3 + 1] = std::clamp(G, 0, 255);
+            data[(y * IMG_DIM + x) * 3 + 2] = std::clamp(B, 0, 255);
+        }
+    }
+
+    // Save image and process colors
+    std::string filepath = "cube" + std::to_string(side) + ".ppm";
     std::ofstream outFile(filepath, std::ios::binary);
-    outFile << "P6\n" << width <<" "<< height << " 255\n";
-    outFile.write((char*)data, subPixelCount);
+    outFile << "P6\n" << IMG_DIM << " " << IMG_DIM << " 255\n";
+    outFile.write((char*)data, IMG_DIM * IMG_DIM * 3);
     outFile.close();
 
+    // Process the image data similarly to before
+    int pixelCount = IMG_DIM * IMG_DIM;
     int pixelsProcessed = 0;
     ColorMath::RGB **pixel1D = new ColorMath::RGB*[pixelCount];
-    for(int i=0; pixelsProcessed < pixelCount; i += 3) {
-        ColorMath::RGB *pixel = new ColorMath::RGB;
-        pixel->red = data[i];
-        pixel->green = data[i+1];
-        pixel->blue = data[i+2];
-
-        pixel1D[pixelsProcessed] = pixel;
-        ++pixelsProcessed;
-    }
-    // We're done with our RAW values
-    delete data;
-
     ColorMath::RGB ***imgObj = new ColorMath::RGB**[height];
     for(int y=0; y<height; ++y) {
         imgObj[y] = new ColorMath::RGB*[width];
