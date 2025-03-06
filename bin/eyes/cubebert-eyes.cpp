@@ -1,6 +1,6 @@
-#include "estimated_cube.h"
-
 // Solver
+#include "process_cube.h"
+
 #include "algorithm_optimiser.h"
 #include "CubeSearch.h"
 #include "StickerCube.h"
@@ -9,23 +9,18 @@
 #include <iostream>
 
 int main(int argc, char* argv[]) {
-    EstimatedCube ec;
-    ec.beginCapture();
-
+    ProcessCube pc;
     std::cout << "Starting Snapping\r\n";
 
     int n;
-
     std::cout << "Enter a number between every picture\n";
     for(int i=0; i<6; ++i) {
         std::cout << "Please: ";
         std::cin >> n;
-        ec.captureSide(i);
+        pc.captureSide(i);
     }
 
-    ec.endCapture();
-
-    int **zeCube = ec.zeCube();
+    int **zeCube = pc.zeCube();
     for(int side=0; side<6; ++side) {
         std::cout << "\n\nSide: " << side << "\n";
         for(int y=0; y<3; ++y) {
