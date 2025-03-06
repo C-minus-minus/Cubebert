@@ -8,6 +8,11 @@
 #define WIDTH 1920
 #define HEIGHT 1920
 
+#define SUBSAMPLE_WIDTH 64
+#define SUBSAMPLE_HEIGHT 64
+#define SUBSAMPLE_OFFSET_X 960
+#define SUBSAMPLE_OFFSET_Y 960
+
 ProcessCube::ProcessCube() {
 }
 
@@ -79,7 +84,11 @@ void ProcessCube::captureSide(int side) {
     std::cout << std::fixed << std::setprecision(4);
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
-            ColorMath::CIELAB* sampleColor = ColorMath::subsample(imgObj, (x * 960) - (64 * x), (y * 960) - (64 * y), 128, 128);
+            ColorMath::CIELAB* sampleColor = ColorMath::subsample(
+                imgObj,
+                (x * SUBSAMPLE_OFFSET_X) - (SUBSAMPLE_WIDTH * x),
+                (y * SUBSAMPLE_OFFSET_Y) - (SUBSAMPLE_HEIGHT * y),
+                128, 128);
             m_cieCubeSides[side][x+(y*3)] = sampleColor;
             
             std::cout << '(' << sampleColor->lStar << ", " << sampleColor->aStar << ", " << sampleColor->bStar << ")\t";
