@@ -1,8 +1,10 @@
-#pragma once
+#ifndef CUBE_SEARCH_H
+#define CUBE_SEARCH_H
+
 #include <algorithm>
-#include "StickerCube.h"
-#include "CubeMath.h"
-#include "TableManager.h"
+#include "sticker_cube.h"
+#include "cube_math.h"
+#include "table_manager.h"
 
 /**
  * Cube Search handles the actual solving of the rubik's cube.
@@ -102,3 +104,4 @@ class CubeSearch {
 
 };
 
+#endif // CUBE_SEARCH_H

@@ -1,9 +1,9 @@
 #include <iostream>
 #include <sstream>
 #include <chrono>
-#include "CubeMath.h"
-#include "TableManager.h"
-#include "CubeSearch.h"
+#include "cube_math.h"
+#include "table_manager.h"
+#include "cube_search.h"
 #include "algorithm_optimiser.h"
 
 using namespace std::chrono;

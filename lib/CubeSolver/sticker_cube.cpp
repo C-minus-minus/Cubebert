@@ -1,4 +1,4 @@
-#include "StickerCube.h"
+#include "sticker_cube.h"
 
 StickerCube::StickerCube() {
 

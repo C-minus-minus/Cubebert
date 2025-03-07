@@ -1,9 +1,12 @@
+#ifndef CUBE_SOLVER_ALGORITHM_OPTIMISER_H
+#define CUBE_SOLVER_ALGORITHM_OPTIMISER_H
+
 #include <iostream>
 #include <sstream>
 #include <unordered_map>
 #include <queue>
-#include "TableManager.h"
-#include "CubeSearch.h"
+#include "table_manager.h"
+#include "cube_search.h"
 
 std::vector<std::string> stringToVector(std::string solution) {
     std::vector<std::string> list;
@@ -104,3 +107,5 @@ std::string convertTo4Arm(std::string solution) {
     }
     return "";
 }
+
+#endif // CUBE_SOLVER_ALGORITHM_OPTIMISER_H
