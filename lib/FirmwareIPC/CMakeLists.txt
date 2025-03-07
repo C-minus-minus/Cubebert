@@ -1,6 +1,6 @@
 set(LIB_NAME FirmwareIPC)
 
-add_library(${LIB_NAME} i2c.c)
+add_library(${LIB_NAME} fipc.cpp i2c.c)
 
 target_include_directories(
     ${LIB_NAME}

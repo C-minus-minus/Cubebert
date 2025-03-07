@@ -1,68 +1,68 @@
-#include "estimated_cube.h"
+#include "cubebert.h"
 
-// Solver
 #include "algorithm_optimiser.h"
 #include "CubeSearch.h"
+#include "process_cube.h"
 #include "StickerCube.h"
-#include "TableManager.h"
 
 #include <iostream>
 
-int main(int argc, char* argv[]) {
-    EstimatedCube ec;
-    ec.beginCapture();
+Cubebert::Cubebert() {
+    std::cout << "Initializing Cubebert\n";
 
-    std::cout << "Starting Snapping\r\n";
+    std::cout << "Initializing Firmware\n";
+    m_fipc = new FIPC();
+    m_fipc->home();
 
-    int n;
+    std::cout << "Initializing TableManager\n";
+    m_tableManager = TableManager::getInstance();
 
-    std::cout << "Enter a number between every picture\n";
-    for(int i=0; i<6; ++i) {
-        std::cout << "Please: ";
-        std::cin >> n;
-        ec.captureSide(i);
-    }
-
-    ec.endCapture();
-
-    int **zeCube = ec.zeCube();
-    for(int side=0; side<6; ++side) {
-        std::cout << "\n\nSide: " << side << "\n";
-        for(int y=0; y<3; ++y) {
-            for(int x=0; x<3; ++x) {
-                std::cout << zeCube[side][x + (y * 3)];
-            }
-            std::cout << "\n";
-        }
-    }
-
-    std::cout << "Enter -1 if this cube detection is invalid: ";
-    std::cin >> n;
-
-    if(n != -1) {
-
-    StickerCube *scrambleCube = new StickerCube(zeCube);
-
-    TableManager* tableManager = TableManager::getInstance();
-
-    //  solve phase 1
-    std::cout << "\nStarting phase 1...\n";
-    std::string phase1Solution = CubeSearch::getPhase1Solution(scrambleCube);
-    //std::cout << phase1Solution << "\n";
-
-    //  apply phase 1  solution to scrambled cube
-    scrambleCube->applyScramble(phase1Solution);
-
-    //  solve phase 2
-    std::cout << "Starting phase 2...\n\n";
-    std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
-
-    //  output complete solution
-    std::cout << "Solution " << phase1Solution << phase2Solution << "\n";
-
-    //  output efficient rotations
-    std::cout << "\nSolution With Optimal Rotations " << convertTo4Arm(phase1Solution + phase2Solution) << "\n";
+    std::cout << "Initializing ProcessCube\n";
+    m_processCube = new ProcessCube();
 }
 
-    return 0;
+Cubebert::~Cubebert() {
+    delete m_fipc;
+    delete m_tableManager;
+    delete m_processCube;
+}
+
+void Cubebert::solve() {
+    std::cout << "Starting Snapping\n";
+    m_processCube->captureSide(0);
+    m_fipc->rotate("X");
+    m_processCube->captureSide(1);
+    m_fipc->rotate("X");
+    m_processCube->captureSide(2);
+    m_fipc->rotate("X");
+    m_processCube->captureSide(3);
+    m_fipc->rotate("X Z");
+    m_processCube->captureSide(4);
+    m_fipc->rotate("Z2");
+    m_processCube->captureSide(5);
+    m_fipc->rotate("Z");
+
+    int **zeCube = m_processCube->zeCube();
+
+    StickerCube *scrambleCube = new StickerCube(zeCube);
+    
+    std::cout << "\nStarting phase 1...\n";
+    std::string phase1Solution = CubeSearch::getPhase1Solution(scrambleCube);
+    scrambleCube->applyScramble(phase1Solution);
+
+    std::cout << "Starting phase 2...\n";
+    std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
+
+    std::cout << "Solution: " << phase1Solution << phase2Solution << "\n";
+
+    std::string optimalRotations = convertTo4Arm(phase1Solution + phase2Solution);
+    std::cout << "Solution for Bot: " << optimalRotations << "\n";
+
+    m_fipc->rotate(phase1Solution + phase2Solution);
+}
+
+int main(int argc, char* argv[]) {
+    Cubebert cubebert;
+
+    cubebert.solve();
 }

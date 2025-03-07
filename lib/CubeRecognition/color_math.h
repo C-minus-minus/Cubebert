@@ -11,12 +11,6 @@ public:
         unsigned char blue;
     };
 
-    struct XYZ {
-        double X;
-        double Y;
-        double Z;
-    };
-
     struct CIELAB {
         double lStar;
         double aStar;
@@ -28,6 +22,12 @@ public:
     static CIELAB* subsample(RGB ***data, int initX, int initY, int subsampleWidth=64, int subsampleHeight=64);
 
 private:
+    struct XYZ {
+        double X;
+        double Y;
+        double Z;
+    };
+    
     static XYZ* rgb2xyz(RGB* pixel);
     static CIELAB* xyz2cielab(XYZ* datum, XYZ ref);
 };
