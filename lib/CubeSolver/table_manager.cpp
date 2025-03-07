@@ -1,5 +1,7 @@
 #include "table_manager.h"
 
+#include <filesystem>
+
 void TableManager::generateTables() {
     this->generatePhase1MoveTables();
     this->generatePhase1PruningTables();
@@ -408,6 +410,11 @@ void TableManager::generatePhase2PruningTables() {
 }
 
 void TableManager::writeTablesToFile() {
+    std::filesystem::path tablesDir("tables");
+    if (!std::filesystem::exists(tablesDir)) {
+        std::cout << "Creating tables directory\n";
+        std::filesystem::create_directories(tablesDir);
+    }
 
     this->writeMoveTablesToFile();
     this->writePruningTablesToFile();
@@ -447,7 +454,7 @@ void TableManager::writeMoveTablesToFile() {
 }
 
 void TableManager::writeMoveTableToFile(std::string fileName, int** moveTable, int size, int moveCount) {
-    
+    std::cout << "Writing move table to file: " << fileName << "\n";
     //  write move table to file
     std::ofstream moveTableFile(fileName);
     for (int i = 0; i < size; i++) {

@@ -15,8 +15,8 @@ Cubebert::Cubebert() {
 
     std::cout << "Initializing TableManager\n";
     m_tableManager = new TableManager();
-    m_tableManager->generateTables();
-    
+    m_tableManager->readTablesFromFile();
+
     m_cubeSearch = new CubeSearch(m_tableManager);
 
     std::cout << "Initializing ProcessCube\n";
