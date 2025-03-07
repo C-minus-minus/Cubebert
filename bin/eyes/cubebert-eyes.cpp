@@ -2,9 +2,9 @@
 #include "process_cube.h"
 
 #include "algorithm_optimiser.h"
-#include "CubeSearch.h"
-#include "StickerCube.h"
-#include "TableManager.h"
+#include "cube_search.h"
+#include "sticker_cube.h"
+#include "table_manager.h"
 
 #include <iostream>
 
