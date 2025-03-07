@@ -1,31 +1,12 @@
 #include "table_manager.h"
 
-//  FILE FLAGS
-const bool TableManager::WRITE_TABLES_TO_FILE = false;
-const bool TableManager::READ_TABLES_FROM_FILE = false;
+#include <filesystem>
 
-TableManager* TableManager::instance = NULL;
-
-TableManager::TableManager() {
-
-    if(READ_TABLES_FROM_FILE) {
-        this->readTablesFromFile();
-    } else {
-        this->generatePhase1MoveTables();
-        this->generatePhase1PruningTables();
-        this->generatePhase2MoveTables();
-        this->generatePhase2PruningTables();
-        if(WRITE_TABLES_TO_FILE) {
-            this->writeTablesToFile();
-        }
-    }
-}
-
-TableManager* TableManager::getInstance() {
-    if (TableManager::instance == NULL) {
-        TableManager::instance = new TableManager();
-    }
-    return TableManager::instance;
+void TableManager::generateTables() {
+    this->generatePhase1MoveTables();
+    this->generatePhase1PruningTables();
+    this->generatePhase2MoveTables();
+    this->generatePhase2PruningTables();
 }
 
 void TableManager::generatePhase1EdgeMoveTable(StickerCube* cube, int coord, int depth) {
@@ -429,6 +410,11 @@ void TableManager::generatePhase2PruningTables() {
 }
 
 void TableManager::writeTablesToFile() {
+    std::filesystem::path tablesDir("tables");
+    if (!std::filesystem::exists(tablesDir)) {
+        std::cout << "Creating tables directory\n";
+        std::filesystem::create_directories(tablesDir);
+    }
 
     this->writeMoveTablesToFile();
     this->writePruningTablesToFile();
@@ -468,7 +454,7 @@ void TableManager::writeMoveTablesToFile() {
 }
 
 void TableManager::writeMoveTableToFile(std::string fileName, int** moveTable, int size, int moveCount) {
-    
+    std::cout << "Writing move table to file: " << fileName << "\n";
     //  write move table to file
     std::ofstream moveTableFile(fileName);
     for (int i = 0; i < size; i++) {

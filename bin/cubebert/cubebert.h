@@ -4,6 +4,7 @@
 #include "fipc.h"
 #include "process_cube.h"
 #include "table_manager.h"
+#include "cube_search.h"
 
 class Cubebert {
 public:
@@ -15,6 +16,7 @@ public:
 private:
     FIPC* m_fipc;
     TableManager* m_tableManager;
+    CubeSearch* m_cubeSearch;
     ProcessCube* m_processCube;
 };
 

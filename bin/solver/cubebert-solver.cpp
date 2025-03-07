@@ -15,8 +15,12 @@ int main() {
 
     //  Create look up tables to enable very fast searching of the state graph
     std::cout << "Generating lookup tables...\n\n";
-    TableManager* tableManager = TableManager::getInstance();
+    TableManager* tableManager = new TableManager();
+    tableManager->generateTables();
+    
     std::cout<<"generation complete\n";
+
+    CubeSearch* cubeSearch = new CubeSearch(tableManager);
 
     while(true) {
         //  Get scramble from user
@@ -30,7 +34,7 @@ int main() {
 
         //  solve phase 1
         std::cout << "\nStarting phase 1...\n";
-        std::string phase1Solution = CubeSearch::getPhase1Solution(scrambleCube);
+        std::string phase1Solution = cubeSearch->getPhase1Solution(scrambleCube);
 
         //  apply phase 1  solution to scrambled cube
         scrambleCube->applyScramble(phase1Solution);
@@ -48,7 +52,7 @@ int main() {
         //  solve phase 2
         std::cout << "Starting phase 2F...\n";
         auto start = high_resolution_clock::now();
-        std::string phase2Solution = CubeSearch::getPhase2SolutionF(scrambleCubeF);
+        std::string phase2Solution = cubeSearch->getPhase2SolutionF(scrambleCubeF);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         std::cout << "Time taken by functionF: "<< duration.count() << " microseconds\n";

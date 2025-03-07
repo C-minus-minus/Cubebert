@@ -1,5 +1,9 @@
 #include "cube_search.h"
 
+CubeSearch::CubeSearch(TableManager* tableManager) {
+    m_tableManager = tableManager;
+}
+
 /**
 * Uses iterative deepening A* to find an algorithm to solve phase 1
 * @param scrambledCube - scrambled cube you want to solve
@@ -18,7 +22,7 @@ std::string CubeSearch::getPhase1Solution(StickerCube* scrambledCube) {
 
         //  search for solution at this depth
         if(CubeSearch::phase1IterativeDeepeningAStar(
-            TableManager::getInstance(),
+            m_tableManager,
             phase1EdgeCoordinate,
             phase1CornerCoordinate,
             phase1UDSliceCoordinate,
@@ -100,7 +104,7 @@ std::string CubeSearch::getPhase2Solution(StickerCube* scrambledCube) {
         //std::cout<<"Curr Phase 2 Depth: "<<goalDepth<<"\n";
         //  search for solution at this depth
         if(CubeSearch::phase2IterativeDeepeningAStar(
-            TableManager::getInstance(),
+            m_tableManager,
             phase2EdgeCoordinate,
             phase2CornerCoordinate,
             phase2UDSliceCoordinate,
@@ -186,7 +190,7 @@ std::string CubeSearch::getPhase2SolutionF(StickerCube* scrambledCube) {
 
         //  search for solution at this depth
         if(CubeSearch::phase2IterativeDeepeningAStarF(
-            TableManager::getInstance(),
+            m_tableManager,
             phase2EdgeCoordinate,
             phase2CornerCoordinate,
             phase2UDSliceCoordinate,

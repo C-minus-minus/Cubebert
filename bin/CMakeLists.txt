@@ -5,3 +5,4 @@ endif()
 
 add_subdirectory(fipctest)
 add_subdirectory(solver)
+add_subdirectory(preprocessor)
