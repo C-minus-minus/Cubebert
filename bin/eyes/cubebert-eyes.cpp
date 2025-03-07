@@ -38,11 +38,12 @@ int main(int argc, char* argv[]) {
 
     StickerCube *scrambleCube = new StickerCube(zeCube);
 
-    TableManager* tableManager = TableManager::getInstance();
+    TableManager* tableManager = new TableManager();
+    CubeSearch* cubeSearch = new CubeSearch(tableManager);
 
     //  solve phase 1
     std::cout << "\nStarting phase 1...\n";
-    std::string phase1Solution = CubeSearch::getPhase1Solution(scrambleCube);
+    std::string phase1Solution = cubeSearch->getPhase1Solution(scrambleCube);
     //std::cout << phase1Solution << "\n";
 
     //  apply phase 1  solution to scrambled cube
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]) {
 
     //  solve phase 2
     std::cout << "Starting phase 2...\n\n";
-    std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
+    std::string phase2Solution = cubeSearch->getPhase2Solution(scrambleCube);
 
     //  output complete solution
     std::cout << "Solution " << phase1Solution << phase2Solution << "\n";

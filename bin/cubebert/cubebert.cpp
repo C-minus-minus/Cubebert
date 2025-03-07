@@ -1,7 +1,6 @@
 #include "cubebert.h"
 
 #include "algorithm_optimiser.h"
-#include "cube_search.h"
 #include "process_cube.h"
 #include "sticker_cube.h"
 
@@ -15,7 +14,10 @@ Cubebert::Cubebert() {
     m_fipc->home();
 
     std::cout << "Initializing TableManager\n";
-    m_tableManager = TableManager::getInstance();
+    m_tableManager = new TableManager();
+    m_tableManager->generateTables();
+    
+    m_cubeSearch = new CubeSearch(m_tableManager);
 
     std::cout << "Initializing ProcessCube\n";
     m_processCube = new ProcessCube();
@@ -47,11 +49,11 @@ void Cubebert::solve() {
     StickerCube *scrambleCube = new StickerCube(zeCube);
     
     std::cout << "\nStarting phase 1...\n";
-    std::string phase1Solution = CubeSearch::getPhase1Solution(scrambleCube);
+    std::string phase1Solution = m_cubeSearch->getPhase1Solution(scrambleCube);
     scrambleCube->applyScramble(phase1Solution);
 
     std::cout << "Starting phase 2...\n";
-    std::string phase2Solution = CubeSearch::getPhase2Solution(scrambleCube);
+    std::string phase2Solution = m_cubeSearch->getPhase2Solution(scrambleCube);
 
     std::cout << "Solution: " << phase1Solution << phase2Solution << "\n";
 

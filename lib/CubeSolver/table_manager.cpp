@@ -1,31 +1,10 @@
 #include "table_manager.h"
 
-//  FILE FLAGS
-const bool TableManager::WRITE_TABLES_TO_FILE = false;
-const bool TableManager::READ_TABLES_FROM_FILE = false;
-
-TableManager* TableManager::instance = NULL;
-
-TableManager::TableManager() {
-
-    if(READ_TABLES_FROM_FILE) {
-        this->readTablesFromFile();
-    } else {
-        this->generatePhase1MoveTables();
-        this->generatePhase1PruningTables();
-        this->generatePhase2MoveTables();
-        this->generatePhase2PruningTables();
-        if(WRITE_TABLES_TO_FILE) {
-            this->writeTablesToFile();
-        }
-    }
-}
-
-TableManager* TableManager::getInstance() {
-    if (TableManager::instance == NULL) {
-        TableManager::instance = new TableManager();
-    }
-    return TableManager::instance;
+void TableManager::generateTables() {
+    this->generatePhase1MoveTables();
+    this->generatePhase1PruningTables();
+    this->generatePhase2MoveTables();
+    this->generatePhase2PruningTables();
 }
 
 void TableManager::generatePhase1EdgeMoveTable(StickerCube* cube, int coord, int depth) {

@@ -10,10 +10,9 @@
 class TableManager {
 
 	public:
-
-		TableManager();
-
-        static TableManager* getInstance();
+        void generateTables();
+        void writeTablesToFile();
+        void readTablesFromFile();
 
          //  FILE FLAGS
         static const bool WRITE_TABLES_TO_FILE;
@@ -76,14 +75,12 @@ class TableManager {
         void generatePhase2Side2PruningTable();
 
         //  writes move and prunning tables to file
-        void writeTablesToFile();
         void writeMoveTablesToFile();
         void writeMoveTableToFile(std::string fileName, int** moveTable, int size, int moveCount);
         void writePruningTablesToFile();
         void writePruningTableToFile(std::string fileName, int* pruningTable, int size);
         
         //  reads move and prunning tables from file
-        void readTablesFromFile();
         void readMoveTablesFromFile();
         void readMoveTableFromFile(std::string fileName, int*** moveTable, int size, int moveCount);
         void readPruningTablesFromFile();
