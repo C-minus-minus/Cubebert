@@ -9,16 +9,16 @@ FIPC::~FIPC() {
 }
 
 void FIPC::home() {
-    uint8_t data[1] = { 0x00 };
-    write_i2c(m_i2cFile, data, 1);
+    std::string homeInstruction = "Home";
+    write_i2c(m_i2cFile, homeInstruction.c_str(), homeInstruction.length());
 }
 
 void FIPC::grab(std::string face) {
-    uint8_t data[1] = { 0x01 };
-    write_i2c(m_i2cFile, data, 1);
+    std::string grabInstruction = "Grab," + face;
+    write_i2c(m_i2cFile, grabInstruction.c_str(), grabInstruction.length());   
 }
 
 void FIPC::rotate(std::string moves) {
-    uint8_t data[2] = { 0x02, static_cast<uint8_t>(moves[0]) };
-    write_i2c(m_i2cFile, data, 2);
+    std::string rotationInstruction = "Rotate," + moves;
+    write_i2c(m_i2cFile, rotationInstruction.c_str(), rotationInstruction.length());
 }

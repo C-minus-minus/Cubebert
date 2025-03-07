@@ -9,7 +9,7 @@ int main() {
     }
 
     std::string data = "Solve,F;";
-    write_i2c(file, (uint8_t *)data.c_str(), data.size());
+    write_i2c(file, data.c_str(), data.size());
 
     close_i2c_device(file);
     return 0;

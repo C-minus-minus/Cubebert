@@ -29,7 +29,7 @@ void close_i2c_device(FILE *file) {
     fclose(file);
 }
 
-void write_i2c(FILE *file, uint8_t *data, size_t length) {
+void write_i2c(FILE *file, const char *data, size_t length) {
     struct i2c_rdwr_ioctl_data packets;
     struct i2c_msg messages[1];
 
@@ -45,7 +45,7 @@ void write_i2c(FILE *file, uint8_t *data, size_t length) {
 
 }
 
-void read_i2c(FILE *file, uint8_t *buffer, size_t length) {
+void read_i2c(FILE *file, const char *buffer, size_t length) {
     // Read data from I2C device
     // buffer[0] = 0x00; // Register address to read from
     // if (write(file, buffer, 1) != 1) {
