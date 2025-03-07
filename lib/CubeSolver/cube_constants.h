@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CUBE_CONSTANTS_H
+#define CUBE_CONSTANTS_H
+
 #include <iostream>
 #include <map>
 
@@ -50,3 +52,5 @@ class CubeConstants {
         static int** createUdsliceOrderTable();
         static int** UDSLICE_ORDER_TABLE;
 };
+
+#endif // CUBE_CONSTANTS_H

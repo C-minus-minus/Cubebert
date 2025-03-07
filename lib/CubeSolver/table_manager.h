@@ -1,8 +1,10 @@
-#pragma once
+#ifndef TABLE_MANAGER_H
+#define TABLE_MANAGER_H
+
 #include <iostream>
 #include <queue>
 #include <unordered_map>
-#include "StickerCube.h"
+#include "sticker_cube.h"
 #include <fstream>
 
 class TableManager {
@@ -97,3 +99,5 @@ class TableManager {
                 }
         };
 };
+
+#endif // TABLE_MANAGER_H

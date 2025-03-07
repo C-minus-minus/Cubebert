@@ -1,4 +1,4 @@
-#include "CubeConstants.h"
+#include "cube_constants.h"
 
 //  Six faces on a cube with 9 stickers on each face
 const int CubeConstants::SIDE_COUNT = 6;

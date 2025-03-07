@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CUBE_MATH_H
+#define CUBE_MATH_H
+
 class CubeMath {
 
     public:
@@ -15,3 +17,5 @@ class CubeMath {
         static int* generateCountBits();
         static int naiveCountBits(int bits);
 };
+
+#endif // CUBE_MATH_H

@@ -1,4 +1,4 @@
-#include "TableManager.h"
+#include "table_manager.h"
 
 //  FILE FLAGS
 const bool TableManager::WRITE_TABLES_TO_FILE = false;

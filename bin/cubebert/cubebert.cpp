@@ -1,9 +1,9 @@
 #include "cubebert.h"
 
 #include "algorithm_optimiser.h"
-#include "CubeSearch.h"
+#include "cube_search.h"
 #include "process_cube.h"
-#include "StickerCube.h"
+#include "sticker_cube.h"
 
 #include <iostream>
 

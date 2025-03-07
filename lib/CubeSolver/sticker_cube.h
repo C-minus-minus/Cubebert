@@ -1,11 +1,13 @@
-#pragma once
+#ifndef STICKER_CUBE_H
+#define STICKER_CUBE_H
+
 #include <iostream>
 #include <sstream>
 #include <math.h>
 #include <algorithm>
 #include <sstream>
-#include "CubeConstants.h"
-#include "CubeMath.h"
+#include "cube_constants.h"
+#include "cube_math.h"
 
 class StickerCube {
 
@@ -64,3 +66,4 @@ class StickerCube {
 			const int* outsideSide);
 };
 
+#endif // STICKER_CUBE_H

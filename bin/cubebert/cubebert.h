@@ -3,7 +3,7 @@
 
 #include "fipc.h"
 #include "process_cube.h"
-#include "TableManager.h"
+#include "table_manager.h"
 
 class Cubebert {
 public:

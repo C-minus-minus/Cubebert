@@ -1,4 +1,4 @@
-#include "CubeMath.h"
+#include "cube_math.h"
 
 //  O(1) lookups for factorial up to n = 12
 const int CubeMath::factorialTable[] =

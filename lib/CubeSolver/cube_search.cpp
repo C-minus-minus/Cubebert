@@ -1,4 +1,4 @@
-#include "CubeSearch.h"
+#include "cube_search.h"
 
 /**
 * Uses iterative deepening A* to find an algorithm to solve phase 1
