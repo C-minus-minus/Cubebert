@@ -7,13 +7,37 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
 # set the project name
 project(Cubebert VERSION 0.0.1)
 
-if(DEFINED ENV{ARCH} AND ENV{ARCH} STREQUAL "aarch64")
-    set(IS_RPI true)
+execute_process(
+    COMMAND uname -m
+    OUTPUT_VARIABLE ARCHITECTURE
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+message(STATUS "Detected architecture: ${ARCHITECTURE}")
+
+if(ARCHITECTURE MATCHES "^(aarch64|arm)")
+# Check if this is specifically a Raspberry Pi
+execute_process(
+    COMMAND grep -q "Raspberry Pi" /proc/cpuinfo
+    RESULT_VARIABLE IS_NOT_RPI
+    OUTPUT_QUIET
+    ERROR_QUIET
+)
+
+if(IS_NOT_RPI EQUAL 0)
+    message(STATUS "Building for Raspberry Pi")
+    set(IS_RPI TRUE)
+else()
+    message(STATUS "Building for ARM architecture (not Raspberry Pi)")
+    set(IS_RPI FALSE)
+endif()
+else()
+    message(STATUS "Building for non-ARM architecture")
+    set(IS_RPI FALSE)
 endif()
 
 add_subdirectory(bin)
 add_subdirectory(lib)
-add_subdirectory(libext)
 
 # Setup packaging information
 include(InstallRequiredSystemLibraries)
