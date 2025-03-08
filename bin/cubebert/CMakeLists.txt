@@ -9,6 +9,7 @@ target_link_libraries(
   PUBLIC CubeRecognition
   PUBLIC CubeSolver
   PUBLIC FirmwareIPC
+  PUBLIC Logger
 )
 
 install(TARGETS ${BIN_NAME} DESTINATION sbin)

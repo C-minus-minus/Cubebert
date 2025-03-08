@@ -1,6 +1,7 @@
 #include "logger.h"
 
 #include <iostream>
+#include <iomanip>
 
 const std::string RED = "\033[31m";
 const std::string YELLOW = "\033[33m";
@@ -9,6 +10,12 @@ const std::string CYAN = "\033[36m";
 const std::string RESET = "\033[0m";
 
 Logger::Logger(LogLevel level) : m_maxLogLevel(level) {
+    std::cout << std::fixed << std::setprecision(4);
+}
+
+Logger *Logger::instance() {
+    static Logger instance;
+    return &instance;
 }
 
 Logger Logger::info() {

@@ -15,6 +15,8 @@ class Logger {
 public:
     Logger(LogLevel level = LogLevel::INFO);
 
+    static Logger *instance();
+
     Logger info();
     Logger error();
     Logger debug();

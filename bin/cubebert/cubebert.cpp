@@ -7,19 +7,24 @@
 #include <iostream>
 
 Cubebert::Cubebert() {
-    std::cout << "Initializing Cubebert\n";
+    m_logger = Logger::instance();
 
-    std::cout << "Initializing Firmware\n";
+    m_logger->info().message("Initializing Cubebert");
+
+    m_logger->info().message("Initializing Firmware");
     m_fipc = new FIPC();
     m_fipc->home();
 
-    std::cout << "Initializing TableManager\n";
+    m_logger->info().message("Initializing TableManager");
     m_tableManager = new TableManager();
+
+    m_logger->info().message("Populating lookup tables");
     m_tableManager->readTablesFromFile();
 
+    m_logger->info().message("Initializing CubeSearch");
     m_cubeSearch = new CubeSearch(m_tableManager);
 
-    std::cout << "Initializing ProcessCube\n";
+    m_logger->info().message("Initializing ProcessCube");
     m_processCube = new ProcessCube();
 }
 
@@ -30,7 +35,7 @@ Cubebert::~Cubebert() {
 }
 
 void Cubebert::solve() {
-    std::cout << "Starting Snapping\n";
+    m_logger->info().message("Starting Solver");
     m_processCube->captureSide(0);
     m_fipc->rotate("X");
     m_processCube->captureSide(1);
@@ -48,17 +53,17 @@ void Cubebert::solve() {
 
     StickerCube *scrambleCube = new StickerCube(zeCube);
     
-    std::cout << "\nStarting phase 1...\n";
+    m_logger->info().message("Starting Phase 1");
     std::string phase1Solution = m_cubeSearch->getPhase1Solution(scrambleCube);
     scrambleCube->applyScramble(phase1Solution);
 
-    std::cout << "Starting phase 2...\n";
+    m_logger->info().message("Starting Phase 2");
     std::string phase2Solution = m_cubeSearch->getPhase2Solution(scrambleCube);
 
-    std::cout << "Solution: " << phase1Solution << phase2Solution << "\n";
+    m_logger->info().message("Solution: " + phase1Solution + phase2Solution);
 
     std::string optimalRotations = convertTo4Arm(phase1Solution + phase2Solution);
-    std::cout << "Solution for Bot: " << optimalRotations << "\n";
+    m_logger->info().message("Solution for Bot: " + optimalRotations);
 
     m_fipc->rotate(phase1Solution + phase2Solution);
 }

@@ -1,5 +1,7 @@
 #include "process_cube.h"
 
+#include "logger.h"
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -20,40 +22,46 @@ ProcessCube::~ProcessCube() {
 }
 
 void ProcessCube::captureSide(int side) {
-    // Create a drop process that calls rpicam-still
-    // to take a picture and save it to a file
+    Logger *logger = Logger::instance();
+
     std::string filename = "side_" + std::to_string(side) + ".rgb";
-    std::string command = "rpicam-still --immediate -e rgb -n -o " + filename + 
+    std::string command = "rpicam-still --immediate -v 0 -e rgb -n -o " + filename + 
         " --width " + std::to_string(WIDTH) + 
         " --height " + std::to_string(HEIGHT) + 
         " -q 100 --autofocus-on-capture --mode 32:32:8:U";
 
-    int result = system(command.c_str());
-    if(result != 0) {
-        std::cerr << "Error taking picture: " << result << '\n';
+    FILE* pipe = popen(command.c_str(), "r");
+    if (!pipe) {
+        logger->error().message("Error opening pipe");
+        return;
+    }
+    
+    // Close the pipe without reading output
+    int result = pclose(pipe);
+    if (result != 0) {
+        logger->error().message("Error capturing image");
         return;
     }
 
-    std::cout << "Captured side " << side << '\n';
+    logger->info().message("Captured side " + std::to_string(side) + " to " + filename);
 
     // Read the file into a buffer
     std::ifstream file(filename, std::ios::binary | std::ios::ate);
     if(!file) {
-        std::cerr << "Error opening file: " << filename << '\n';
+        logger->error().message("Error opening file: " + filename);
         return;
     }
-
-    std::cout << "Reading file " << filename << '\n';
 
     std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
     char *data = new char[size];
     if(!file.read(data, size)) {
-        std::cerr << "Error reading file: " << filename << '\n';
+        logger->error().message("Error reading file: " + filename);
+        delete[] data;
         return;
     }
 
-    std::cout << "Processing file " << filename << '\n';
+    logger->info().message("Read " + std::to_string(size) + " bytes from " + filename);
 
     int pixelCount = WIDTH * HEIGHT;
     int pixelsProcessed = 0;
@@ -68,9 +76,7 @@ void ProcessCube::captureSide(int side) {
         ++pixelsProcessed;
     }
     // We're done with our RAW values
-    delete data;
-
-    std::cout << "Creating 2D array\n";
+    delete[] data;
 
     ColorMath::RGB ***imgObj = new ColorMath::RGB**[HEIGHT];
     for(int y=0; y<HEIGHT; ++y) {
@@ -80,8 +86,8 @@ void ProcessCube::captureSide(int side) {
         }
     }
 
-    std::cout << "Side[" << side << "] CIEL*A*B* Values\n";
-    std::cout << std::fixed << std::setprecision(4);
+    logger->debug().message("Converted image to 2D array");
+    logger->debug().message("Subsampling image...");
     for(int y=0; y<3; ++y) {
         for(int x=0; x<3; ++x) {
             ColorMath::CIELAB* sampleColor = ColorMath::subsample(
@@ -91,12 +97,12 @@ void ProcessCube::captureSide(int side) {
                 128, 128);
             m_cieCubeSides[side][x+(y*3)] = sampleColor;
             
-            std::cout << '(' << sampleColor->lStar << ", " << sampleColor->aStar << ", " << sampleColor->bStar << ")\t";
+            logger->debug().message("Subsampled side " + std::to_string(side) + " at (" + std::to_string(x) + ", " + std::to_string(y) + ") to (" +
+                std::to_string(sampleColor->lStar) + ", " +
+                std::to_string(sampleColor->aStar) + ", " +
+                std::to_string(sampleColor->bStar) + ")");
         }
-        std::cout << '\n';
     }
-    std::cout << "\n\n";
-
     m_ciePalette[side] = m_cieCubeSides[side][4];
 }
 
